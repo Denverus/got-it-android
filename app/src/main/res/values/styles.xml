@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Base.Theme.Participent">
+    </style>
+
+    <style name="Base.Theme.Participent" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
+
+        <!--<item name="colorPrimary">#673AB7</item>-->
+        <!--<item name="colorPrimaryDark">#512DA8</item>-->
+        <!--<item name="colorAccent">#FF4081</item>-->
+        <item name="colorAccent">@color/primary_dark</item>
+
+        <item name="android:windowBackground">@color/window_background</item>
+        <!-- changed for option menu -->
+        <item name="android:textSize">14sp</item>
+        <item name="colorButtonNormal">@color/button_color</item>
+    </style>
+
+    <style name="Widget.CardContent" parent="android:Widget">
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+        <item name="android:paddingTop">24dp</item>
+        <item name="android:paddingBottom">24dp</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="AppCompatAlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorAccent">#FFCC00</item>
+        <item name="android:textColorPrimary">#FFFFFF</item>
+        <item name="android:background">#5fa3d0</item>
+    </style>
+
+    <!--<style name="ParseLoginUI.Button" parent="@android:style/Widget.Button">-->
+        <!--<item name="android:layout_width">match_parent</item>-->
+        <!--<item name="android:layout_height">48dp</item>-->
+        <!--<item name="android:background">@drawable/com_parse_ui_parse_login_button_background_selector</item>-->
+        <!--<item name="android:textColor">@drawable/login_display_text</item>-->
+        <!--<item name="android:textSize">18sp</item>-->
+    <!--</style>-->
+
+
+</resources>

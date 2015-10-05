@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="window_background">#FFF5F5F5</color>
+
+    <!--<color name="primary">#53bd53</color>-->
+    <!--<color name="primary_dark">#2da82d</color>-->
+    <color name="primary">#dd1100</color>
+    <color name="primary_dark">#FF2400</color>
+
+
+    <color name="com_parse_ui_parse_login_button">@color/primary</color>
+    <color name="com_parse_ui_parse_login_button_push">@color/primary_dark</color>
+    <color name="com_parse_ui_parse_login_button_focus">@color/primary_dark</color>
+    <color name="sign_up_dark">#3498e5</color>
+    <color name="sing_up_light">#0c84e1</color>
+    <color name="suggestion_highlight_text">#177bbd</color>
+
+    <color name="button_color">#26A69A</color>
+
+</resources>
