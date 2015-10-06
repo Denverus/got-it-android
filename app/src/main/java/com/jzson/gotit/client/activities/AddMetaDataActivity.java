@@ -22,9 +22,6 @@ public class AddMetaDataActivity extends Activity {
     @InjectView(R.id.videoUrl)
     protected EditText videoUrl;
 
-    @InjectView(R.id.videoDuration)
-    protected EditText videoDuration;
-
     @InjectView(R.id.addButton)
     protected Button addButton;
 
@@ -41,7 +38,6 @@ public class AddMetaDataActivity extends Activity {
                 Intent result = new Intent();
                 result.putExtra("name", videoName.getText().toString());
                 result.putExtra("url", videoUrl.getText().toString());
-                result.putExtra("duration", Long.parseLong(videoDuration.getText().toString()));
                 setResult(Activity.RESULT_OK, result);
                 finish();
             }
