@@ -3,11 +3,13 @@ package com.jzson.gotit.client;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.jzson.gotit.client.activities.MainActivity;
+import com.jzson.gotit.client.fragments.TeenListFragment;
 
 /**
- * Created by Iliya Gogolev on 6/26/15.
+ * Created by Denis on 6/26/15.
  */
 public class NavigationViewManager {
 
@@ -38,26 +40,23 @@ public class NavigationViewManager {
     }
 
     private void onNavigationItemSelected(int menuId) {
-/*
+
         switch (menuId) {
             case R.id.nav_settings:
-                NavUtils.showUserDetailsActivity(mMainActivity);
-
-                Snackbar.make(mMainActivity.findViewById(R.id.main_content), "Here's a Snackbar", Snackbar.LENGTH_LONG)
-                        .setAction("Action", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-
-                            }
-                        }).show();
-
+                Toast.makeText(mMainActivity, "Not implemented", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.nav_teens:
+                mMainActivity.setFragment(new TeenListFragment());
+                //NavUtils.showTeensActivity(mMainActivity);
+                break;
+            case R.id.nav_feedbacks:
+                Toast.makeText(mMainActivity, "Not implemented", Toast.LENGTH_SHORT).show();;
                 break;
             case R.id.nav_singout:
-                ParseUser.logOut();
-                NavUtils.showSigninActivity(mMainActivity);
+                Toast.makeText(mMainActivity, "Not implemented", Toast.LENGTH_SHORT).show();;
                 break;
 
-        }*/
+        }
 
     }
 }

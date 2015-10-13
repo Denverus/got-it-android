@@ -1,10 +1,15 @@
 package com.jzson.gotit.client;
 
 import android.app.Application;
+import android.support.v4.app.Fragment;
+
+import com.jzson.gotit.client.model.Person;
 
 public class AppApplication extends Application {
 
     private static AppApplication context;
+    private Fragment fragment;
+    private Person person;
 
     @Override
     public void onCreate() {
@@ -15,6 +20,22 @@ public class AppApplication extends Application {
 
     public static AppApplication getContext() {
         return (AppApplication) AppApplication.context;
+    }
+
+    public void setFragment(Fragment fragment) {
+        this.fragment = fragment;
+    }
+
+    public Fragment getFragment() {
+        return fragment;
+    }
+
+    public Person getPerson() {
+        return person;
+    }
+
+    public void setPerson(Person person) {
+        this.person = person;
     }
 }
 
