@@ -16,8 +16,10 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.jzson.gotit.client.AppApplication;
+import com.jzson.gotit.client.NavUtils;
 import com.jzson.gotit.client.NavigationViewManager;
 import com.jzson.gotit.client.R;
+import com.jzson.gotit.client.fragments.EditFeedbackFragment;
 import com.jzson.gotit.client.fragments.TeenListFragment;
 
 
@@ -47,9 +49,7 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(MainActivity.this, "No action", Toast.LENGTH_SHORT).show();
-//                Snackbar.make(view, "Here's a Snackbar", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
+                setFragment(new EditFeedbackFragment());
             }
         });
 

@@ -7,6 +7,7 @@ import android.view.View;
 
 import com.jzson.gotit.client.activities.MainActivity;
 import com.jzson.gotit.client.activities.TeenListActivity;
+import com.jzson.gotit.client.fragments.EditFeedbackFragment;
 
 /**
  * Created by Denis on 10/12/2015.
@@ -20,5 +21,8 @@ public class NavUtils {
     public static void showFeedbacksActivity(Context context) {
         //Intent intent = new Intent(context, Feed.class);
         //context.startActivity(intent);
+    }
+
+    public static void showEditFeedback(Context context) {
     }
 }
