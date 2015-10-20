@@ -9,8 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.jzson.gotit.client.R;
-import com.jzson.gotit.client.adapter.RVAdapter;
-import com.jzson.gotit.client.provider.PersonProvider;
+import com.jzson.gotit.client.adapter.FeedbackListAdapter;
+import com.jzson.gotit.client.provider.DataProvider;
 
 public class FeedbackListFragment extends Fragment {
 
@@ -31,7 +31,7 @@ public class FeedbackListFragment extends Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.scrollToPosition(0);
 
-        mAdapter = new RVAdapter(PersonProvider.getInstance().getPersons());
+        mAdapter = new FeedbackListAdapter(DataProvider.getInstance().getFeedbacks());
         mRecyclerView.setAdapter(mAdapter);
 
 

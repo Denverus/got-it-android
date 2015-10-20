@@ -1,44 +1,46 @@
 package com.jzson.gotit.client.model;
 
+import java.util.Date;
+import java.util.List;
+
 /**
  * Created by Denis on 10/18/2015.
  */
 public class Feedback {
 
-    private double sugarLevel;
-    private String whatYouEat;
-    private boolean administerInsulin;
+    private Date created;
+    private List<Question> questions;
 
     public Feedback() {
+        created = new Date();
     }
 
-    public Feedback(double sugarLevel, String whatYouEat, boolean administerInsulin) {
-        this.sugarLevel = sugarLevel;
-        this.whatYouEat = whatYouEat;
-        this.administerInsulin = administerInsulin;
+    public Feedback(List<Question> questions) {
+        created = new Date();
+        this.questions = questions;
+    }
+    public Date getCreated() {
+        return created;
     }
 
-    public double getSugarLevel() {
-        return sugarLevel;
+    public void setCreated(Date created) {
+        this.created = created;
     }
 
-    public void setSugarLevel(double sugarLevel) {
-        this.sugarLevel = sugarLevel;
+    public List<Question> getQuestions() {
+        return questions;
     }
 
-    public String getWhatYouEat() {
-        return whatYouEat;
+    public void setQuestions(List<Question> questions) {
+        this.questions = questions;
     }
 
-    public void setWhatYouEat(String whatYouEat) {
-        this.whatYouEat = whatYouEat;
-    }
-
-    public boolean getAdministerInsulin() {
-        return administerInsulin;
-    }
-
-    public void setAdministerInsulin(boolean administerInsulin) {
-        this.administerInsulin = administerInsulin;
+    public String getAnswer(int questionType) {
+        for (Question question : questions) {
+            if (question.getQuestionType() == questionType) {
+                return question.getStringAnswer();
+            }
+        }
+        return "";
     }
 }

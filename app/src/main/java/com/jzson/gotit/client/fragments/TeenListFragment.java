@@ -5,13 +5,13 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.jzson.gotit.client.R;
-import com.jzson.gotit.client.adapter.RVAdapter;
-import com.jzson.gotit.client.provider.PersonProvider;
+import com.jzson.gotit.client.adapter.FeedbackListAdapter;
+import com.jzson.gotit.client.adapter.PersonListAdapter;
+import com.jzson.gotit.client.provider.DataProvider;
 
 public class TeenListFragment extends Fragment {
 
@@ -32,7 +32,7 @@ public class TeenListFragment extends Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.scrollToPosition(0);
 
-        mAdapter = new RVAdapter(PersonProvider.getInstance().getPersons());
+        mAdapter = new PersonListAdapter(DataProvider.getInstance().getPersons());
         mRecyclerView.setAdapter(mAdapter);
 
 

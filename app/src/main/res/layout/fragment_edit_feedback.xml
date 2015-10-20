@@ -55,7 +55,7 @@
                         android:textSize="20sp"
                         android:id="@+id/sugar_level_answer"
                         android:layout_weight="1"
-                        android:text="@{Utils.doubleToString(feedback.sugarLevel)}"/>
+                        android:text="@{feedback.getAnswer(1)}"/>
 
                 </LinearLayout>
 
@@ -80,7 +80,7 @@
                         android:inputType="number"
                         android:ems="5"
                         android:textSize="20sp"
-                        android:text="@{feedback.whatYouEat}"
+                        android:text="@{feedback.getAnswer(1)}"
                         android:layout_weight="1" />
 
                 </LinearLayout>

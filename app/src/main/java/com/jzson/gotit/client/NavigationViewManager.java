@@ -6,6 +6,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.jzson.gotit.client.activities.MainActivity;
+import com.jzson.gotit.client.fragments.FeedbackListFragment;
 import com.jzson.gotit.client.fragments.TeenListFragment;
 
 /**
@@ -50,7 +51,7 @@ public class NavigationViewManager {
                 //NavUtils.showTeensActivity(mMainActivity);
                 break;
             case R.id.nav_feedbacks:
-                Toast.makeText(mMainActivity, "Not implemented", Toast.LENGTH_SHORT).show();;
+                mMainActivity.setFragment(new FeedbackListFragment());
                 break;
             case R.id.nav_singout:
                 Toast.makeText(mMainActivity, "Not implemented", Toast.LENGTH_SHORT).show();;

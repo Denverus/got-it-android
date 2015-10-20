@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.jzson.gotit.client.AppApplication;
 import com.jzson.gotit.client.R;
@@ -22,12 +21,12 @@ import java.util.List;
 /**
  * Created by Denis on 10/11/2015.
  */
-public class RVAdapter extends RecyclerView.Adapter<RVAdapter.PersonViewHolder> implements View.OnClickListener {
+public class PersonListAdapter extends RecyclerView.Adapter<PersonListAdapter.PersonViewHolder> implements View.OnClickListener {
 
     private List<Person> persons;
     private RecyclerView mRecyclerView;
 
-    public RVAdapter(List<Person> persons){
+    public PersonListAdapter(List<Person> persons){
         this.persons = persons;
     }
 

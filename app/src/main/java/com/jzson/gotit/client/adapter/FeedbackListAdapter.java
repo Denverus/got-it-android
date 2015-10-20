@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.jzson.gotit.client.AppApplication;
 import com.jzson.gotit.client.R;
 import com.jzson.gotit.client.activities.MainActivity;
+import com.jzson.gotit.client.fragments.EditFeedbackFragment;
 import com.jzson.gotit.client.fragments.TeenProfileFragment;
 import com.jzson.gotit.client.model.Feedback;
 import com.jzson.gotit.client.model.Person;
@@ -27,13 +28,13 @@ public class FeedbackListAdapter extends RecyclerView.Adapter<FeedbackListAdapte
     private List<Feedback> feedbackList;
     private RecyclerView mRecyclerView;
 
-    public FeedbackListAdapter(List<Feedback> persons){
+    public FeedbackListAdapter(List<Feedback> feedbackList){
         this.feedbackList = feedbackList;
     }
 
     @Override
     public FeedbackViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.feedback_item, viewGroup, false);
+        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.personal_feedback_item, viewGroup, false);
         v.setOnClickListener(this);
         FeedbackViewHolder pvh = new FeedbackViewHolder(v);
         return pvh;
@@ -41,9 +42,8 @@ public class FeedbackListAdapter extends RecyclerView.Adapter<FeedbackListAdapte
 
     @Override
     public void onBindViewHolder(FeedbackViewHolder feedbackViewHolder, int i) {
-        //feedbackViewHolder.personName.setText(feedbackList.get(i).getName());
-        //feedbackViewHolder.personAge.setText(feedbackList.get(i).getAge());
-        //feedbackViewHolder.personPhoto.setImageResource(persons.get(i).photoId);
+        feedbackViewHolder.created.setText(feedbackList.get(i).getCreated().toString());
+        feedbackViewHolder.summary.setText("Answers"+feedbackList.get(i).getQuestions().size());
     }
 
     @Override
@@ -65,21 +65,20 @@ public class FeedbackListAdapter extends RecyclerView.Adapter<FeedbackListAdapte
 
         Intent intent = new Intent(context, MainActivity.class);
         AppApplication.getContext().setFeedback(feedback);
-        AppApplication.getContext().setFragment(new TeenProfileFragment());
+        AppApplication.getContext().setFragment(new EditFeedbackFragment());
         context.startActivity(intent);
     }
 
     public static class FeedbackViewHolder extends RecyclerView.ViewHolder {
         CardView cv;
-        //TextEdit personName;
-        //TextView personAge;
+        TextView created;
+        TextView summary;
 
         FeedbackViewHolder(View itemView) {
             super(itemView);
             cv = (CardView)itemView.findViewById(R.id.cv);
-            //personName = (TextView)itemView.findViewById(R.id.person_name);
-            //personAge = (TextView)itemView.findViewById(R.id.person_age);
-            //personPhoto = (ImageView)itemView.findViewById(R.id.person_photo);
+            created = (TextView)itemView.findViewById(R.id.time);
+            summary = (TextView)itemView.findViewById(R.id.summary);
         }
     }
 
