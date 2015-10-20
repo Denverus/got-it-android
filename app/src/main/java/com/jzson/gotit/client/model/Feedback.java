@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Created by Denis on 10/18/2015.
  */
-public class Feedback {
+public class Feedback extends BaseModel {
 
     private Date created;
     private List<Question> questions;

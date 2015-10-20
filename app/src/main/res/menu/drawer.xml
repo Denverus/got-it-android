@@ -9,6 +9,10 @@
             android:id="@+id/nav_feedbacks"
             android:icon="@drawable/ic_notifications_black_24dp"
             android:title="@string/nav_feedbacks" />
+        <item
+            android:id="@+id/nav_feeds"
+            android:icon="@drawable/ic_notifications_black_24dp"
+            android:title="@string/nav_feeds" />
     </group>
 
     <item

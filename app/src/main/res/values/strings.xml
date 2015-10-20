@@ -31,6 +31,7 @@
     <string name="question_sugar_level">What was your blood sugar level at meal time?</string>
     <string name="question_what_eat_level">What did you eat at meal time?</string>
     <string name="question_administer_insulin">Did you administer insulin?</string>
+    <string name="nav_feeds">Feed</string>
 
 
 </resources>
