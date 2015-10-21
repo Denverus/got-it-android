@@ -12,6 +12,7 @@ public class AppApplication extends Application {
     private Fragment fragment;
     private Person person;
     private Feedback feedback;
+    private int userId = 5;
 
     @Override
     public void onCreate() {
@@ -46,6 +47,14 @@ public class AppApplication extends Application {
 
     public Feedback getFeedback() {
         return feedback;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 }
 

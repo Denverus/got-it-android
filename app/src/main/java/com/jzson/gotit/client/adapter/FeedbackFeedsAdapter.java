@@ -1,13 +1,17 @@
 package com.jzson.gotit.client.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
+import com.jzson.gotit.client.AppApplication;
 import com.jzson.gotit.client.R;
+import com.jzson.gotit.client.activities.MainActivity;
 import com.jzson.gotit.client.adapter.base.BaseListAdapter;
+import com.jzson.gotit.client.fragments.EditFeedbackFragment;
 import com.jzson.gotit.client.model.Feedback;
 import com.jzson.gotit.client.model.UserFeed;
 
@@ -18,7 +22,10 @@ public class FeedbackFeedsAdapter extends BaseListAdapter<UserFeed, FeedbackFeed
 
     @Override
     protected void onItemClick(Context context, UserFeed model) {
-
+        Intent intent = new Intent(context, MainActivity.class);
+        AppApplication.getContext().setFeedback(model.getFeedback());
+        AppApplication.getContext().setFragment(new EditFeedbackFragment());
+        context.startActivity(intent);
     }
 
     @Override

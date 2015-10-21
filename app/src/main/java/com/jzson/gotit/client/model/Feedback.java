@@ -10,13 +10,15 @@ public class Feedback extends BaseModel {
 
     private Date created;
     private List<Question> questions;
+    private int personId;
 
     public Feedback() {
         created = new Date();
     }
 
-    public Feedback(List<Question> questions) {
+    public Feedback(int personId, List<Question> questions) {
         created = new Date();
+        this.personId = personId;
         this.questions = questions;
     }
     public Date getCreated() {
@@ -46,5 +48,13 @@ public class Feedback extends BaseModel {
 
     public String getSummary() {
         return "Questions "+questions.size();
+    }
+
+    public int getPersonId() {
+        return personId;
+    }
+
+    public void setPersonId(int personId) {
+        this.personId = personId;
     }
 }

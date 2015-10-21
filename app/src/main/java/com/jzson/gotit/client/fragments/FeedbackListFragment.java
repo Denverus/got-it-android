@@ -31,7 +31,7 @@ public class FeedbackListFragment extends Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.scrollToPosition(0);
 
-        mAdapter = new FeedbackListAdapter(DataProvider.getInstance().getFeedbacks());
+        mAdapter = new FeedbackListAdapter(DataProvider.getInstance().getFeedback());
         mRecyclerView.setAdapter(mAdapter);
 
 

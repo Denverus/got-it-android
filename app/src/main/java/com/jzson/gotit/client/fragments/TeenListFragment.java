@@ -32,7 +32,7 @@ public class TeenListFragment extends Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.scrollToPosition(0);
 
-        mAdapter = new PersonListAdapter(DataProvider.getInstance().getPersons());
+        mAdapter = new PersonListAdapter(DataProvider.getInstance().getTeens());
         mRecyclerView.setAdapter(mAdapter);
 
 

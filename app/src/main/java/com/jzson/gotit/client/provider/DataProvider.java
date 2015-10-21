@@ -1,12 +1,18 @@
 package com.jzson.gotit.client.provider;
 
+import android.hardware.usb.UsbRequest;
+
 import com.jzson.gotit.client.model.Feedback;
+import com.jzson.gotit.client.model.Notification;
 import com.jzson.gotit.client.model.Person;
 import com.jzson.gotit.client.model.Question;
+import com.jzson.gotit.client.model.Subscription;
 import com.jzson.gotit.client.model.UserFeed;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Denis on 10/11/2015.
@@ -14,62 +20,100 @@ import java.util.List;
 public class DataProvider {
     private static final DataProvider INSTANCE = new DataProvider();
 
-    private List<Person> persons;
+    private PersonTable persons = new PersonTable();
 
-    private List<Feedback> feedbacks;
+    private FeedbackTable feedback = new FeedbackTable();
 
-    private List<Question> question;
+    private Table<Question> questions = new Table<>();
 
-    private List<UserFeed> userFeeds;
+    private Table<Notification> notifications = new Table<>();
+
+    private SubscriptionTable subscriptions = new SubscriptionTable();
 
     public DataProvider() {
         initializeData();
     }
 
     private void initializeData(){
-        persons = new ArrayList<>();
-        persons.add(new Person("Emma Wilson", "23 years old"));
-        persons.add(new Person("Lavery Maiss", "25 years old"));
-        persons.add(new Person("Lillie Watts", "35 years old"));
+        persons.add(new Person("Emma Wilson", "13 years old", Person.TEEN));
+        persons.add(new Person("Lavery Maiss", "15 years old", Person.TEEN));
+        persons.add(new Person("Lillie Watts", "16 years old", Person.TEEN));
+        persons.add(new Person("Michel Rodrigez", "17 years old", Person.TEEN));
+        persons.add(new Person("Caren Wilosn", "12 years old", Person.TEEN));
+        persons.add(new Person("Mike Waters", "45 years old", Person.FOLLOWER));
 
-        feedbacks = new ArrayList<>();
-        feedbacks.add(new Feedback(createQuestions(10d, "Meat", false)));
-        feedbacks.add(new Feedback(createQuestions(5d, "Bread", true)));
-        feedbacks.add(new Feedback(createQuestions(3d, "Soup", false)));
-        feedbacks.add(new Feedback(createQuestions(12d, "Sandwich", true)));
+        feedback.add(new Feedback(0, createQuestions(10d, "Meat", false)));
+        feedback.add(new Feedback(1, createQuestions(5d, "Bread", true)));
+        feedback.add(new Feedback(2, createQuestions(3d, "Soup", false)));
+        feedback.add(new Feedback(3, createQuestions(12d, "Sandwich", true)));
+        feedback.add(new Feedback(4, createQuestions(2d, "Burger", true)));
 
-        userFeeds = new ArrayList<>();
-        userFeeds.add(createUserFeed(0, 0));
-        userFeeds.add(createUserFeed(1, 1));
-        userFeeds.add(createUserFeed(2, 2));
-        userFeeds.add(createUserFeed(0, 3));
+        notifications.add(new Notification(Notification.SUBSCRIBE_REQUESTED, 5, 0));
+        notifications.add(new Notification(Notification.SUBSCRIBE_REQUESTED, 5, 1));
+        notifications.add(new Notification(Notification.SUBSCRIBE_ACCEPTED, 2, 5));
+        notifications.add(new Notification(Notification.SUBSCRIBE_ACCEPTED, 3, 5));
+        notifications.add(new Notification(Notification.SUBSCRIBE_REJECTED, 4, 5));
+
+        subscriptions.add(new Subscription(5, 2));
+        subscriptions.add(new Subscription(5, 3));
     }
 
     public static DataProvider getInstance() {
         return INSTANCE;
     }
 
-    public List<Person> getPersons() {
-        return persons;
+    public Person getPersonById(int id) {
+        return persons.getById(id);
     }
 
-    public List<Feedback> getFeedbacks() {
-        return feedbacks;
+    public List<Person> getPersons() {
+        return persons.getList();
+    }
+
+    public List<Person> getTeens() {
+        return persons.getTeens();
+    }
+
+    public List<Feedback> getFeedback() {
+        return feedback.getList();
     }
 
     private List<Question> createQuestions(Double sugarLevel, String meal, Boolean adminInsulin) {
-        question = new ArrayList<>();
-        question.add(new Question("What was your blood sugar level at meal time?", sugarLevel, Question.QUESTION_SUGAR_LEVEL));
-        question.add(new Question("What did you eat at meal time?", meal, Question.QUESTION_MEAL));
-        question.add(new Question("Did you administer insulin?", adminInsulin, Question.QUESTION_INSULIN));
-        return question;
+        List<Question> questions = new ArrayList<>();
+        questions.add(new Question("What was your blood sugar level at meal time?", sugarLevel, Question.QUESTION_SUGAR_LEVEL));
+        questions.add(new Question("What did you eat at meal time?", meal, Question.QUESTION_MEAL));
+        questions.add(new Question("Did you administer insulin?", adminInsulin, Question.QUESTION_INSULIN));
+        return questions;
     }
 
-    private UserFeed createUserFeed(int personId, int feedbackId) {
-        return new UserFeed(persons.get(personId), feedbacks.get(feedbackId));
-    }
+    public List<UserFeed> getUserFeeds(int personId) {
+        List<UserFeed> userFeeds = new ArrayList<>();
 
-    public List<UserFeed> getUserFeeds() {
+        List<Subscription> list = subscriptions.getSubscriptionByPersonId(personId);
+        for (Subscription subscription : list) {
+            int teenId = subscription.getSubscribedTo();
+            Person person = persons.getById(teenId);
+            List<Feedback> feedbackList = feedback.getFeedbackListByUserId(teenId);
+            for (Feedback feedback: feedbackList) {
+                UserFeed userFeed = new UserFeed(person, feedback);
+                userFeeds.add(userFeed);
+            }
+        }
+
         return userFeeds;
+    }
+
+    public List<Notification> getNotifications() {
+        return notifications.getList();
+    }
+
+
+    public List<Notification> getNotificationsByUserId(final int id) {
+        return notifications.getListByCriteria(new Table.BooleanCriteria<Notification>() {
+            @Override
+            public boolean getCriteriaValue(Notification value) {
+                return value.getToPersonId() == id;
+            }
+        });
     }
 }

@@ -3,7 +3,7 @@ package com.jzson.gotit.client.model;
 /**
  * Created by dtrotckii on 10/19/2015.
  */
-public class Question {
+public class Question extends BaseModel {
 
     private static final int TYPE_STRING = 1;
     private static final int TYPE_BOOLEAN = 2;
