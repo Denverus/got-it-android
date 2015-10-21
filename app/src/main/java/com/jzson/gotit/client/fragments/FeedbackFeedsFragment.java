@@ -14,7 +14,7 @@ public class FeedbackFeedsFragment extends ListFragment {
     @Override
     protected RecyclerView.Adapter createAdapter() {
         FeedbackFeedsAdapter feedbackFeedsAdapter = new FeedbackFeedsAdapter();
-        feedbackFeedsAdapter.setData(DataProvider.getInstance().getFeedbacks());
+        feedbackFeedsAdapter.setData(DataProvider.getInstance().getUserFeeds());
         return feedbackFeedsAdapter;
     }
 }

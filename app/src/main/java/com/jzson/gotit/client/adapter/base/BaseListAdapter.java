@@ -36,6 +36,10 @@ public abstract class BaseListAdapter<T extends BaseModel, H extends RecyclerVie
 
     protected abstract H createViewHolder(View v);
 
+    protected T getModel(int index) {
+        return modelList.get(index);
+    }
+
     @Override
     public H onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(getResource(), viewGroup, false);

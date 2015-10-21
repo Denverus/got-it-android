@@ -43,4 +43,8 @@ public class Feedback extends BaseModel {
         }
         return "";
     }
+
+    public String getSummary() {
+        return "Questions "+questions.size();
+    }
 }
