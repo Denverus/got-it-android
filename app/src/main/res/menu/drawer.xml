@@ -13,7 +13,23 @@
             android:id="@+id/nav_feeds"
             android:icon="@drawable/ic_notifications_black_24dp"
             android:title="@string/nav_feeds" />
+        <item
+            android:id="@+id/nav_notifications"
+            android:icon="@drawable/ic_notifications_black_24dp"
+            android:title="@string/nav_notifications" />
     </group>
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_as_teen"
+            android:icon="@drawable/ic_directions_run_black_24dp"
+            android:title="@string/nav_as_teen" />
+        <item
+            android:id="@+id/nav_as_follower"
+            android:icon="@drawable/ic_directions_run_black_24dp"
+            android:title="@string/nav_as_follower" />
+    </group>
+
 
     <item
         android:id="@+id/nav_settings"

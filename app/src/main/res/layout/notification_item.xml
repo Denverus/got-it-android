@@ -25,11 +25,13 @@
 
                 <ImageView
                     android:id="@+id/request_code_image"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentTop="true"
-                    android:layout_marginRight="16dp" />
+                    android:layout_marginRight="16dp"
+                    android:src="@drawable/avatar"
+                    />
 
                 <TextView
                     android:id="@+id/summary"
@@ -37,14 +39,34 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
                     android:layout_toRightOf="@+id/request_code_image"
-                    android:textSize="30sp" />
+                    android:textSize="20sp"
+                    android:text="Petrov wants to follow for you."/>
 
                 <TextView
                     android:id="@+id/time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/request_code_image"
-                    android:layout_toRightOf="@+id/request_code_image" />
+                    android:layout_toRightOf="@+id/request_code_image"
+                    android:text="10/22/2015 6:00pm"/>
+
+                <Button
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:text="Yes"
+                    android:layout_below="@+id/time"
+                    android:layout_toLeftOf="@+id/buttonNo"
+                    android:id="@+id/buttonYes"/>
+
+                <Button
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:text="No"
+                    android:layout_below="@+id/time"
+                    android:layout_alignParentRight="true"
+                    android:id="@+id/buttonNo"/>
 
             </RelativeLayout>
 

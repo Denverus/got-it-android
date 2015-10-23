@@ -21,6 +21,7 @@
                 android:id="@+id/time"
                 android:layout_alignParentTop="true"
                 android:textSize="30sp"
+                android:text="10/22/2015 6:00pm"
                 />
 
             <TextView

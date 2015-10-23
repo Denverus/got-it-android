@@ -33,7 +33,9 @@ public class NotificationListAdapter extends BaseListAdapter<Notification, Notif
 
     @Override
     public void onBindViewHolder(NotificationViewHolder holder, int position) {
-
+        Notification notification = getModel(position);
+        holder.summary.setText(notification.getSummary());
+        holder.created.setText(notification.getCreated().toString());
     }
 
     public static class NotificationViewHolder extends RecyclerView.ViewHolder {

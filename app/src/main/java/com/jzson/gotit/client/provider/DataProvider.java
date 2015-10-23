@@ -116,4 +116,13 @@ public class DataProvider {
             }
         });
     }
+
+    public List<Feedback> getFeedbackById(final int userId) {
+        return feedback.getListByCriteria(new Table.BooleanCriteria<Feedback>() {
+            @Override
+            public boolean getCriteriaValue(Feedback value) {
+                return value.getPersonId()==userId;
+            }
+        });
+    }
 }

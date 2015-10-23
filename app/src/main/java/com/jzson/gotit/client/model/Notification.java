@@ -1,5 +1,7 @@
 package com.jzson.gotit.client.model;
 
+import java.util.Date;
+
 /**
  * Created by Denis on 10/20/2015.
  */
@@ -12,6 +14,8 @@ public class Notification extends BaseModel {
     private int code;
     private int fromPersonId;
     private int toPersonId;
+    private String summary;
+    private Date created;
 
     public Notification(int id) {
         super(id);
@@ -45,5 +49,21 @@ public class Notification extends BaseModel {
 
     public void setToPersonId(int toPersonId) {
         this.toPersonId = toPersonId;
+    }
+
+    public String getSummary() {
+        return summary;
+    }
+
+    public void setSummary(String summary) {
+        this.summary = summary;
+    }
+
+    public Date getCreated() {
+        return created;
+    }
+
+    public void setCreated(Date created) {
+        this.created = created;
     }
 }

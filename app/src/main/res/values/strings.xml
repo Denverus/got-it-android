@@ -32,6 +32,9 @@
     <string name="question_what_eat_level">What did you eat at meal time?</string>
     <string name="question_administer_insulin">Did you administer insulin?</string>
     <string name="nav_feeds">Feed</string>
+    <string name="nav_as_follower">Switch to follower</string>
+    <string name="nav_as_teen">Switch to teen</string>
+    <string name="nav_notifications">Notifications</string>
 
 
 </resources>

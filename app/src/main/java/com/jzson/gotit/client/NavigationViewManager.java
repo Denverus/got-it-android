@@ -8,6 +8,7 @@ import android.widget.Toast;
 import com.jzson.gotit.client.activities.MainActivity;
 import com.jzson.gotit.client.fragments.FeedbackFeedsFragment;
 import com.jzson.gotit.client.fragments.FeedbackListFragment;
+import com.jzson.gotit.client.fragments.NotificationListFragment;
 import com.jzson.gotit.client.fragments.TeenListFragment;
 
 /**
@@ -49,7 +50,6 @@ public class NavigationViewManager {
                 break;
             case R.id.nav_teens:
                 mMainActivity.setFragment(new TeenListFragment());
-                //NavUtils.showTeensActivity(mMainActivity);
                 break;
             case R.id.nav_feedbacks:
                 mMainActivity.setFragment(new FeedbackListFragment());
@@ -57,8 +57,19 @@ public class NavigationViewManager {
             case R.id.nav_feeds:
                 mMainActivity.setFragment(new FeedbackFeedsFragment());
                 break;
+            case R.id.nav_notifications:
+                mMainActivity.setFragment(new NotificationListFragment());
+                break;
             case R.id.nav_singout:
                 Toast.makeText(mMainActivity, "Not implemented", Toast.LENGTH_SHORT).show();;
+                break;
+            case R.id.nav_as_teen:
+                AppApplication.getContext().setUserId(0);
+                Toast.makeText(mMainActivity, "Switched to teen", Toast.LENGTH_SHORT).show();;
+                break;
+            case R.id.nav_as_follower:
+                AppApplication.getContext().setUserId(5);
+                Toast.makeText(mMainActivity, "Switched to followe", Toast.LENGTH_SHORT).show();;
                 break;
 
         }
