@@ -13,10 +13,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.jzson.gotit.client.AppApplication;
-import com.jzson.gotit.client.NavUtils;
 import com.jzson.gotit.client.NavigationViewManager;
 import com.jzson.gotit.client.R;
 import com.jzson.gotit.client.fragments.EditFeedbackFragment;
@@ -29,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout mDrawerLayout;
     private NavigationViewManager mNavigationViewManager;
+    private TextView mUsernameTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,9 +46,9 @@ public class MainActivity extends AppCompatActivity {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_drawer);
         mNavigationViewManager = new NavigationViewManager(this, (DrawerLayout) findViewById(R.id.drawer_layout), navigationView);
+        mUsernameTextView = (TextView) findViewById(R.id.username);
 
-        Person person = DataProvider.getInstance().getPersonById(AppApplication.getContext().getUserId());
-        mNavigationViewManager.showTeenMenu(person.getType() == Person.TEEN);
+        updateDrawer();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.button_action);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -69,6 +69,12 @@ public class MainActivity extends AppCompatActivity {
         } else {
             setFragment(fragment);
         }
+    }
+
+    public void updateDrawer() {
+        Person person = DataProvider.getInstance().getPersonById(AppApplication.getContext().getUserId());
+        mNavigationViewManager.showTeenMenu(person.getType() == Person.TEEN);
+        mUsernameTextView.setText(person.getName());
     }
 
     public void setFragment(Fragment fragment) {

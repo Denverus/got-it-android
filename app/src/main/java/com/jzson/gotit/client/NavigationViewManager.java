@@ -67,11 +67,13 @@ public class NavigationViewManager {
             case R.id.nav_as_teen:
                 AppApplication.getContext().setUserId(0);
                 showTeenMenu(true);
+                mMainActivity.updateDrawer();
                 Toast.makeText(mMainActivity, "Switched to teen", Toast.LENGTH_SHORT).show();;
                 break;
             case R.id.nav_as_follower:
                 AppApplication.getContext().setUserId(5);
                 showTeenMenu(false);
+                mMainActivity.updateDrawer();
                 Toast.makeText(mMainActivity, "Switched to followe", Toast.LENGTH_SHORT).show();;
                 break;
 
