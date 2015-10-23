@@ -21,6 +21,8 @@ import com.jzson.gotit.client.NavigationViewManager;
 import com.jzson.gotit.client.R;
 import com.jzson.gotit.client.fragments.EditFeedbackFragment;
 import com.jzson.gotit.client.fragments.TeenListFragment;
+import com.jzson.gotit.client.model.Person;
+import com.jzson.gotit.client.provider.DataProvider;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -44,6 +46,9 @@ public class MainActivity extends AppCompatActivity {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_drawer);
         mNavigationViewManager = new NavigationViewManager(this, (DrawerLayout) findViewById(R.id.drawer_layout), navigationView);
+
+        Person person = DataProvider.getInstance().getPersonById(AppApplication.getContext().getUserId());
+        mNavigationViewManager.showTeenMenu(person.getType() == Person.TEEN);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.button_action);
         fab.setOnClickListener(new View.OnClickListener() {

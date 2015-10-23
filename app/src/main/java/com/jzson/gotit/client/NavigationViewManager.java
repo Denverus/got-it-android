@@ -18,17 +18,18 @@ public class NavigationViewManager {
 
     MainActivity mMainActivity;
     DrawerLayout mDrawerLayout;
+    NavigationView mNavigationView;
 
     public NavigationViewManager(MainActivity mainActivity, DrawerLayout drawerLayout, NavigationView navigationView) {
         mMainActivity = mainActivity;
         mDrawerLayout = drawerLayout;
-        if (navigationView != null) {
-            setupDrawerContent(navigationView);
-        }
+        mNavigationView = navigationView;
+
+        initMenuHandlers();
     }
 
-    private void setupDrawerContent(NavigationView navigationView) {
-        navigationView.setNavigationItemSelectedListener(
+    private void initMenuHandlers() {
+        mNavigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
@@ -65,14 +66,25 @@ public class NavigationViewManager {
                 break;
             case R.id.nav_as_teen:
                 AppApplication.getContext().setUserId(0);
+                showTeenMenu(true);
                 Toast.makeText(mMainActivity, "Switched to teen", Toast.LENGTH_SHORT).show();;
                 break;
             case R.id.nav_as_follower:
                 AppApplication.getContext().setUserId(5);
+                showTeenMenu(false);
                 Toast.makeText(mMainActivity, "Switched to followe", Toast.LENGTH_SHORT).show();;
                 break;
 
         }
+    }
 
+    public void showTeenMenu(boolean isVisibleForTeen) {
+        setMenuItemVisible(R.id.nav_teens, !isVisibleForTeen);
+        setMenuItemVisible(R.id.nav_feedbacks, isVisibleForTeen);
+        setMenuItemVisible(R.id.nav_feeds, !isVisibleForTeen);
+    }
+    private void setMenuItemVisible(int resourceId, boolean visible) {
+        MenuItem menuItem1 = mNavigationView.getMenu().findItem(resourceId);
+        menuItem1.setVisible(visible);
     }
 }

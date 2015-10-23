@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:bind="http://schemas.android.com/apk/res-auto">
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
         <variable
@@ -46,6 +47,7 @@
                 android:layout_alignParentTop="true"
                 android:textSize="30sp"
                 android:text="@{person.name}"
+                tools:text="Ivan Petrov"
                 />
 
             <TextView
@@ -55,6 +57,7 @@
                 android:layout_toRightOf="@+id/person_photo"
                 android:layout_below="@+id/person_name"
                 android:text="@{person.age}"
+                tools:text="14 years old"
                 />
 
             <Button
