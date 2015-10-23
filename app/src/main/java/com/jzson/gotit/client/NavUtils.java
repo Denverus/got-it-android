@@ -8,6 +8,7 @@ import android.view.View;
 import com.jzson.gotit.client.activities.MainActivity;
 import com.jzson.gotit.client.activities.TeenListActivity;
 import com.jzson.gotit.client.fragments.EditFeedbackFragment;
+import com.jzson.gotit.client.fragments.FeedbackListFragment;
 
 /**
  * Created by Denis on 10/12/2015.
@@ -24,5 +25,11 @@ public class NavUtils {
     }
 
     public static void showEditFeedback(Context context) {
+    }
+
+    public static void showFeedbackList(Context context) {
+        AppApplication.getContext().setFragment(new FeedbackListFragment());
+        Intent intent = new Intent(context, MainActivity.class);
+        context.startActivity(intent);
     }
 }

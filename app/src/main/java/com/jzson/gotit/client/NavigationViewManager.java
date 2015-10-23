@@ -53,7 +53,7 @@ public class NavigationViewManager {
                 mMainActivity.setFragment(new TeenListFragment());
                 break;
             case R.id.nav_feedbacks:
-                mMainActivity.setFragment(new FeedbackListFragment());
+                NavUtils.showFeedbackList(mMainActivity);
                 break;
             case R.id.nav_feeds:
                 mMainActivity.setFragment(new FeedbackFeedsFragment());

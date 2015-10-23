@@ -13,22 +13,26 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/time"
-                android:layout_alignParentTop="true"
-                android:textSize="30sp"
-                android:text="10/22/2015 6:00pm"
-                />
+            android:padding="@dimen/list_item_padding">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/summary"
-                android:layout_toRightOf="@+id/time"
+                android:textSize="20sp"
+                android:text="6/7"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/time"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/summary"
+                android:textSize="10sp"
+                android:text="10/22/2015 6:00pm"
                 />
 
         </RelativeLayout>

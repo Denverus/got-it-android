@@ -46,6 +46,13 @@ public class Feedback extends BaseModel {
         return "";
     }
 
+    public void setAnswer(int questionType, String value) {
+        for (Question question : questions) {
+            if (question.getQuestionType() == questionType) {
+                question.setAnswer(value);
+            }
+        }
+    }
     public String getSummary() {
         return "Questions "+questions.size();
     }

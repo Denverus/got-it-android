@@ -1,7 +1,5 @@
 package com.jzson.gotit.client.provider;
 
-import android.hardware.usb.UsbRequest;
-
 import com.jzson.gotit.client.model.Feedback;
 import com.jzson.gotit.client.model.Notification;
 import com.jzson.gotit.client.model.Person;
@@ -10,9 +8,7 @@ import com.jzson.gotit.client.model.Subscription;
 import com.jzson.gotit.client.model.UserFeed;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Denis on 10/11/2015.
@@ -22,7 +18,7 @@ public class DataProvider {
 
     private PersonTable persons = new PersonTable();
 
-    private FeedbackTable feedback = new FeedbackTable();
+    private FeedbackTable feedbackTable = new FeedbackTable();
 
     private Table<Question> questions = new Table<>();
 
@@ -42,11 +38,11 @@ public class DataProvider {
         persons.add(new Person("Caren Wilosn", "12 years old", Person.TEEN));
         persons.add(new Person("Mike Waters", "45 years old", Person.FOLLOWER));
 
-        feedback.add(new Feedback(0, createQuestions(10d, "Meat", false)));
-        feedback.add(new Feedback(1, createQuestions(5d, "Bread", true)));
-        feedback.add(new Feedback(2, createQuestions(3d, "Soup", false)));
-        feedback.add(new Feedback(3, createQuestions(12d, "Sandwich", true)));
-        feedback.add(new Feedback(4, createQuestions(2d, "Burger", true)));
+        feedbackTable.add(new Feedback(0, createQuestions(10d, "Meat", false)));
+        feedbackTable.add(new Feedback(1, createQuestions(5d, "Bread", true)));
+        feedbackTable.add(new Feedback(2, createQuestions(3d, "Soup", false)));
+        feedbackTable.add(new Feedback(3, createQuestions(12d, "Sandwich", true)));
+        feedbackTable.add(new Feedback(4, createQuestions(2d, "Burger", true)));
 
         notifications.add(new Notification(Notification.SUBSCRIBE_REQUESTED, 5, 0));
         notifications.add(new Notification(Notification.SUBSCRIBE_REQUESTED, 5, 1));
@@ -75,7 +71,7 @@ public class DataProvider {
     }
 
     public List<Feedback> getFeedback() {
-        return feedback.getList();
+        return feedbackTable.getList();
     }
 
     private List<Question> createQuestions(Double sugarLevel, String meal, Boolean adminInsulin) {
@@ -93,7 +89,7 @@ public class DataProvider {
         for (Subscription subscription : list) {
             int teenId = subscription.getSubscribedTo();
             Person person = persons.getById(teenId);
-            List<Feedback> feedbackList = feedback.getFeedbackListByUserId(teenId);
+            List<Feedback> feedbackList = feedbackTable.getFeedbackListByUserId(teenId);
             for (Feedback feedback: feedbackList) {
                 UserFeed userFeed = new UserFeed(person, feedback);
                 userFeeds.add(userFeed);
@@ -118,11 +114,15 @@ public class DataProvider {
     }
 
     public List<Feedback> getFeedbackById(final int userId) {
-        return feedback.getListByCriteria(new Table.BooleanCriteria<Feedback>() {
+        return feedbackTable.getListByCriteria(new Table.BooleanCriteria<Feedback>() {
             @Override
             public boolean getCriteriaValue(Feedback value) {
                 return value.getPersonId()==userId;
             }
         });
+    }
+
+    public void addFeedback(int userId, Feedback feedback) {
+        feedbackTable.add(feedback);
     }
 }
