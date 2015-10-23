@@ -22,6 +22,7 @@ public class Notification extends BaseModel {
     }
 
     public Notification(int code, int fromPersonId, int toPersonId) {
+        this.created = new Date();
         this.code = code;
         this.fromPersonId = fromPersonId;
         this.toPersonId = toPersonId;
