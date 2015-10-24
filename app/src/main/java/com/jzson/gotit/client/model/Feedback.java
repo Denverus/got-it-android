@@ -1,5 +1,6 @@
 package com.jzson.gotit.client.model;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -9,7 +10,7 @@ import java.util.List;
 public class Feedback extends BaseModel {
 
     private Date created;
-    private List<Question> questions;
+    private List<Question> questions = Collections.EMPTY_LIST;
     private int personId;
 
     public Feedback() {
@@ -44,6 +45,15 @@ public class Feedback extends BaseModel {
             }
         }
         return "";
+    }
+
+    public Boolean getAnswerAsBoolean(int questionType) {
+        for (Question question : questions) {
+            if (question.getQuestionType() == questionType) {
+                return question.getAnswerAsBoolean();
+            }
+        }
+        return false;
     }
 
     public void setAnswer(int questionType, String value) {

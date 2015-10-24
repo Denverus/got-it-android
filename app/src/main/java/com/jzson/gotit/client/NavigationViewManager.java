@@ -8,6 +8,7 @@ import android.widget.Toast;
 import com.jzson.gotit.client.activities.MainActivity;
 import com.jzson.gotit.client.fragments.FeedbackFeedsFragment;
 import com.jzson.gotit.client.fragments.FeedbackListFragment;
+import com.jzson.gotit.client.fragments.FollowerListFragment;
 import com.jzson.gotit.client.fragments.NotificationListFragment;
 import com.jzson.gotit.client.fragments.TeenListFragment;
 
@@ -50,13 +51,16 @@ public class NavigationViewManager {
                 Toast.makeText(mMainActivity, "Not implemented", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.nav_teens:
-                mMainActivity.setFragment(new TeenListFragment());
+                NavUtils.showTeensActivity(mMainActivity);
                 break;
             case R.id.nav_feedbacks:
                 NavUtils.showFeedbackList(mMainActivity);
                 break;
             case R.id.nav_feeds:
                 mMainActivity.setFragment(new FeedbackFeedsFragment());
+                break;
+            case R.id.nav_followers:
+                mMainActivity.setFragment(new FollowerListFragment());
                 break;
             case R.id.nav_notifications:
                 mMainActivity.setFragment(new NotificationListFragment());
@@ -84,6 +88,7 @@ public class NavigationViewManager {
         setMenuItemVisible(R.id.nav_teens, !isVisibleForTeen);
         setMenuItemVisible(R.id.nav_feedbacks, isVisibleForTeen);
         setMenuItemVisible(R.id.nav_feeds, !isVisibleForTeen);
+        setMenuItemVisible(R.id.nav_followers, isVisibleForTeen);
     }
     private void setMenuItemVisible(int resourceId, boolean visible) {
         MenuItem menuItem1 = mNavigationView.getMenu().findItem(resourceId);

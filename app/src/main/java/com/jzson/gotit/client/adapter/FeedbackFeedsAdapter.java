@@ -20,6 +20,10 @@ import com.jzson.gotit.client.model.UserFeed;
  */
 public class FeedbackFeedsAdapter extends BaseListAdapter<UserFeed, FeedbackFeedsAdapter.FeedbackViewHolder> {
 
+    public FeedbackFeedsAdapter(Context context) {
+        super(context);
+    }
+
     @Override
     protected void onItemClick(Context context, UserFeed model) {
         Intent intent = new Intent(context, MainActivity.class);
@@ -29,7 +33,7 @@ public class FeedbackFeedsAdapter extends BaseListAdapter<UserFeed, FeedbackFeed
     }
 
     @Override
-    protected int getResource() {
+    protected int getItemResourceId() {
         return R.layout.feedback_item;
     }
 

@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.jzson.gotit.client.AppApplication;
+import com.jzson.gotit.client.NavUtils;
 import com.jzson.gotit.client.NavigationViewManager;
 import com.jzson.gotit.client.R;
 import com.jzson.gotit.client.fragments.EditFeedbackFragment;
@@ -74,6 +75,11 @@ public class MainActivity extends AppCompatActivity {
     public void updateDrawer() {
         Person person = DataProvider.getInstance().getPersonById(AppApplication.getContext().getUserId());
         mNavigationViewManager.showTeenMenu(person.getType() == Person.TEEN);
+        /*if (person.getType() == Person.TEEN) {
+            NavUtils.showFeedbackList(this);
+        } else {
+            NavUtils.showFeedsList(this);
+        }*/
         mUsernameTextView.setText(person.getName());
     }
 

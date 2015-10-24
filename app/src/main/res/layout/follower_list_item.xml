@@ -4,8 +4,8 @@
 
     <data>
         <variable
-            name="notification"
-            type="com.jzson.gotit.client.model.Notification" />
+            name="person"
+            type="com.jzson.gotit.client.model.Person" />
     </data>
 
     <LinearLayout
@@ -34,39 +34,22 @@
                     />
 
                 <TextView
-                    android:id="@+id/summary"
+                    android:id="@+id/name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@+id/request_code_image"
-                    android:layout_below="@+id/time"
-                    android:textSize="20sp"
-                    android:text="Petrov wants to follow for you."/>
-
-                <TextView
-                    android:id="@+id/time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
-                    android:layout_toRightOf="@+id/request_code_image"
-                    android:text="10/22/2015 6:00pm"/>
+                    android:textSize="20sp"
+                    android:text="@{person.name}"/>
 
                 <Button
                     style="?android:attr/buttonStyleSmall"
-                    android:layout_width="100dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Yes"
-                    android:layout_below="@+id/summary"
-                    android:layout_toLeftOf="@+id/buttonNo"
-                    android:id="@+id/buttonYes"/>
-
-                <Button
-                    style="?android:attr/buttonStyleSmall"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:text="No"
-                    android:layout_below="@+id/summary"
+                    android:text="@string/cancel_subscription"
+                    android:layout_below="@+id/name"
                     android:layout_alignParentRight="true"
-                    android:id="@+id/buttonNo"/>
+                    android:id="@+id/unsubscribe"/>
 
             </RelativeLayout>
 

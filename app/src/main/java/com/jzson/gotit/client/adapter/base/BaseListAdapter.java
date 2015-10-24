@@ -1,20 +1,12 @@
 package com.jzson.gotit.client.adapter.base;
 
 import android.content.Context;
-import android.content.Intent;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
-import com.jzson.gotit.client.AppApplication;
-import com.jzson.gotit.client.R;
-import com.jzson.gotit.client.activities.MainActivity;
-import com.jzson.gotit.client.fragments.EditFeedbackFragment;
 import com.jzson.gotit.client.model.BaseModel;
-import com.jzson.gotit.client.model.Feedback;
 
 import java.util.List;
 
@@ -25,6 +17,7 @@ public abstract class BaseListAdapter<T extends BaseModel, H extends RecyclerVie
 
     private List<T> modelList;
     private RecyclerView mRecyclerView;
+    private Context mContext;
 
     public void setData(List<T> modelList){
         this.modelList = modelList;
@@ -32,7 +25,7 @@ public abstract class BaseListAdapter<T extends BaseModel, H extends RecyclerVie
 
     protected abstract void onItemClick(Context context, T model);
 
-    protected abstract int getResource();
+    protected abstract int getItemResourceId();
 
     protected abstract H createViewHolder(View v);
 
@@ -40,9 +33,21 @@ public abstract class BaseListAdapter<T extends BaseModel, H extends RecyclerVie
         return modelList.get(index);
     }
 
+    public BaseListAdapter(Context context) {
+        setContext(context);
+    }
+
+    public void setContext(Context context) {
+        mContext = context;
+    }
+
+    public Context getContext() {
+        return mContext;
+    }
+
     @Override
     public H onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        View v = LayoutInflater.from(viewGroup.getContext()).inflate(getResource(), viewGroup, false);
+        View v = LayoutInflater.from(viewGroup.getContext()).inflate(getItemResourceId(), viewGroup, false);
         v.setOnClickListener(this);
         return createViewHolder(v);
     }

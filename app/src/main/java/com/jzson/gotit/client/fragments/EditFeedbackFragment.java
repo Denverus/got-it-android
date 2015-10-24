@@ -17,7 +17,11 @@ import com.jzson.gotit.client.activities.MainActivity;
 import com.jzson.gotit.client.databinding.FragmentEditFeedbackBinding;
 import com.jzson.gotit.client.model.Feedback;
 import com.jzson.gotit.client.model.Person;
+import com.jzson.gotit.client.model.Question;
 import com.jzson.gotit.client.provider.DataProvider;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -50,14 +54,23 @@ public class EditFeedbackFragment extends Fragment implements View.OnClickListen
         super.onViewCreated(view, savedInstanceState);
 
         bind = (FragmentEditFeedbackBinding) DataBindingUtil.bind(view);
-        bind.setFeedback(AppApplication.getContext().getFeedback());
+        Feedback feedback = AppApplication.getContext().getFeedback();
+        if (feedback == null)
+            feedback = new Feedback();
+        bind.setFeedback(feedback);
+        bind.administerInsulinAnwser.setChecked(feedback.getAnswerAsBoolean(Question.QUESTION_INSULIN));
     }
 
     @Override
     public void onClick(View v) {
         mSaveButton.setEnabled(false);
-        Feedback feedback = bind.getFeedback();
-        DataProvider.getInstance().addFeedback(AppApplication.getContext().getUserId(), feedback);
-        NavUtils.showEditFeedback(getContext());
+        List<Question> questions = new ArrayList<>();
+        questions.add(new Question(bind.sugarLevelQuestion.getText().toString(), bind.sugarLevelAnswer.getText().toString(), Question.QUESTION_SUGAR_LEVEL)) ;
+        questions.add(new Question(bind.whatEatQuestion.getText().toString(), bind.whatEatAnswer.getText().toString(), Question.QUESTION_MEAL)) ;
+        questions.add(new Question(bind.administerInsulinQuestion.getText().toString(), bind.administerInsulinAnwser.isChecked(), Question.QUESTION_INSULIN)) ;
+
+        Feedback feedback = new Feedback(AppApplication.getContext().getUserId(), questions);
+        DataProvider.getInstance().addFeedback(feedback);
+        NavUtils.showFeedbackList(getContext());
     }
 }

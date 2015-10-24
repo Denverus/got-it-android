@@ -1,5 +1,6 @@
 package com.jzson.gotit.client.fragments;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 
 import com.jzson.gotit.client.AppApplication;
@@ -12,8 +13,8 @@ import com.jzson.gotit.client.provider.DataProvider;
  */
 public class NotificationListFragment extends ListFragment {
     @Override
-    protected RecyclerView.Adapter createAdapter() {
-        NotificationListAdapter notificationListAdapter = new NotificationListAdapter();
+    protected RecyclerView.Adapter createAdapter(Context context) {
+        NotificationListAdapter notificationListAdapter = new NotificationListAdapter(context);
         notificationListAdapter.setData(DataProvider.getInstance().getNotificationsByUserId(AppApplication.getContext().getUserId()));
         return notificationListAdapter;
     }

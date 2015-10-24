@@ -26,7 +26,6 @@
     <string name="nav_feedbacks">Feedbacks</string>
     <string name="nav_view_settings">Settings</string>
     <string name="nav_view_signout">Sign Out</string>
-    <string name="subscribe">Subscribe</string>
     <string name="save">Save</string>
     <string name="question_sugar_level">What was your blood sugar level at meal time?</string>
     <string name="question_what_eat_level">What did you eat at meal time?</string>
@@ -35,6 +34,15 @@
     <string name="nav_as_follower">Switch to follower</string>
     <string name="nav_as_teen">Switch to teen</string>
     <string name="nav_notifications">Notifications</string>
-
-
+    <string name="notification_request">%s want to be your follower. Do you accept request?</string>
+    <string name="notification_accept">%s accepted you request.</string>
+    <string name="notification_reject">%s rejected you request.</string>
+    <string name="requested">Requested</string>
+    <string name="unfollow">Unfollow</string>
+    <string name="follow">Follow</string>
+    <string name="cancel_subscription">Cancel subscription</string>
+    <string name="nav_followers">Followers</string>
+    <string name="no_data_available">No data available</string>
+    <string name="notification_canceled">Your subscription was canceled by %s.</string>
+    <string name="can_remove_this_notification">Can\'t remove this notification. Please answer first.</string>
 </resources>

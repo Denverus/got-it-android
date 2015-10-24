@@ -72,6 +72,7 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:inputType="number"
+                        android:id="@+id/what_eat_answer"
                         android:text="@{feedback.getAnswer(1)}"
                         android:layout_weight="1" />
 
@@ -93,8 +94,8 @@
                     <Switch
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:id="@+id/switch1"
-                        android:layout_weight="1" />
+                        android:id="@+id/administer_insulin_anwser"
+                        android:layout_weight="1"/>
 
                 </LinearLayout>
 

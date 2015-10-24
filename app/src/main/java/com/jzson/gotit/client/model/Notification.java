@@ -10,11 +10,11 @@ public class Notification extends BaseModel {
     public static final int SUBSCRIBE_REQUESTED = 1;
     public static final int SUBSCRIBE_ACCEPTED = 2;
     public static final int SUBSCRIBE_REJECTED = 3;
+    public static final int SUBSCRIBTION_CANCELED = 4;
 
     private int code;
     private int fromPersonId;
     private int toPersonId;
-    private String summary;
     private Date created;
 
     public Notification(int id) {
@@ -50,14 +50,6 @@ public class Notification extends BaseModel {
 
     public void setToPersonId(int toPersonId) {
         this.toPersonId = toPersonId;
-    }
-
-    public String getSummary() {
-        return summary;
-    }
-
-    public void setSummary(String summary) {
-        this.summary = summary;
     }
 
     public Date getCreated() {

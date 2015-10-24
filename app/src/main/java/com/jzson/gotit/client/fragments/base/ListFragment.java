@@ -1,5 +1,6 @@
 package com.jzson.gotit.client.fragments.base;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -7,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.jzson.gotit.client.R;
 import com.jzson.gotit.client.adapter.FeedbackListAdapter;
@@ -17,8 +19,9 @@ public abstract class ListFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    private TextView emptyView;
 
-    protected abstract RecyclerView.Adapter createAdapter();
+    protected abstract RecyclerView.Adapter createAdapter(Context context);
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -33,9 +36,14 @@ public abstract class ListFragment extends Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.scrollToPosition(0);
 
-        mAdapter = createAdapter();
+        mAdapter = createAdapter(getActivity());
         mRecyclerView.setAdapter(mAdapter);
 
+        emptyView = (TextView)rootView.findViewById(R.id.empty_view);
+        if (mAdapter.getItemCount() == 0) {
+            mRecyclerView.setVisibility(View.GONE);
+            emptyView.setVisibility(View.VISIBLE);
+        }
 
         return rootView;
     }

@@ -43,7 +43,7 @@ public class FeedbackListAdapter extends RecyclerView.Adapter<FeedbackListAdapte
     @Override
     public void onBindViewHolder(FeedbackViewHolder feedbackViewHolder, int i) {
         feedbackViewHolder.created.setText(feedbackList.get(i).getCreated().toString());
-        feedbackViewHolder.summary.setText("Answers"+feedbackList.get(i).getQuestions().size());
+        feedbackViewHolder.summary.setText("Answers: "+feedbackList.get(i).getQuestions().size());
     }
 
     @Override
