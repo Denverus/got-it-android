@@ -45,4 +45,7 @@
     <string name="no_data_available">No data available</string>
     <string name="notification_canceled">Your subscription was canceled by %s.</string>
     <string name="can_remove_this_notification">Can\'t remove this notification. Please answer first.</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
