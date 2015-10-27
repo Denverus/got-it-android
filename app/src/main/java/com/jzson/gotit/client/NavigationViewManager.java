@@ -1,11 +1,13 @@
 package com.jzson.gotit.client;
 
+import android.content.Intent;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.jzson.gotit.client.activities.MainActivity;
+import com.jzson.gotit.client.activities.RegistrationActivity;
 import com.jzson.gotit.client.fragments.FeedbackFeedsFragment;
 import com.jzson.gotit.client.fragments.FeedbackListFragment;
 import com.jzson.gotit.client.fragments.FollowerListFragment;
@@ -64,6 +66,10 @@ public class NavigationViewManager {
                 break;
             case R.id.nav_notifications:
                 mMainActivity.setFragment(new NotificationListFragment());
+                break;
+            case R.id.nav_registration:
+                Intent i = new Intent(mMainActivity, RegistrationActivity.class);
+                mMainActivity.startActivity(i);
                 break;
             case R.id.nav_singout:
                 Toast.makeText(mMainActivity, "Not implemented", Toast.LENGTH_SHORT).show();;

@@ -40,6 +40,10 @@
         android:icon="@drawable/ic_settings_black_24dp"
         android:title="@string/nav_view_settings" />
     <item
+        android:id="@+id/nav_registration"
+        android:icon="@drawable/ic_event_note_black_24dp"
+        android:title="@string/nav_view_registration" />
+    <item
         android:id="@+id/nav_singout"
         android:icon="@drawable/ic_exit_to_app_black_24dp"
         android:title="@string/nav_view_signout" />
