@@ -5,6 +5,9 @@ import android.support.v4.app.Fragment;
 
 import com.jzson.gotit.client.model.CheckIn;
 import com.jzson.gotit.client.model.Person;
+import com.jzson.gotit.client.model.Question;
+
+import java.util.List;
 
 public class AppApplication extends Application {
 
@@ -13,6 +16,7 @@ public class AppApplication extends Application {
     private Person person;
     private CheckIn checkIn;
     private int userId = 5;
+    private List<Question> questionList;
 
     @Override
     public void onCreate() {
@@ -55,6 +59,14 @@ public class AppApplication extends Application {
 
     public void setUserId(int userId) {
         this.userId = userId;
+    }
+
+    public List<Question> getQuestionList() {
+        return questionList;
+    }
+
+    public void setQuestionList(List<Question> questionList) {
+        this.questionList = questionList;
     }
 }
 

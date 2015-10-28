@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.jzson.gotit.client.AppApplication;
+import com.jzson.gotit.client.NavUtils;
 import com.jzson.gotit.client.NavigationViewManager;
 import com.jzson.gotit.client.R;
 import com.jzson.gotit.client.fragments.EditFeedbackFragment;
@@ -56,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
         mActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setFragment(new EditFeedbackFragment());
+                NavUtils.showEditCheckIn(MainActivity.this);
             }
         });
 
