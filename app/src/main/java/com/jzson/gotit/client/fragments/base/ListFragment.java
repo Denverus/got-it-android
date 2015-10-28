@@ -51,7 +51,7 @@ public abstract class ListFragment extends Fragment implements BaseListAdapter.D
                     @Override
                     public void onRefresh() {
                         mAdapter.refreshData();
-                        Toast.makeText(getContext(), "Updating...", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Updated", Toast.LENGTH_SHORT).show();
                     }
                 }
         );
