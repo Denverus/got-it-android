@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="com.jzson.gotit.client.Utils"/>
+
         <variable
             name="person"
             type="com.jzson.gotit.client.model.Person" />
@@ -56,7 +58,7 @@
                 android:id="@+id/person_age"
                 android:layout_toRightOf="@+id/person_photo"
                 android:layout_below="@+id/person_name"
-                android:text="@{person.age}"
+                android:text="@{Utils.ageToString(person.dateBirth)}"
                 tools:text="14 years old"
                 />
 

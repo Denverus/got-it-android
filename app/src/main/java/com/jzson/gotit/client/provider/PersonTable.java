@@ -14,7 +14,7 @@ public class PersonTable extends Table<Person> {
         return getListByCriteria(new BooleanCriteria<Person>() {
             @Override
             public boolean getCriteriaValue(Person person) {
-                return person.getType() == Person.TEEN;
+                return person.isHasDiabetes();
             }
         });
     }

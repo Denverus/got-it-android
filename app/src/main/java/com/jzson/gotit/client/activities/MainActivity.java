@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void updateDrawer() {
         Person person = DataProvider.getInstance().getPersonById(AppApplication.getContext().getUserId());
-        mNavigationViewManager.showTeenMenu(person.getType() == Person.TEEN);
+        mNavigationViewManager.showTeenMenu(person.isHasDiabetes());
         /*if (person.getType() == Person.TEEN) {
             NavUtils.showFeedbackList(this);
         } else {

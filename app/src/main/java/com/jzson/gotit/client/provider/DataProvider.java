@@ -1,5 +1,8 @@
 package com.jzson.gotit.client.provider;
 
+import android.media.Image;
+
+import com.jzson.gotit.client.Utils;
 import com.jzson.gotit.client.model.Feedback;
 import com.jzson.gotit.client.model.Notification;
 import com.jzson.gotit.client.model.Person;
@@ -8,6 +11,7 @@ import com.jzson.gotit.client.model.Subscription;
 import com.jzson.gotit.client.model.UserFeed;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -36,12 +40,12 @@ public class DataProvider {
     }
 
     private void initializeData(){
-        personTable.add(new Person("Emma Wilson", "13 years old", Person.TEEN));
-        personTable.add(new Person("Lavery Maiss", "15 years old", Person.TEEN));
-        personTable.add(new Person("Lillie Watts", "16 years old", Person.TEEN));
-        personTable.add(new Person("Michel Rodrigez", "17 years old", Person.TEEN));
-        personTable.add(new Person("Caren Wilosn", "12 years old", Person.TEEN));
-        personTable.add(new Person("Mike Waters", "45 years old", Person.FOLLOWER));
+        personTable.add(new Person("Emma Wilson", "user1", "", Utils.getRandomBirthDate(), true, "11232", null));
+        personTable.add(new Person("Lavery Maiss", "user2", "", Utils.getRandomBirthDate(), true, "11232", null));
+        personTable.add(new Person("Lillie Watts", "user3", "", Utils.getRandomBirthDate(), true, "11232", null));
+        personTable.add(new Person("Michel Rodrigez", "user4", "", Utils.getRandomBirthDate(), true, "11232", null));
+        personTable.add(new Person("Caren Wilosn", "user5", "", Utils.getRandomBirthDate(), true, "11232", null));
+        personTable.add(new Person("Mike Waters", "user6", "", Utils.getRandomBirthDate(), false, null, null));
 
         feedbackTable.add(new Feedback(0, createQuestions(10d, "Meat", false)));
         feedbackTable.add(new Feedback(1, createQuestions(5d, "Bread", true)));
@@ -211,5 +215,10 @@ public class DataProvider {
 
     public void deleteNotification(int id) {
         notifications.delete(id);
+    }
+
+    public void registerUser(String fullName, Date dateBirth, String login, String password, boolean hasDiabetes, String medicalRecordNumber, Image photo) {
+        Person person = new Person(fullName, login, password, dateBirth, hasDiabetes, medicalRecordNumber, photo);
+        personTable.add(person);
     }
 }

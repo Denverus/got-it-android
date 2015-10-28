@@ -40,6 +40,16 @@
             android:layout_height="wrap_content"
             android:padding="10dip"
             android:layout_below="@id/header">
+            <TextView android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#372c24"
+                android:text="Login"/>
+            <EditText android:id="@+id/reg_login"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dip"
+                android:singleLine="true"
+                android:layout_marginBottom="20dip"/>
             <!-- Full Name Label -->
             <TextView android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -114,6 +124,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dip"
+                android:onClick="onRegisterClick"
                 android:text="Register New Account"/>
             <!-- Link to Login Screen -->
             <TextView android:id="@+id/link_to_login"
@@ -121,7 +132,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dip"
                 android:layout_marginBottom="40dip"
-                android:text="Already has account! Login here"
+                android:text="Already has account"
                 android:gravity="center"
                 android:textSize="20dip"
                 android:textColor="#025f7c"/>

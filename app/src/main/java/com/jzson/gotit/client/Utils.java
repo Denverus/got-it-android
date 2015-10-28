@@ -1,8 +1,12 @@
 package com.jzson.gotit.client;
 
+import android.text.format.DateUtils;
+
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Random;
 
 /**
  * Created by Denis on 10/18/2015.
@@ -22,5 +26,26 @@ public class Utils {
         } else {
             return "";
         }
+    }
+
+    public static String ageToString(Date date) {
+        if (date != null) {
+            Date now = new Date();
+            long years = (now.getTime() - date.getTime())/ DateUtils.YEAR_IN_MILLIS;
+            return years+" years old";
+        } else {
+            return "";
+        }
+    }
+
+    public static Date getRandomBirthDate() {
+        Random rnd = new Random();
+        int year = rnd.nextInt(25)+1980;
+        int month = rnd.nextInt(12);
+        int day = rnd.nextInt(28);
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, month, day);
+        return calendar.getTime();
     }
 }

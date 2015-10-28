@@ -1,29 +1,30 @@
 package com.jzson.gotit.client.model;
 
+import android.media.Image;
+
+import java.util.Date;
+
 /**
  * Created by Denis on 10/11/2015.
  */
 public class Person extends BaseModel {
 
-    public static final int TEEN = 1;
-    public static final int FOLLOWER = 2;
-
     private String name;
-    private String age;
-    private int photoId;
-    private int type;
+    private Image photo;
+    private String login;
+    private String password;
+    private Date dateBirth;
+    private boolean hasDiabetes;
+    private String medicalRecordNumber;
 
-    public Person(String name, String age, int type) {
+    public Person(String name, String login, String password, Date dateBirth, boolean hasDiabetes, String medicalRecordNumber, Image photo) {
         this.name = name;
-        this.age = age;
-        this.type = type;
-    }
-
-    public Person(String name, String age, int photoId, int type) {
-        this.name = name;
-        this.age = age;
-        this.photoId = photoId;
-        this.type = type;
+        this.login = login;
+        this.password = password;
+        this.dateBirth = dateBirth;
+        this.hasDiabetes = hasDiabetes;
+        this.medicalRecordNumber = medicalRecordNumber;
+        this.photo = photo;
     }
 
     public String getName() {
@@ -34,27 +35,51 @@ public class Person extends BaseModel {
         this.name = name;
     }
 
-    public String getAge() {
-        return age;
+    public Image getPhoto() {
+        return photo;
     }
 
-    public void setAge(String age) {
-        this.age = age;
+    public void setPhoto(Image photo) {
+        this.photo = photo;
     }
 
-    public int getPhotoId() {
-        return photoId;
+    public String getLogin() {
+        return login;
     }
 
-    public void setPhotoId(int photoId) {
-        this.photoId = photoId;
+    public void setLogin(String login) {
+        this.login = login;
     }
 
-    public int getType() {
-        return type;
+    public String getPassword() {
+        return password;
     }
 
-    public void setType(int type) {
-        this.type = type;
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Date getDateBirth() {
+        return dateBirth;
+    }
+
+    public void setDateBirth(Date dateBirth) {
+        this.dateBirth = dateBirth;
+    }
+
+    public boolean isHasDiabetes() {
+        return hasDiabetes;
+    }
+
+    public void setHasDiabetes(boolean hasDiabetes) {
+        this.hasDiabetes = hasDiabetes;
+    }
+
+    public String getMedicalRecordNumber() {
+        return medicalRecordNumber;
+    }
+
+    public void setMedicalRecordNumber(String medicalRecordNumber) {
+        this.medicalRecordNumber = medicalRecordNumber;
     }
 }

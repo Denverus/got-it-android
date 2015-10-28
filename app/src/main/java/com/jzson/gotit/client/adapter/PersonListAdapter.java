@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.jzson.gotit.client.AppApplication;
 import com.jzson.gotit.client.R;
+import com.jzson.gotit.client.Utils;
 import com.jzson.gotit.client.activities.MainActivity;
 import com.jzson.gotit.client.fragments.TeenProfileFragment;
 import com.jzson.gotit.client.model.Person;
@@ -41,7 +42,7 @@ public class PersonListAdapter extends RecyclerView.Adapter<PersonListAdapter.Pe
     @Override
     public void onBindViewHolder(PersonViewHolder personViewHolder, int i) {
         personViewHolder.personName.setText(persons.get(i).getName());
-        personViewHolder.personAge.setText(persons.get(i).getAge());
+        personViewHolder.personAge.setText(Utils.ageToString(persons.get(i).getDateBirth()));
         //personViewHolder.personPhoto.setImageResource(persons.get(i).photoId);
     }
 

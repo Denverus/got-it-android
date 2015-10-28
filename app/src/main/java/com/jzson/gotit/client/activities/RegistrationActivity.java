@@ -10,10 +10,13 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.jzson.gotit.client.R;
+import com.jzson.gotit.client.provider.DataProvider;
 
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by dtrotckii on 10/26/2015.
@@ -22,18 +25,34 @@ public class RegistrationActivity extends AppCompatActivity implements DatePicke
 
     protected EditText birthDateEdit;
 
+    private EditText reg_medical_record;
+
+    private EditText reg_fullName;
+
+    private EditText reg_login;
+
+    private EditText reg_password;
+
     protected Switch hasDiabetesSwitch;
+
+    private Date date;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register);
 
+        reg_fullName = (EditText) findViewById(R.id.reg_fullname);
+
         birthDateEdit = (EditText) findViewById(R.id.birthDate);
+
+        reg_login =  (EditText) findViewById(R.id.reg_login);
+
+        reg_password =  (EditText) findViewById(R.id.reg_password);
 
         hasDiabetesSwitch = (Switch) findViewById(R.id.reg_has_diabetes);
 
-        final EditText reg_medical_record = (EditText)findViewById(R.id.reg_medical_record);
+        reg_medical_record = (EditText)findViewById(R.id.reg_medical_record);
         final TextView reg_medical_record_title = (TextView)findViewById(R.id.reg_medical_record_title);
 
         hasDiabetesSwitch.setOnClickListener(new View.OnClickListener() {
@@ -44,18 +63,6 @@ public class RegistrationActivity extends AppCompatActivity implements DatePicke
                 reg_medical_record_title.setVisibility(visibility);
             }
         });
-
-        //TextView registerScreen = (TextView) findViewById(R.id.link_to_register);
-
-        // Listening to register new account link
-        /*registerScreen.setOnClickListener(new View.OnClickListener() {
-
-            public void onClick(View v) {
-                // Switching to Register screen
-                Intent i = new Intent(getApplicationContext(), RegisterActivity.class);
-                startActivity(i);
-            }
-        });*/
     }
 
     public void showDatePickerDialog(View v) {
@@ -64,9 +71,27 @@ public class RegistrationActivity extends AppCompatActivity implements DatePicke
         newFragment.show(getSupportFragmentManager(), "datePicker");
     }
 
+    public void onRegisterClick(View v) {
+        v.setEnabled(false);
+
+        String login = reg_login.getText().toString();
+        String fullName = reg_fullName.getText().toString();
+        String password = reg_password.getText().toString();
+        boolean hasDiabetes = hasDiabetesSwitch.isChecked();
+        String medicalRecordNumber = reg_medical_record.getText().toString();
+
+        DataProvider.getInstance().registerUser(fullName, date, login, password, hasDiabetes, medicalRecordNumber, null);
+
+        Toast.makeText(this, "User registered", Toast.LENGTH_SHORT).show();
+    }
+
     @Override
     public void onDateSet(DatePicker view, int year, int month, int day) {
         birthDateEdit.setText(month+"/"+day+"/"+year);
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, month, day);
+        date = calendar.getTime();
     }
 
     public static class DatePickerFragment extends DialogFragment
