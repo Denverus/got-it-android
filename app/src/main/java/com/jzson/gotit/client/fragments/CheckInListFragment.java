@@ -10,10 +10,10 @@ import android.view.ViewGroup;
 
 import com.jzson.gotit.client.AppApplication;
 import com.jzson.gotit.client.R;
-import com.jzson.gotit.client.adapter.FeedbackListAdapter;
+import com.jzson.gotit.client.adapter.CheckInListAdapter;
 import com.jzson.gotit.client.provider.DataProvider;
 
-public class FeedbackListFragment extends Fragment {
+public class CheckInListFragment extends Fragment {
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -32,7 +32,7 @@ public class FeedbackListFragment extends Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.scrollToPosition(0);
 
-        mAdapter = new FeedbackListAdapter(DataProvider.getInstance().getFeedbackById(AppApplication.getContext().getUserId()));
+        mAdapter = new CheckInListAdapter(DataProvider.getInstance().getFeedbackById(AppApplication.getContext().getUserId()));
 
         mRecyclerView.setAdapter(mAdapter);
 

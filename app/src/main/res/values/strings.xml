@@ -23,7 +23,7 @@
     <string name="title_activity_add_meta_data">Test</string>
     <string name="title_activity_teen_list">Teens</string>
     <string name="nav_teens">Teens</string>
-    <string name="nav_feedbacks">Feedbacks</string>
+    <string name="nav_checkins">Check-Ins</string>
     <string name="nav_view_settings">Settings</string>
     <string name="nav_view_signout">Sign Out</string>
     <string name="save">Save</string>

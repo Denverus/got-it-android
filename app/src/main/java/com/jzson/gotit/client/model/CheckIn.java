@@ -7,17 +7,17 @@ import java.util.List;
 /**
  * Created by Denis on 10/18/2015.
  */
-public class Feedback extends BaseModel {
+public class CheckIn extends BaseModel {
 
     private Date created;
     private List<Question> questions = Collections.EMPTY_LIST;
     private int personId;
 
-    public Feedback() {
+    public CheckIn() {
         created = new Date();
     }
 
-    public Feedback(int personId, List<Question> questions) {
+    public CheckIn(int personId, List<Question> questions) {
         created = new Date();
         this.personId = personId;
         this.questions = questions;

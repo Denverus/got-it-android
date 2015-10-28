@@ -13,9 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jzson.gotit.client.R;
-import com.jzson.gotit.client.adapter.FeedbackListAdapter;
 import com.jzson.gotit.client.adapter.base.BaseListAdapter;
-import com.jzson.gotit.client.provider.DataProvider;
 
 public abstract class ListFragment extends Fragment implements BaseListAdapter.DataUpdateListener {
 

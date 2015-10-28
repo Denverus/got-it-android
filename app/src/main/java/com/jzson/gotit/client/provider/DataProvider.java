@@ -3,7 +3,7 @@ package com.jzson.gotit.client.provider;
 import android.media.Image;
 
 import com.jzson.gotit.client.Utils;
-import com.jzson.gotit.client.model.Feedback;
+import com.jzson.gotit.client.model.CheckIn;
 import com.jzson.gotit.client.model.Notification;
 import com.jzson.gotit.client.model.Person;
 import com.jzson.gotit.client.model.Question;
@@ -47,11 +47,11 @@ public class DataProvider {
         personTable.add(new Person("Caren Wilosn", "user5", "", Utils.getRandomBirthDate(), true, "11232", null));
         personTable.add(new Person("Mike Waters", "user6", "", Utils.getRandomBirthDate(), false, null, null));
 
-        feedbackTable.add(new Feedback(0, createQuestions(10d, "Meat", false)));
-        feedbackTable.add(new Feedback(1, createQuestions(5d, "Bread", true)));
-        feedbackTable.add(new Feedback(2, createQuestions(3d, "Soup", false)));
-        feedbackTable.add(new Feedback(3, createQuestions(12d, "Sandwich", true)));
-        feedbackTable.add(new Feedback(4, createQuestions(2d, "Burger", true)));
+        feedbackTable.add(new CheckIn(0, createQuestions(10d, "Meat", false)));
+        feedbackTable.add(new CheckIn(1, createQuestions(5d, "Bread", true)));
+        feedbackTable.add(new CheckIn(2, createQuestions(3d, "Soup", false)));
+        feedbackTable.add(new CheckIn(3, createQuestions(12d, "Sandwich", true)));
+        feedbackTable.add(new CheckIn(4, createQuestions(2d, "Burger", true)));
 
         /*notifications.add(new Notification(Notification.SUBSCRIBE_REQUESTED, 5, 0));
         notifications.add(new Notification(Notification.SUBSCRIBE_REQUESTED, 5, 1));
@@ -79,7 +79,7 @@ public class DataProvider {
         return personTable.getTeens();
     }
 
-    public List<Feedback> getFeedback() {
+    public List<CheckIn> getFeedback() {
         return feedbackTable.getList();
     }
 
@@ -98,9 +98,9 @@ public class DataProvider {
         for (Subscription subscription : list) {
             int teenId = subscription.getSubscribedTo();
             Person person = personTable.getById(teenId);
-            List<Feedback> feedbackList = feedbackTable.getFeedbackListByUserId(teenId);
-            for (Feedback feedback: feedbackList) {
-                UserFeed userFeed = new UserFeed(person, feedback);
+            List<CheckIn> checkInList = feedbackTable.getFeedbackListByUserId(teenId);
+            for (CheckIn checkIn : checkInList) {
+                UserFeed userFeed = new UserFeed(person, checkIn);
                 userFeeds.add(userFeed);
             }
         }
@@ -122,17 +122,17 @@ public class DataProvider {
         });
     }
 
-    public List<Feedback> getFeedbackById(final int userId) {
-        return feedbackTable.getListByCriteria(new Table.BooleanCriteria<Feedback>() {
+    public List<CheckIn> getFeedbackById(final int userId) {
+        return feedbackTable.getListByCriteria(new Table.BooleanCriteria<CheckIn>() {
             @Override
-            public boolean getCriteriaValue(Feedback value) {
+            public boolean getCriteriaValue(CheckIn value) {
                 return value.getPersonId() == userId;
             }
         });
     }
 
-    public void addFeedback(Feedback feedback) {
-        feedbackTable.add(feedback);
+    public void addFeedback(CheckIn checkIn) {
+        feedbackTable.add(checkIn);
     }
 
     public void sendSubscribeRequest(int teenId, int followerId) {

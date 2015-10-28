@@ -3,7 +3,7 @@ package com.jzson.gotit.client;
 import android.app.Application;
 import android.support.v4.app.Fragment;
 
-import com.jzson.gotit.client.model.Feedback;
+import com.jzson.gotit.client.model.CheckIn;
 import com.jzson.gotit.client.model.Person;
 
 public class AppApplication extends Application {
@@ -11,7 +11,7 @@ public class AppApplication extends Application {
     private static AppApplication context;
     private Fragment fragment;
     private Person person;
-    private Feedback feedback;
+    private CheckIn checkIn;
     private int userId = 5;
 
     @Override
@@ -41,12 +41,12 @@ public class AppApplication extends Application {
         this.person = person;
     }
 
-    public void setFeedback(Feedback feedback) {
-        this.feedback = feedback;
+    public void setCheckIn(CheckIn checkIn) {
+        this.checkIn = checkIn;
     }
 
-    public Feedback getFeedback() {
-        return feedback;
+    public CheckIn getCheckIn() {
+        return checkIn;
     }
 
     public int getUserId() {

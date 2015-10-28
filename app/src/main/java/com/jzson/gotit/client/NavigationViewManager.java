@@ -8,11 +8,9 @@ import android.widget.Toast;
 
 import com.jzson.gotit.client.activities.MainActivity;
 import com.jzson.gotit.client.activities.RegistrationActivity;
-import com.jzson.gotit.client.fragments.FeedbackFeedsFragment;
-import com.jzson.gotit.client.fragments.FeedbackListFragment;
+import com.jzson.gotit.client.fragments.FeedListFragment;
 import com.jzson.gotit.client.fragments.FollowerListFragment;
 import com.jzson.gotit.client.fragments.NotificationListFragment;
-import com.jzson.gotit.client.fragments.TeenListFragment;
 
 /**
  * Created by Denis on 6/26/15.
@@ -55,11 +53,11 @@ public class NavigationViewManager {
             case R.id.nav_teens:
                 NavUtils.showTeensActivity(mMainActivity);
                 break;
-            case R.id.nav_feedbacks:
-                NavUtils.showFeedbackList(mMainActivity);
+            case R.id.nav_check_ins:
+                NavUtils.showCheckInList(mMainActivity);
                 break;
             case R.id.nav_feeds:
-                mMainActivity.setFragment(new FeedbackFeedsFragment());
+                mMainActivity.setFragment(new FeedListFragment());
                 break;
             case R.id.nav_followers:
                 mMainActivity.setFragment(new FollowerListFragment());
@@ -91,9 +89,7 @@ public class NavigationViewManager {
     }
 
     public void showTeenMenu(boolean isVisibleForTeen) {
-        setMenuItemVisible(R.id.nav_teens, !isVisibleForTeen);
-        setMenuItemVisible(R.id.nav_feedbacks, isVisibleForTeen);
-        setMenuItemVisible(R.id.nav_feeds, !isVisibleForTeen);
+        setMenuItemVisible(R.id.nav_check_ins, isVisibleForTeen);
         setMenuItemVisible(R.id.nav_followers, isVisibleForTeen);
     }
     private void setMenuItemVisible(int resourceId, boolean visible) {

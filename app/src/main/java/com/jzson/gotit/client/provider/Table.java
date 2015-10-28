@@ -1,8 +1,6 @@
 package com.jzson.gotit.client.provider;
 
 import com.jzson.gotit.client.model.BaseModel;
-import com.jzson.gotit.client.model.Feedback;
-import com.jzson.gotit.client.model.Subscription;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -2,15 +2,11 @@ package com.jzson.gotit.client;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.view.View;
 
 import com.jzson.gotit.client.activities.MainActivity;
-import com.jzson.gotit.client.activities.TeenListActivity;
-import com.jzson.gotit.client.fragments.EditFeedbackFragment;
-import com.jzson.gotit.client.fragments.FeedbackFeedsFragment;
-import com.jzson.gotit.client.fragments.FeedbackListFragment;
+import com.jzson.gotit.client.fragments.FeedListFragment;
+import com.jzson.gotit.client.fragments.CheckInListFragment;
 import com.jzson.gotit.client.fragments.FollowerListFragment;
 import com.jzson.gotit.client.fragments.NotificationListFragment;
 import com.jzson.gotit.client.fragments.TeenListFragment;
@@ -26,12 +22,12 @@ public class NavUtils {
     public static void showEditFeedback(Context context) {
     }
 
-    public static void showFeedbackList(Context context) {
-        showFragmentInMainActivity(context, new FeedbackListFragment());
+    public static void showCheckInList(Context context) {
+        showFragmentInMainActivity(context, new CheckInListFragment());
     }
 
-    public static void showFeedsList(Context context) {
-        showFragmentInMainActivity(context, new FeedbackFeedsFragment());
+    public static void showFeedList(Context context) {
+        showFragmentInMainActivity(context, new FeedListFragment());
     }
 
     public static void showFollowerList(Context context) {

@@ -5,14 +5,14 @@ package com.jzson.gotit.client.model;
  */
 public class UserFeed extends BaseModel {
     private Person person;
-    private Feedback feedback;
+    private CheckIn checkIn;
 
     public UserFeed() {
     }
 
-    public UserFeed(Person person, Feedback feedback) {
+    public UserFeed(Person person, CheckIn checkIn) {
         this.person = person;
-        this.feedback = feedback;
+        this.checkIn = checkIn;
     }
 
     public Person getPerson() {
@@ -23,11 +23,11 @@ public class UserFeed extends BaseModel {
         this.person = person;
     }
 
-    public Feedback getFeedback() {
-        return feedback;
+    public CheckIn getCheckIn() {
+        return checkIn;
     }
 
-    public void setFeedback(Feedback feedback) {
-        this.feedback = feedback;
+    public void setCheckIn(CheckIn checkIn) {
+        this.checkIn = checkIn;
     }
 }

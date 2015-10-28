@@ -5,8 +5,8 @@
     <data>
         <import type="com.jzson.gotit.client.Utils"/>
         <variable
-            name="feedback"
-            type="com.jzson.gotit.client.model.Feedback" />
+            name="checkIn"
+            type="com.jzson.gotit.client.model.CheckIn" />
     </data>
 
     <LinearLayout
@@ -51,7 +51,7 @@
                         android:inputType="number"
                         android:id="@+id/sugar_level_answer"
                         android:layout_weight="1"
-                        android:text="@{feedback.getAnswer(1)}"/>
+                        android:text="@{checkIn.getAnswer(1)}"/>
 
                 </LinearLayout>
 
@@ -73,7 +73,7 @@
                         android:layout_height="match_parent"
                         android:inputType="number"
                         android:id="@+id/what_eat_answer"
-                        android:text="@{feedback.getAnswer(1)}"
+                        android:text="@{checkIn.getAnswer(1)}"
                         android:layout_weight="1" />
 
                 </LinearLayout>

@@ -6,9 +6,9 @@
             android:icon="@drawable/ic_group_black_24dp"
             android:title="@string/nav_teens" />
         <item
-            android:id="@+id/nav_feedbacks"
+            android:id="@+id/nav_check_ins"
             android:icon="@drawable/ic_notifications_black_24dp"
-            android:title="@string/nav_feedbacks" />
+            android:title="@string/nav_checkins" />
         <item
             android:id="@+id/nav_feeds"
             android:icon="@drawable/ic_notifications_black_24dp"

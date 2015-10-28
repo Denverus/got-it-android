@@ -12,7 +12,6 @@ import com.jzson.gotit.client.R;
 import com.jzson.gotit.client.activities.MainActivity;
 import com.jzson.gotit.client.adapter.base.BaseListAdapter;
 import com.jzson.gotit.client.fragments.EditFeedbackFragment;
-import com.jzson.gotit.client.model.Feedback;
 import com.jzson.gotit.client.model.UserFeed;
 import com.jzson.gotit.client.provider.DataProvider;
 
@@ -21,16 +20,16 @@ import java.util.List;
 /**
  * Created by Denis on 10/19/2015.
  */
-public class FeedbackFeedsAdapter extends BaseListAdapter<UserFeed, FeedbackFeedsAdapter.FeedbackViewHolder> {
+public class FeedListAdapter extends BaseListAdapter<UserFeed, FeedListAdapter.FeedbackViewHolder> {
 
-    public FeedbackFeedsAdapter(Context context) {
+    public FeedListAdapter(Context context) {
         super(context);
     }
 
     @Override
     protected void onItemClick(Context context, UserFeed model) {
         Intent intent = new Intent(context, MainActivity.class);
-        AppApplication.getContext().setFeedback(model.getFeedback());
+        AppApplication.getContext().setCheckIn(model.getCheckIn());
         AppApplication.getContext().setFragment(new EditFeedbackFragment());
         context.startActivity(intent);
     }
@@ -53,8 +52,8 @@ public class FeedbackFeedsAdapter extends BaseListAdapter<UserFeed, FeedbackFeed
     @Override
     public void onBindViewHolder(FeedbackViewHolder holder, int position) {
         holder.personName.setText(getModel(position).getPerson().getName());
-        holder.created.setText(getModel(position).getFeedback().getCreated().toString());
-        holder.summary.setText(getModel(position).getFeedback().getSummary());
+        holder.created.setText(getModel(position).getCheckIn().getCreated().toString());
+        holder.summary.setText(getModel(position).getCheckIn().getSummary());
     }
 
     public static class FeedbackViewHolder extends RecyclerView.ViewHolder {
