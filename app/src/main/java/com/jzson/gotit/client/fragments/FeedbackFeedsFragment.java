@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 
 import com.jzson.gotit.client.AppApplication;
 import com.jzson.gotit.client.adapter.FeedbackFeedsAdapter;
+import com.jzson.gotit.client.adapter.base.BaseListAdapter;
 import com.jzson.gotit.client.fragments.base.ListFragment;
 import com.jzson.gotit.client.provider.DataProvider;
 
@@ -14,9 +15,8 @@ import com.jzson.gotit.client.provider.DataProvider;
 public class FeedbackFeedsFragment extends ListFragment {
 
     @Override
-    protected RecyclerView.Adapter createAdapter(Context context) {
+    protected BaseListAdapter createAdapter(Context context) {
         FeedbackFeedsAdapter feedbackFeedsAdapter = new FeedbackFeedsAdapter(context);
-        feedbackFeedsAdapter.setData(DataProvider.getInstance().getUserFeeds(AppApplication.getContext().getUserId()));
         return feedbackFeedsAdapter;
     }
 }

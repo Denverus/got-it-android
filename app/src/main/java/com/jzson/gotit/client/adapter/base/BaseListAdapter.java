@@ -1,6 +1,7 @@
 package com.jzson.gotit.client.adapter.base;
 
 import android.content.Context;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,9 +16,14 @@ import java.util.List;
  */
 public abstract class BaseListAdapter<T extends BaseModel, H extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<H> implements View.OnClickListener {
 
+    public interface DataUpdateListener {
+        void onDataUpdated();
+    }
+
     private List<T> modelList;
     private RecyclerView mRecyclerView;
     private Context mContext;
+    private DataUpdateListener dataUpdateListener;
 
     public void setData(List<T> modelList){
         this.modelList = modelList;
@@ -28,6 +34,8 @@ public abstract class BaseListAdapter<T extends BaseModel, H extends RecyclerVie
     protected abstract int getItemResourceId();
 
     protected abstract H createViewHolder(View v);
+
+    protected abstract List<T> onRefresh();
 
     protected T getModel(int index) {
         return modelList.get(index);
@@ -70,5 +78,15 @@ public abstract class BaseListAdapter<T extends BaseModel, H extends RecyclerVie
         Context context = mRecyclerView.getContext();
 
         onItemClick(context, model);
+    }
+
+    public void refreshData() {
+        List<T> data = onRefresh();
+        setData(data);
+        dataUpdateListener.onDataUpdated();
+    }
+
+    public void setDataUpdateListener(DataUpdateListener dataUpdateListener) {
+        this.dataUpdateListener = dataUpdateListener;
     }
 }

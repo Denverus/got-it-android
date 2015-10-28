@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.jzson.gotit.client.AppApplication;
 import com.jzson.gotit.client.NavUtils;
 import com.jzson.gotit.client.R;
 import com.jzson.gotit.client.Utils;
@@ -18,6 +19,8 @@ import com.jzson.gotit.client.adapter.base.BaseListAdapter;
 import com.jzson.gotit.client.model.Notification;
 import com.jzson.gotit.client.model.Person;
 import com.jzson.gotit.client.provider.DataProvider;
+
+import java.util.List;
 
 /**
  * Created by Denis on 10/20/2015.
@@ -60,6 +63,11 @@ public class NotificationListAdapter extends BaseListAdapter<Notification, Notif
     @Override
     protected NotificationViewHolder createViewHolder(View v) {
         return new NotificationViewHolder(v);
+    }
+
+    @Override
+    protected List<Notification> onRefresh() {
+        return DataProvider.getInstance().getNotificationsByUserId(AppApplication.getContext().getUserId());
     }
 
     @Override

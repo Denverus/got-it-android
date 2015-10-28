@@ -3,25 +3,29 @@ package com.jzson.gotit.client.fragments.base;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.jzson.gotit.client.R;
 import com.jzson.gotit.client.adapter.FeedbackListAdapter;
+import com.jzson.gotit.client.adapter.base.BaseListAdapter;
 import com.jzson.gotit.client.provider.DataProvider;
 
-public abstract class ListFragment extends Fragment {
+public abstract class ListFragment extends Fragment implements BaseListAdapter.DataUpdateListener {
 
     private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
+    private BaseListAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private TextView emptyView;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
-    protected abstract RecyclerView.Adapter createAdapter(Context context);
+    protected abstract BaseListAdapter createAdapter(Context context);
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -40,11 +44,33 @@ public abstract class ListFragment extends Fragment {
         mRecyclerView.setAdapter(mAdapter);
 
         emptyView = (TextView)rootView.findViewById(R.id.empty_view);
+
+        mSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_refresh);
+        mSwipeRefreshLayout.setOnRefreshListener(
+                new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        mAdapter.refreshData();
+                        Toast.makeText(getContext(), "Updating...", Toast.LENGTH_SHORT).show();
+                    }
+                }
+        );
+
+        mAdapter.setDataUpdateListener(this);
+        mAdapter.refreshData();
+
+        return rootView;
+    }
+
+    @Override
+    public void onDataUpdated() {
+        mSwipeRefreshLayout.setRefreshing(false);
         if (mAdapter.getItemCount() == 0) {
             mRecyclerView.setVisibility(View.GONE);
             emptyView.setVisibility(View.VISIBLE);
+        } else {
+            mRecyclerView.setVisibility(View.VISIBLE);
+            emptyView.setVisibility(View.GONE);
         }
-
-        return rootView;
     }
 }

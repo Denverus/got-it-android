@@ -16,7 +16,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.jzson.gotit.client.AppApplication;
-import com.jzson.gotit.client.NavUtils;
 import com.jzson.gotit.client.NavigationViewManager;
 import com.jzson.gotit.client.R;
 import com.jzson.gotit.client.fragments.EditFeedbackFragment;
@@ -30,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
     private NavigationViewManager mNavigationViewManager;
     private TextView mUsernameTextView;
+    private FloatingActionButton mActionButton;
+    private boolean mPersonIsTeen;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,8 +52,8 @@ public class MainActivity extends AppCompatActivity {
 
         updateDrawer();
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.button_action);
-        fab.setOnClickListener(new View.OnClickListener() {
+        mActionButton = (FloatingActionButton) findViewById(R.id.button_action);
+        mActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 setFragment(new EditFeedbackFragment());
@@ -74,16 +75,22 @@ public class MainActivity extends AppCompatActivity {
 
     public void updateDrawer() {
         Person person = DataProvider.getInstance().getPersonById(AppApplication.getContext().getUserId());
-        mNavigationViewManager.showTeenMenu(person.isHasDiabetes());
-        /*if (person.getType() == Person.TEEN) {
-            NavUtils.showFeedbackList(this);
-        } else {
-            NavUtils.showFeedsList(this);
-        }*/
+        mPersonIsTeen = person.isHasDiabetes();
+        mNavigationViewManager.showTeenMenu(mPersonIsTeen);
         mUsernameTextView.setText(person.getName());
     }
 
     public void setFragment(Fragment fragment) {
+        if (!mPersonIsTeen) {
+            hideActionButton();
+        } else {
+            if (fragment instanceof EditFeedbackFragment) {
+                hideActionButton();
+            } else {
+                showActionButton();
+            }
+        }
+
         FragmentManager fm = getSupportFragmentManager();
         fm.beginTransaction()
                 .replace(R.id.content_frame, fragment)
@@ -114,5 +121,13 @@ public class MainActivity extends AppCompatActivity {
                 break;*/
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void showActionButton() {
+        mActionButton.show();
+    }
+
+    public void hideActionButton() {
+        mActionButton.hide();
     }
 }

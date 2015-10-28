@@ -55,11 +55,31 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/person_age"
+                android:id="@+id/person_date_birth"
                 android:layout_toRightOf="@+id/person_photo"
                 android:layout_below="@+id/person_name"
+                android:text="@{Utils.dateToString(person.dateBirth)}"
+                tools:text="10/22/1995"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/person_age"
+                android:layout_toRightOf="@+id/person_photo"
+                android:layout_below="@+id/person_date_birth"
                 android:text="@{Utils.ageToString(person.dateBirth)}"
                 tools:text="14 years old"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/person_medical_record"
+                android:layout_toRightOf="@+id/person_photo"
+                android:layout_below="@+id/person_age"
+                android:text="@{person.medicalRecordNumber}"
+                tools:text="#12123232"
                 />
 
             <Button

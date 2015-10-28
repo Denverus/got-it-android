@@ -17,6 +17,8 @@ import com.jzson.gotit.client.databinding.FollowerListItemBinding;
 import com.jzson.gotit.client.model.Person;
 import com.jzson.gotit.client.provider.DataProvider;
 
+import java.util.List;
+
 /**
  * Created by Denis on 10/23/2015.
  */
@@ -40,6 +42,11 @@ public class FollowerListAdapter extends BaseListAdapter<Person, FollowerListAda
     @Override
     protected FollowerListViewHolder createViewHolder(View v) {
         return new FollowerListViewHolder(v);
+    }
+
+    @Override
+    protected List<Person> onRefresh() {
+        return DataProvider.getInstance().getFollowerList(AppApplication.getContext().getUserId());
     }
 
     @Override

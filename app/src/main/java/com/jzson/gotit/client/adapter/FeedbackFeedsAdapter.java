@@ -14,6 +14,9 @@ import com.jzson.gotit.client.adapter.base.BaseListAdapter;
 import com.jzson.gotit.client.fragments.EditFeedbackFragment;
 import com.jzson.gotit.client.model.Feedback;
 import com.jzson.gotit.client.model.UserFeed;
+import com.jzson.gotit.client.provider.DataProvider;
+
+import java.util.List;
 
 /**
  * Created by Denis on 10/19/2015.
@@ -40,6 +43,11 @@ public class FeedbackFeedsAdapter extends BaseListAdapter<UserFeed, FeedbackFeed
     @Override
     protected FeedbackViewHolder createViewHolder(View v) {
         return new FeedbackViewHolder(v);
+    }
+
+    @Override
+    protected List<UserFeed> onRefresh() {
+        return DataProvider.getInstance().getUserFeeds(AppApplication.getContext().getUserId());
     }
 
     @Override
