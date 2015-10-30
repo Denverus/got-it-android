@@ -91,10 +91,6 @@ public class CreateCheckInFragment extends Fragment {
     }
 
     private void moveToNextStep(boolean save) {
-        if (questionIndex < questionList.size()) {
-            progressBar.setProgress(questionIndex * 100 / questionList.size());
-            openNextQuestion();
-        }
         if (save) {
             Answer answer = readAnswer();
             if (answer != null) {
@@ -102,7 +98,10 @@ public class CreateCheckInFragment extends Fragment {
             }
         }
 
-        if (questionIndex >= questionList.size()) {
+        if (questionIndex < questionList.size()) {
+            progressBar.setProgress(questionIndex * 100 / questionList.size());
+            openNextQuestion();
+        } else {
             if (!answerList.isEmpty()) {
                 int userId = AppApplication.getContext().getUserId();
                 DataProvider.getInstance().saveAnswer(userId, answerList);

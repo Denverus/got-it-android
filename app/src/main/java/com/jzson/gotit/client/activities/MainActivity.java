@@ -95,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
         FragmentManager fm = getSupportFragmentManager();
         fm.beginTransaction()
                 .replace(R.id.content_frame, fragment)
+                .addToBackStack(fragment.toString())
                 .commit();
     }
 

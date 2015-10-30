@@ -124,12 +124,23 @@ public class DataProvider {
     }
 
     public List<CheckIn> getCheckInListByUserId(final int userId) {
-        return checkInTable.getListByCriteria(new Table.BooleanCriteria<CheckIn>() {
+        List<CheckIn> checkInList = checkInTable.getListByCriteria(new Table.BooleanCriteria<CheckIn>() {
             @Override
             public boolean getCriteriaValue(CheckIn value) {
                 return value.getPersonId() == userId;
             }
         });
+        for (CheckIn checkIn : checkInList) {
+            final int checkInId = checkIn.getId();
+            List<Answer> answerList = answerTable.getListByCriteria(new Table.BooleanCriteria<Answer>() {
+                @Override
+                public boolean getCriteriaValue(Answer value) {
+                    return value.getCheckInId() == checkInId;
+                }
+            });
+            checkIn.setAnswers(answerList);
+        }
+        return checkInList;
     }
 
     public void addFeedback(CheckIn checkIn) {
@@ -224,9 +235,7 @@ public class DataProvider {
     }
 
     public List<Answer> getUserAnswerList(final int checkIn) {
-        List<Answer> answers = new ArrayList<>();
-
-        answerTable.getListByCriteria(new Table.BooleanCriteria<Answer>() {
+        List<Answer> answers =answerTable.getListByCriteria(new Table.BooleanCriteria<Answer>() {
             @Override
             public boolean getCriteriaValue(Answer value) {
                 return value.getCheckInId() == checkIn;
