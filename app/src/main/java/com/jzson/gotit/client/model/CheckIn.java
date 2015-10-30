@@ -10,17 +10,17 @@ import java.util.List;
 public class CheckIn extends BaseModel {
 
     private Date created;
-    private List<Question> questions = Collections.EMPTY_LIST;
+    private List<Answer> answerList = Collections.EMPTY_LIST;
     private int personId;
 
     public CheckIn() {
         created = new Date();
     }
 
-    public CheckIn(int personId, List<Question> questions) {
+    public CheckIn(int personId, List<Answer> answerList) {
         created = new Date();
         this.personId = personId;
-        this.questions = questions;
+        this.answerList = answerList;
     }
     public Date getCreated() {
         return created;
@@ -30,41 +30,16 @@ public class CheckIn extends BaseModel {
         this.created = created;
     }
 
-    public List<Question> getQuestions() {
-        return questions;
+    public List<Answer> getAnswers() {
+        return answerList;
     }
 
-    public void setQuestions(List<Question> questions) {
-        this.questions = questions;
+    public void setAnswers(List<Answer> questions) {
+        this.answerList = questions;
     }
 
-    public String getAnswer(int questionType) {
-        for (Question question : questions) {
-            if (question.getQuestionType() == questionType) {
-                return question.getStringAnswer();
-            }
-        }
-        return "";
-    }
-
-    public Boolean getAnswerAsBoolean(int questionType) {
-        for (Question question : questions) {
-            if (question.getQuestionType() == questionType) {
-                return question.getAnswerAsBoolean();
-            }
-        }
-        return false;
-    }
-
-    public void setAnswer(int questionType, String value) {
-        for (Question question : questions) {
-            if (question.getQuestionType() == questionType) {
-                question.setAnswer(value);
-            }
-        }
-    }
     public String getSummary() {
-        return "Questions "+questions.size();
+        return "Answers "+ answerList.size();
     }
 
     public int getPersonId() {

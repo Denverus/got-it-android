@@ -1,19 +1,19 @@
 package com.jzson.gotit.client;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v4.app.Fragment;
 
 import com.jzson.gotit.client.activities.MainActivity;
+import com.jzson.gotit.client.fragments.AnswerListFragment;
 import com.jzson.gotit.client.fragments.FeedListFragment;
 import com.jzson.gotit.client.fragments.CheckInListFragment;
 import com.jzson.gotit.client.fragments.FollowerListFragment;
-import com.jzson.gotit.client.fragments.NewCheckInFragment;
+import com.jzson.gotit.client.fragments.CreateCheckInFragment;
 import com.jzson.gotit.client.fragments.NotificationListFragment;
 import com.jzson.gotit.client.fragments.TeenListFragment;
 import com.jzson.gotit.client.model.Question;
+import com.jzson.gotit.client.provider.DataProvider;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,15 +27,12 @@ public class NavUtils {
     public static void showEditFeedback(Context context) {
     }
 
-    public static void showEditCheckIn(Context context) {
-        List<Question> questionList = new ArrayList<>();
-        questionList.add(new Question("Question1", "", 0));
-        questionList.add(new Question("Question2", "", 0));
-        questionList.add(new Question("Question3", "", 0));
+    public static void showCreateCheckIn(Context context) {
+        List<Question> questionList = DataProvider.getInstance().getCheckInQuestions();
 
         AppApplication.getContext().setQuestionList(questionList);
 
-        showFragmentInMainActivity(context, new NewCheckInFragment());
+        showFragmentInMainActivity(context, new CreateCheckInFragment());
     }
 
     public static void showCheckInList(Context context) {
@@ -60,5 +57,10 @@ public class NavUtils {
 
     public static void showNotificationList(Context context) {
         showFragmentInMainActivity(context, new NotificationListFragment());
+    }
+
+    public static void showAnswerListFragment(Context context, int checkIn) {
+        AppApplication.getContext().setCheckIn(checkIn);
+        showFragmentInMainActivity(context, new AnswerListFragment());
     }
 }

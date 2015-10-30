@@ -11,7 +11,7 @@ import com.jzson.gotit.client.AppApplication;
 import com.jzson.gotit.client.R;
 import com.jzson.gotit.client.activities.MainActivity;
 import com.jzson.gotit.client.adapter.base.BaseListAdapter;
-import com.jzson.gotit.client.fragments.EditFeedbackFragment;
+import com.jzson.gotit.client.fragments.AnswerListFragment;
 import com.jzson.gotit.client.model.UserFeed;
 import com.jzson.gotit.client.provider.DataProvider;
 
@@ -29,8 +29,8 @@ public class FeedListAdapter extends BaseListAdapter<UserFeed, FeedListAdapter.F
     @Override
     protected void onItemClick(Context context, UserFeed model) {
         Intent intent = new Intent(context, MainActivity.class);
-        AppApplication.getContext().setCheckIn(model.getCheckIn());
-        AppApplication.getContext().setFragment(new EditFeedbackFragment());
+        AppApplication.getContext().setCheckIn(model.getCheckIn().getId());
+        AppApplication.getContext().setFragment(new AnswerListFragment());
         context.startActivity(intent);
     }
 

@@ -14,7 +14,7 @@ public class AppApplication extends Application {
     private static AppApplication context;
     private Fragment fragment;
     private Person person;
-    private CheckIn checkIn;
+    private Integer checkIn = null;
     private int userId = 5;
     private List<Question> questionList;
 
@@ -45,11 +45,11 @@ public class AppApplication extends Application {
         this.person = person;
     }
 
-    public void setCheckIn(CheckIn checkIn) {
+    public void setCheckIn(Integer checkIn) {
         this.checkIn = checkIn;
     }
 
-    public CheckIn getCheckIn() {
+    public Integer getCheckIn() {
         return checkIn;
     }
 

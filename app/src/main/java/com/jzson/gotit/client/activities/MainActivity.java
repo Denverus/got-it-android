@@ -19,7 +19,7 @@ import com.jzson.gotit.client.AppApplication;
 import com.jzson.gotit.client.NavUtils;
 import com.jzson.gotit.client.NavigationViewManager;
 import com.jzson.gotit.client.R;
-import com.jzson.gotit.client.fragments.EditFeedbackFragment;
+import com.jzson.gotit.client.fragments.CreateCheckInFragment;
 import com.jzson.gotit.client.fragments.TeenListFragment;
 import com.jzson.gotit.client.model.Person;
 import com.jzson.gotit.client.provider.DataProvider;
@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
         mActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                NavUtils.showEditCheckIn(MainActivity.this);
+                NavUtils.showCreateCheckIn(MainActivity.this);
             }
         });
 
@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
         if (!mPersonIsTeen) {
             hideActionButton();
         } else {
-            if (fragment instanceof EditFeedbackFragment) {
+            if (fragment instanceof CreateCheckInFragment) {
                 hideActionButton();
             } else {
                 showActionButton();

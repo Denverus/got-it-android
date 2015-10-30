@@ -3,6 +3,7 @@ package com.jzson.gotit.client.provider;
 import android.media.Image;
 
 import com.jzson.gotit.client.Utils;
+import com.jzson.gotit.client.model.Answer;
 import com.jzson.gotit.client.model.CheckIn;
 import com.jzson.gotit.client.model.Notification;
 import com.jzson.gotit.client.model.Person;
@@ -29,7 +30,11 @@ public class DataProvider {
 
     private FeedbackTable feedbackTable = new FeedbackTable();
 
-    private Table<Question> questions = new Table<>();
+    private Table<Question> questionTable = new Table<>();
+
+    private Table<Answer> answerTable = new Table<>();
+
+    private Table<CheckIn> checkInTable = new Table<>();
 
     private Table<Notification> notifications = new Table<>();
 
@@ -47,11 +52,15 @@ public class DataProvider {
         personTable.add(new Person("Caren Wilosn", "user5", "", Utils.getRandomBirthDate(), true, "11232", null));
         personTable.add(new Person("Mike Waters", "user6", "", Utils.getRandomBirthDate(), false, null, null));
 
-        feedbackTable.add(new CheckIn(0, createQuestions(10d, "Meat", false)));
+        questionTable.add(new Question("What was your blood sugar level at meal time?", Answer.TYPE_INT));
+        questionTable.add(new Question("What did you eat at meal time?", Answer.TYPE_STRING));
+        questionTable.add(new Question("Did you administer insulin?", Answer.TYPE_BOOLEAN));
+
+        /*feedbackTable.add(new CheckIn(0, createQuestions(10d, "Meat", false)));
         feedbackTable.add(new CheckIn(1, createQuestions(5d, "Bread", true)));
         feedbackTable.add(new CheckIn(2, createQuestions(3d, "Soup", false)));
         feedbackTable.add(new CheckIn(3, createQuestions(12d, "Sandwich", true)));
-        feedbackTable.add(new CheckIn(4, createQuestions(2d, "Burger", true)));
+        feedbackTable.add(new CheckIn(4, createQuestions(2d, "Burger", true)));*/
 
         /*notifications.add(new Notification(Notification.SUBSCRIBE_REQUESTED, 5, 0));
         notifications.add(new Notification(Notification.SUBSCRIBE_REQUESTED, 5, 1));
@@ -81,14 +90,6 @@ public class DataProvider {
 
     public List<CheckIn> getFeedback() {
         return feedbackTable.getList();
-    }
-
-    private List<Question> createQuestions(Double sugarLevel, String meal, Boolean adminInsulin) {
-        List<Question> questions = new ArrayList<>();
-        questions.add(new Question("What was your blood sugar level at meal time?", sugarLevel, Question.QUESTION_SUGAR_LEVEL));
-        questions.add(new Question("What did you eat at meal time?", meal, Question.QUESTION_MEAL));
-        questions.add(new Question("Did you administer insulin?", adminInsulin, Question.QUESTION_INSULIN));
-        return questions;
     }
 
     public List<UserFeed> getUserFeeds(int personId) {
@@ -122,8 +123,8 @@ public class DataProvider {
         });
     }
 
-    public List<CheckIn> getFeedbackById(final int userId) {
-        return feedbackTable.getListByCriteria(new Table.BooleanCriteria<CheckIn>() {
+    public List<CheckIn> getCheckInListByUserId(final int userId) {
+        return checkInTable.getListByCriteria(new Table.BooleanCriteria<CheckIn>() {
             @Override
             public boolean getCriteriaValue(CheckIn value) {
                 return value.getPersonId() == userId;
@@ -220,5 +221,38 @@ public class DataProvider {
     public void registerUser(String fullName, Date dateBirth, String login, String password, boolean hasDiabetes, String medicalRecordNumber, Image photo) {
         Person person = new Person(fullName, login, password, dateBirth, hasDiabetes, medicalRecordNumber, photo);
         personTable.add(person);
+    }
+
+    public List<Answer> getUserAnswerList(final int checkIn) {
+        List<Answer> answers = new ArrayList<>();
+
+        answerTable.getListByCriteria(new Table.BooleanCriteria<Answer>() {
+            @Override
+            public boolean getCriteriaValue(Answer value) {
+                return value.getCheckInId() == checkIn;
+            }
+        });
+
+        for (Answer answer : answers) {
+            Question question = questionTable.getById(answer.getQuestionId());
+            answer.setQuestion(question.getQuestion());
+        }
+
+        return answers;
+    }
+
+    public void saveAnswer(int userId, List<Answer> answerList) {
+        CheckIn checkIn = new CheckIn();
+        checkIn.setPersonId(userId);
+        int checkInId = checkInTable.add(checkIn);
+
+        for (Answer answer : answerList) {
+            answer.setCheckInId(checkInId);
+            answerTable.add(answer);
+        }
+    }
+
+    public List<Question> getCheckInQuestions() {
+        return questionTable.getList();
     }
 }
