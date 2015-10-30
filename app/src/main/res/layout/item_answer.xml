@@ -23,21 +23,40 @@
                 android:layout_height="wrap_content"
                 android:padding="5dp">
 
-                <TextView
-                    android:id="@+id/question"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                <FrameLayout
+                    android:id="@+id/question_frame"
+                    android:padding="@dimen/card_margin"
+                    android:background="@layout/bg_item_question"
                     android:layout_alignParentLeft="true"
-                    android:textSize="20sp"
-                    android:text="What time do you eat last time?"/>
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/question"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/question_text_color"
+                        android:textSize="20sp"
+                        android:text="What time do you eat last time?"/>
+                </FrameLayout>
 
-                <TextView
-                    android:id="@+id/answer"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                <FrameLayout
+                    android:layout_marginTop="5dp"
+                    android:padding="@dimen/card_margin"
+                    android:background="@layout/bg_item_answer"
                     android:layout_alignParentRight="true"
-                    android:textSize="20sp"
-                    android:text="lunch"/>
+                    android:layout_below="@+id/question_frame"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/answer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="20sp"
+                        android:textColor="@color/answer_text_color"
+                        android:text="lunch"/>
+
+                </FrameLayout>
 
             </RelativeLayout>
 

@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.jzson.gotit.client.AppApplication;
 import com.jzson.gotit.client.NavUtils;
 import com.jzson.gotit.client.R;
+import com.jzson.gotit.client.Utils;
 import com.jzson.gotit.client.adapter.base.BaseListAdapter;
 import com.jzson.gotit.client.model.CheckIn;
 import com.jzson.gotit.client.provider.DataProvider;
@@ -46,7 +47,7 @@ public class CheckInListAdapter extends BaseListAdapter<CheckIn, CheckInListAdap
 
     @Override
     public void onBindViewHolder(FeedbackViewHolder feedbackViewHolder, int i) {
-        feedbackViewHolder.created.setText(getModel(i).getCreated().toString());
+        feedbackViewHolder.created.setText(Utils.dateToString(getModel(i).getCreated()));
         feedbackViewHolder.summary.setText("Answers: " + getModel(i).getAnswers().size());
     }
 

@@ -58,7 +58,7 @@
                 android:id="@+id/person_date_birth"
                 android:layout_toRightOf="@+id/person_photo"
                 android:layout_below="@+id/person_name"
-                android:text="@{Utils.dateToString(person.dateBirth)}"
+                android:text="@{Utils.dateBirthToString(person.dateBirth)}"
                 tools:text="10/22/1995"
                 />
 

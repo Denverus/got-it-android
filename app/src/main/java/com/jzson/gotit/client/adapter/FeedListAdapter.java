@@ -8,7 +8,9 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.jzson.gotit.client.AppApplication;
+import com.jzson.gotit.client.NavUtils;
 import com.jzson.gotit.client.R;
+import com.jzson.gotit.client.Utils;
 import com.jzson.gotit.client.activities.MainActivity;
 import com.jzson.gotit.client.adapter.base.BaseListAdapter;
 import com.jzson.gotit.client.fragments.AnswerListFragment;
@@ -28,10 +30,7 @@ public class FeedListAdapter extends BaseListAdapter<UserFeed, FeedListAdapter.F
 
     @Override
     protected void onItemClick(Context context, UserFeed model) {
-        Intent intent = new Intent(context, MainActivity.class);
-        AppApplication.getContext().setCheckIn(model.getCheckIn().getId());
-        AppApplication.getContext().setFragment(new AnswerListFragment());
-        context.startActivity(intent);
+        NavUtils.showAnswerListFragment(context, model.getCheckIn().getId());
     }
 
     @Override
@@ -52,7 +51,7 @@ public class FeedListAdapter extends BaseListAdapter<UserFeed, FeedListAdapter.F
     @Override
     public void onBindViewHolder(FeedbackViewHolder holder, int position) {
         holder.personName.setText(getModel(position).getPerson().getName());
-        holder.created.setText(getModel(position).getCheckIn().getCreated().toString());
+        holder.created.setText(Utils.dateToString(getModel(position).getCheckIn().getCreated()));
         holder.summary.setText(getModel(position).getCheckIn().getSummary());
     }
 

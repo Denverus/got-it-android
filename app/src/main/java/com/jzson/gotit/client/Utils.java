@@ -15,6 +15,8 @@ public class Utils {
 
     private static final  String DATE_FORMAT = "yyyy-MM-dd HH:mm";
 
+    private static final  String DATE_BIRTH_FORMAT = "yyyy-MM-dd";
+
     public static String doubleToString(double value) {
         return value + "";
     }
@@ -22,6 +24,15 @@ public class Utils {
     public static String dateToString(Date date) {
         if (date != null) {
             SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT, Locale.US);
+            return sdf.format(date);
+        } else {
+            return "";
+        }
+    }
+
+    public static String dateBirthToString(Date date) {
+        if (date != null) {
+            SimpleDateFormat sdf = new SimpleDateFormat(DATE_BIRTH_FORMAT, Locale.US);
             return sdf.format(date);
         } else {
             return "";

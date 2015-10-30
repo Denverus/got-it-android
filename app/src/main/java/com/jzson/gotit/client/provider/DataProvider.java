@@ -97,9 +97,14 @@ public class DataProvider {
 
         List<Subscription> list = subscriptions.getSubscriptionByPersonId(personId);
         for (Subscription subscription : list) {
-            int teenId = subscription.getSubscribedTo();
+            final int teenId = subscription.getSubscribedTo();
             Person person = personTable.getById(teenId);
-            List<CheckIn> checkInList = feedbackTable.getFeedbackListByUserId(teenId);
+            List<CheckIn> checkInList = checkInTable.getListByCriteria(new Table.BooleanCriteria<CheckIn>() {
+                @Override
+                public boolean getCriteriaValue(CheckIn value) {
+                    return value.getPersonId() == teenId;
+                }
+            });
             for (CheckIn checkIn : checkInList) {
                 UserFeed userFeed = new UserFeed(person, checkIn);
                 userFeeds.add(userFeed);

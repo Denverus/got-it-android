@@ -16,5 +16,11 @@
     <color name="suggestion_highlight_text">#177bbd</color>
 
     <color name="button_color">#26A69A</color>
+    <color name="answer_item_bg">#99FF99</color>
+    <color name="answer_text_color">#003366</color>
+    <color name="answer_item_border">#99FF99</color>
+    <color name="question_item_bg">#E5FFFF</color>
+    <color name="question_text_color">#003366</color>
+    <color name="question_item_border">#E5FFFF</color>
 
 </resources>
