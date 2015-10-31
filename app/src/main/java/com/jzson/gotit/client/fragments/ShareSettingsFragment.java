@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.Switch;
 
@@ -45,7 +46,7 @@ public class ShareSettingsFragment extends Fragment implements BaseListAdapter.D
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_share_settings, container, false);
 
-        Switch settingsSwitch = (Switch)rootView.findViewById(R.id.switch_share_data);
+        final Switch settingsSwitch = (Switch)rootView.findViewById(R.id.switch_share_data);
 
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.rv);
 
@@ -64,6 +65,17 @@ public class ShareSettingsFragment extends Fragment implements BaseListAdapter.D
         int userId = AppApplication.getContext().getUserId();
 
         List<FollowerSettings> shareSettings = DataProvider.getInstance().loadFollowerSettings(userId);
+
+        settingsSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    mRecyclerView.animate().translationY(0);
+                } else {
+                    mRecyclerView.animate().translationY(-mRecyclerView.getHeight());
+                }
+            }
+        });
 
         settingsSwitch.setChecked(!shareSettings.isEmpty());
 

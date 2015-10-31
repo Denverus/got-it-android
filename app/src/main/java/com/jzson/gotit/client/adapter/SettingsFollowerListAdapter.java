@@ -27,7 +27,7 @@ public class SettingsFollowerListAdapter extends BaseListAdapter<FollowerSetting
 
     @Override
     protected void onItemClick(Context context, FollowerSettings model) {
-        
+
     }
 
     @Override
