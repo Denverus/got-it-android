@@ -10,6 +10,7 @@ import com.jzson.gotit.client.fragments.CheckInListFragment;
 import com.jzson.gotit.client.fragments.FollowerListFragment;
 import com.jzson.gotit.client.fragments.CreateCheckInFragment;
 import com.jzson.gotit.client.fragments.NotificationListFragment;
+import com.jzson.gotit.client.fragments.ShareSettingsFragment;
 import com.jzson.gotit.client.fragments.TeenListFragment;
 import com.jzson.gotit.client.model.Question;
 import com.jzson.gotit.client.provider.DataProvider;
@@ -62,5 +63,9 @@ public class NavUtils {
     public static void showAnswerListFragment(Context context, int checkIn) {
         AppApplication.getContext().setCheckIn(checkIn);
         showFragmentInMainActivity(context, new AnswerListFragment());
+    }
+
+    public static void showSettings(Context context) {
+        showFragmentInMainActivity(context, new ShareSettingsFragment());
     }
 }

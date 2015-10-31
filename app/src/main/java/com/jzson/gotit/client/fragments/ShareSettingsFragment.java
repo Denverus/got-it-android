@@ -4,27 +4,40 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.Switch;
 
 import com.jzson.gotit.client.AppApplication;
 import com.jzson.gotit.client.R;
+import com.jzson.gotit.client.adapter.SettingsFollowerListAdapter;
+import com.jzson.gotit.client.adapter.base.BaseListAdapter;
+import com.jzson.gotit.client.databinding.FragmentShareSettingsBinding;
 import com.jzson.gotit.client.databinding.FragmentTeenProfileBinding;
+import com.jzson.gotit.client.model.FollowerSettings;
 import com.jzson.gotit.client.model.Person;
+import com.jzson.gotit.client.model.ShareSettings;
 import com.jzson.gotit.client.provider.DataProvider;
+
+import java.util.List;
 
 /**
  * A placeholder fragment containing a simple view.
  */
-public class ShareSettingsFragment extends Fragment implements View.OnClickListener {
+public class ShareSettingsFragment extends Fragment implements BaseListAdapter.DataUpdateListener {
 
-    private Person mPerson;
+    private RecyclerView mRecyclerView;
+    private BaseListAdapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
 
-    FragmentTeenProfileBinding bind;
 
     public ShareSettingsFragment() {
-        mPerson = AppApplication.getContext().getPerson();
+
     }
 
     @Override
@@ -32,32 +45,38 @@ public class ShareSettingsFragment extends Fragment implements View.OnClickListe
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_share_settings, container, false);
 
+        Switch settingsSwitch = (Switch)rootView.findViewById(R.id.switch_share_data);
+
+        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.rv);
+
+        mRecyclerView.setHasFixedSize(false);
+
+        mLayoutManager = new LinearLayoutManager(getActivity());
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.scrollToPosition(0);
+
+        mAdapter = new SettingsFollowerListAdapter(getActivity());
+        mRecyclerView.setAdapter(mAdapter);
+
+        mAdapter.setDataUpdateListener(this);
+        mAdapter.refreshData();
+
+        int userId = AppApplication.getContext().getUserId();
+
+        List<FollowerSettings> shareSettings = DataProvider.getInstance().loadFollowerSettings(userId);
+
+        settingsSwitch.setChecked(!shareSettings.isEmpty());
+
         return rootView;
     }
 
     @Override
     public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        bind = (FragmentTeenProfileBinding) DataBindingUtil.bind(view);
-        bind.setPerson(mPerson);
-        bind.subscribeButton.setOnClickListener(this);
-
-        int followerStatus = DataProvider.getInstance().checkFollowerStatus(AppApplication.getContext().getUserId(), mPerson.getId());
-        if (followerStatus == DataProvider.FOLLOWER_STATUS_FOLLOWED) {
-            bind.subscribeButton.setText(getContext().getResources().getString(R.string.unfollow));
-        } else if (followerStatus == DataProvider.FOLLOWER_STATUS_NOT_FOLLOWED) {
-            bind.subscribeButton.setText(getContext().getResources().getString(R.string.follow));
-        } else if (followerStatus == DataProvider.FOLLOWER_STATUS_REQUESTED) {
-            bind.subscribeButton.setText(getContext().getResources().getString(R.string.requested));
-            bind.subscribeButton.setEnabled(false);
-        }
     }
 
     @Override
-    public void onClick(View v) {
-        bind.subscribeButton.setText(R.string.requested);
-        bind.subscribeButton.setEnabled(false);
-        DataProvider.getInstance().sendSubscribeRequest(mPerson.getId(), AppApplication.getContext().getUserId());
+    public void onDataUpdated() {
+
     }
 }

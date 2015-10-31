@@ -5,6 +5,7 @@ import android.media.Image;
 import com.jzson.gotit.client.Utils;
 import com.jzson.gotit.client.model.Answer;
 import com.jzson.gotit.client.model.CheckIn;
+import com.jzson.gotit.client.model.FollowerSettings;
 import com.jzson.gotit.client.model.GeneralSettings;
 import com.jzson.gotit.client.model.Notification;
 import com.jzson.gotit.client.model.Person;
@@ -300,5 +301,17 @@ public class DataProvider {
                 return value.getUserId() == userId;
             }
         });
+    }
+
+    public List<FollowerSettings> loadFollowerSettings(final int userId) {
+        List<FollowerSettings> followerSettingList = new ArrayList<>();
+        List<Person> list = personTable.getList();
+        for (Person person : list) {
+            FollowerSettings followerSettings = new FollowerSettings();
+            followerSettings.setName(person.getName());
+            followerSettingList.add(followerSettings);
+        }
+
+        return followerSettingList;
     }
 }

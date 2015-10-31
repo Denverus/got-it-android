@@ -48,7 +48,7 @@ public class NavigationViewManager {
 
         switch (menuId) {
             case R.id.nav_settings:
-                Toast.makeText(mMainActivity, "Not implemented", Toast.LENGTH_SHORT).show();
+                NavUtils.showSettings(mMainActivity);
                 break;
             case R.id.nav_teens:
                 NavUtils.showTeensActivity(mMainActivity);
