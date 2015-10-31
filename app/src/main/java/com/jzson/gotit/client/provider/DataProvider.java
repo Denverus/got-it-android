@@ -5,9 +5,11 @@ import android.media.Image;
 import com.jzson.gotit.client.Utils;
 import com.jzson.gotit.client.model.Answer;
 import com.jzson.gotit.client.model.CheckIn;
+import com.jzson.gotit.client.model.GeneralSettings;
 import com.jzson.gotit.client.model.Notification;
 import com.jzson.gotit.client.model.Person;
 import com.jzson.gotit.client.model.Question;
+import com.jzson.gotit.client.model.ShareSettings;
 import com.jzson.gotit.client.model.Subscription;
 import com.jzson.gotit.client.model.UserFeed;
 
@@ -39,6 +41,10 @@ public class DataProvider {
     private Table<Notification> notifications = new Table<>();
 
     private SubscriptionTable subscriptions = new SubscriptionTable();
+
+    private Table<GeneralSettings> generalSettingsTable = new Table<>();
+
+    private Table<ShareSettings> shareSettingsTable = new Table<>();
 
     public DataProvider() {
         initializeData();
@@ -268,5 +274,31 @@ public class DataProvider {
 
     public List<Question> getCheckInQuestions() {
         return questionTable.getList();
+    }
+
+    public void saveGeneralSettings(GeneralSettings settings) {
+        generalSettingsTable.addOrSave(settings);
+    }
+
+    public List<GeneralSettings> loadGeneralSettingsByUserId(final int userId) {
+        return generalSettingsTable.getListByCriteria(new Table.BooleanCriteria<GeneralSettings>() {
+            @Override
+            public boolean getCriteriaValue(GeneralSettings value) {
+                return value.getUserId() == userId;
+            }
+        });
+    }
+
+    public void saveShareSettings(List<ShareSettings> settingsList) {
+        shareSettingsTable.addOrSave(settingsList);
+    }
+
+    public List<ShareSettings> loadShareSettingsByUserId(final int userId) {
+        return shareSettingsTable.getListByCriteria(new Table.BooleanCriteria<ShareSettings>() {
+            @Override
+            public boolean getCriteriaValue(ShareSettings value) {
+                return value.getUserId() == userId;
+            }
+        });
     }
 }

@@ -12,10 +12,6 @@ import java.util.Map;
  */
 public class Table<T extends BaseModel> {
 
-    public interface Criteria<T> {
-        int getCriteriaValue(T value);
-    }
-
     public interface BooleanCriteria<T> {
         boolean getCriteriaValue(T value);
     }
@@ -30,23 +26,29 @@ public class Table<T extends BaseModel> {
         return index++;
     }
 
+    public int addOrSave(T value) {
+        if (value.getId() == BaseModel.INITIAL_ID) {
+            value.setId(index);
+            map.put(index, value);
+            return index++;
+        } else {
+            map.put(index, value);
+            return index;
+        }
+    }
+
+    public void addOrSave(List<T> valueList) {
+        for (T value : valueList) {
+            addOrSave(value);
+        }
+    }
+
     public List<T> getList() {
         return new ArrayList<>(map.values());
     }
 
     public T getById(int index) {
         return map.get(index);
-    }
-
-    public List<T> getListByCriteria(int id, Criteria<T> criteria) {
-        List<T> result = new ArrayList<>();
-        List<T> list = getList();
-        for(T value : list) {
-            if (criteria.getCriteriaValue(value) == id) {
-                result.add(value);
-            }
-        }
-        return result;
     }
 
     public List<T> getListByCriteria(BooleanCriteria<T> criteria) {
@@ -69,4 +71,17 @@ public class Table<T extends BaseModel> {
             delete(value.getId());
         }
     }
+
+    public void deleteByCriteria(BooleanCriteria<T> criteria) {
+        List<T> result = new ArrayList<>();
+        List<T> list = getList();
+        for(T value : list) {
+            if (criteria.getCriteriaValue(value)) {
+                result.add(value);
+            }
+        }
+
+        deleteAll(result);
+    }
+
 }

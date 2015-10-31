@@ -5,7 +5,9 @@ package com.jzson.gotit.client.model;
  */
 public abstract class BaseModel {
 
-    private int id;
+    public static final int INITIAL_ID = -1;
+
+    private int id = INITIAL_ID;
 
     public BaseModel() {
     }
