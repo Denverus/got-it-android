@@ -12,6 +12,10 @@ import java.util.Map;
  */
 public class Table<T extends BaseModel> {
 
+    public interface AddTrigger<T> {
+        void onAdd(T model);
+    }
+
     public interface BooleanCriteria<T> {
         boolean getCriteriaValue(T value);
     }
@@ -20,17 +24,18 @@ public class Table<T extends BaseModel> {
 
     private Map<Integer, T> map = new HashMap<>();
 
+    private List<AddTrigger<T>> addTriggers = new ArrayList<>();
+
     public int add(T value) {
         value.setId(index);
         map.put(index, value);
+        callAddTrigger(value);
         return index++;
     }
 
     public int addOrSave(T value) {
         if (value.getId() == BaseModel.INITIAL_ID) {
-            value.setId(index);
-            map.put(index, value);
-            return index++;
+            return add(value);
         } else {
             map.put(index, value);
             return index;
@@ -84,4 +89,13 @@ public class Table<T extends BaseModel> {
         deleteAll(result);
     }
 
+    public void addOnAddTrigger(AddTrigger<T> addTrigger) {
+        addTriggers.add(addTrigger);
+    }
+
+    private void callAddTrigger(T model) {
+        for (AddTrigger trigger : addTriggers) {
+            trigger.onAdd(model);
+        }
+    }
 }

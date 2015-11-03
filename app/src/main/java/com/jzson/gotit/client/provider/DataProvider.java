@@ -5,8 +5,8 @@ import android.media.Image;
 import com.jzson.gotit.client.Utils;
 import com.jzson.gotit.client.model.Answer;
 import com.jzson.gotit.client.model.CheckIn;
+import com.jzson.gotit.client.model.DataItemSettings;
 import com.jzson.gotit.client.model.FollowerSettings;
-import com.jzson.gotit.client.model.GeneralSettings;
 import com.jzson.gotit.client.model.Notification;
 import com.jzson.gotit.client.model.Person;
 import com.jzson.gotit.client.model.Question;
@@ -43,15 +43,13 @@ public class DataProvider {
 
     private SubscriptionTable subscriptions = new SubscriptionTable();
 
-    private Table<GeneralSettings> generalSettingsTable = new Table<>();
-
     private Table<ShareSettings> shareSettingsTable = new Table<>();
 
     public DataProvider() {
         initializeData();
     }
 
-    private void initializeData(){
+    private void initializeData() {
         personTable.add(new Person("Emma Wilson", "user1", "", Utils.getRandomBirthDate(), true, "11232", null));
         personTable.add(new Person("Lavery Maiss", "user2", "", Utils.getRandomBirthDate(), true, "11232", null));
         personTable.add(new Person("Lillie Watts", "user3", "", Utils.getRandomBirthDate(), true, "11232", null));
@@ -59,9 +57,10 @@ public class DataProvider {
         personTable.add(new Person("Caren Wilosn", "user5", "", Utils.getRandomBirthDate(), true, "11232", null));
         personTable.add(new Person("Mike Waters", "user6", "", Utils.getRandomBirthDate(), false, null, null));
 
-        questionTable.add(new Question("What was your blood sugar level at meal time?", Answer.TYPE_INT));
-        questionTable.add(new Question("What did you eat at meal time?", Answer.TYPE_STRING));
-        questionTable.add(new Question("Did you administer insulin?", Answer.TYPE_BOOLEAN));
+        questionTable.add(new Question("What was your blood sugar level at meal time?", "Blood sugar level", Answer.TYPE_INT));
+        questionTable.add(new Question("What did you eat at meal time?", "Meal", Answer.TYPE_STRING));
+        questionTable.add(new Question("Did you administer insulin?", "Insulin administer", Answer.TYPE_BOOLEAN));
+
 
         /*feedbackTable.add(new CheckIn(0, createQuestions(10d, "Meat", false)));
         feedbackTable.add(new CheckIn(1, createQuestions(5d, "Bread", true)));
@@ -162,6 +161,7 @@ public class DataProvider {
     public void sendSubscribeRequest(int teenId, int followerId) {
         notifications.add(new Notification(Notification.SUBSCRIBE_REQUESTED, followerId, teenId));
     }
+
     public void acceptSubscribeRequest(int notificationId) {
         Notification notification = notifications.getById(notificationId);
         if (notification.getCode() == Notification.SUBSCRIBE_REQUESTED) {
@@ -173,6 +173,7 @@ public class DataProvider {
         }
         notifications.delete(notificationId);
     }
+
     public void rejectSubscribeRequest(int notificationId) {
         Notification notification = notifications.getById(notificationId);
         if (notification.getCode() == Notification.SUBSCRIBE_REQUESTED) {
@@ -247,7 +248,7 @@ public class DataProvider {
     }
 
     public List<Answer> getUserAnswerList(final int checkIn) {
-        List<Answer> answers =answerTable.getListByCriteria(new Table.BooleanCriteria<Answer>() {
+        List<Answer> answers = answerTable.getListByCriteria(new Table.BooleanCriteria<Answer>() {
             @Override
             public boolean getCriteriaValue(Answer value) {
                 return value.getCheckInId() == checkIn;
@@ -277,41 +278,92 @@ public class DataProvider {
         return questionTable.getList();
     }
 
-    public void saveGeneralSettings(GeneralSettings settings) {
-        generalSettingsTable.addOrSave(settings);
-    }
-
-    public List<GeneralSettings> loadGeneralSettingsByUserId(final int userId) {
-        return generalSettingsTable.getListByCriteria(new Table.BooleanCriteria<GeneralSettings>() {
-            @Override
-            public boolean getCriteriaValue(GeneralSettings value) {
-                return value.getUserId() == userId;
-            }
-        });
-    }
-
-    public void saveShareSettings(List<ShareSettings> settingsList) {
-        shareSettingsTable.addOrSave(settingsList);
-    }
-
-    public List<ShareSettings> loadShareSettingsByUserId(final int userId) {
-        return shareSettingsTable.getListByCriteria(new Table.BooleanCriteria<ShareSettings>() {
-            @Override
-            public boolean getCriteriaValue(ShareSettings value) {
-                return value.getUserId() == userId;
-            }
-        });
-    }
-
     public List<FollowerSettings> loadFollowerSettings(final int userId) {
         List<FollowerSettings> followerSettingList = new ArrayList<>();
+
         List<Person> list = personTable.getList();
-        for (Person person : list) {
+        for (final Person person : list) {
+
+            List<ShareSettings> userSharingSettings = shareSettingsTable.getListByCriteria(new Table.BooleanCriteria<ShareSettings>() {
+                @Override
+                public boolean getCriteriaValue(ShareSettings value) {
+                    return value.getUserId() == userId && value.getFollowerId() == person.getId();
+                }
+            });
+
             FollowerSettings followerSettings = new FollowerSettings();
             followerSettings.setName(person.getName());
+            followerSettings.setFollowerId(person.getId());
+
+            if (userSharingSettings.size() >= questionTable.getList().size()) {
+                followerSettings.setEnableSharing(false);
+            } else {
+                followerSettings.setEnableSharing(true);
+            }
+
             followerSettingList.add(followerSettings);
         }
 
         return followerSettingList;
+    }
+
+    public void enableFollowerSharing(final int userId, final int followerId, boolean doShare) {
+        if (doShare) {
+            List<ShareSettings> shareList = shareSettingsTable.getListByCriteria(new Table.BooleanCriteria<ShareSettings>() {
+                @Override
+                public boolean getCriteriaValue(ShareSettings value) {
+                    return value.getUserId() == userId && value.getFollowerId() == followerId;
+                }
+            });
+            shareSettingsTable.deleteAll(shareList);
+        } else {
+            List<Question> questions = questionTable.getList();
+            for (Question question : questions) {
+                ShareSettings shareSettings = new ShareSettings();
+                shareSettings.setFollowerId(followerId);
+                shareSettings.setUserId(userId);
+                shareSettings.setAllowedQuestionId(question.getId());
+                shareSettingsTable.add(shareSettings);
+            }
+        }
+    }
+
+    public List<DataItemSettings> loadSingleFollowerSettings(final int userId, final int followerId) {
+        List<DataItemSettings> resultsList = new ArrayList<>();
+
+        for (final Question question : questionTable.getList()) {
+            List<ShareSettings> list = shareSettingsTable.getListByCriteria(new Table.BooleanCriteria<ShareSettings>() {
+                @Override
+                public boolean getCriteriaValue(ShareSettings value) {
+                    return value.getUserId() == userId && value.getFollowerId() == followerId && value.getAllowedQuestionId()==question.getId();
+                }
+            });
+
+            DataItemSettings followerSettings = new DataItemSettings();
+            followerSettings.setData(question.getShortName());
+            followerSettings.setQuestionId(followerSettings.getQuestionId());
+            followerSettings.setEnableShare(list.isEmpty());
+            resultsList.add(followerSettings);
+        }
+
+        return resultsList;
+    }
+
+    public void saveSingleFollowerSettings(final int userId, final int followerId, final int questionId, final boolean doShare) {
+        if (doShare) {
+            List<ShareSettings> shareList = shareSettingsTable.getListByCriteria(new Table.BooleanCriteria<ShareSettings>() {
+                @Override
+                public boolean getCriteriaValue(ShareSettings value) {
+                    return value.getUserId() == userId && value.getFollowerId() == followerId && value.getAllowedQuestionId()==questionId;
+                }
+            });
+            shareSettingsTable.deleteAll(shareList);
+        } else {
+            ShareSettings shareSettings = new ShareSettings();
+            shareSettings.setFollowerId(followerId);
+            shareSettings.setUserId(userId);
+            shareSettings.setAllowedQuestionId(questionId);
+            shareSettingsTable.add(shareSettings);
+        }
     }
 }

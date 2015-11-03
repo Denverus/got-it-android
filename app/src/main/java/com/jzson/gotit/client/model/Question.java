@@ -6,10 +6,12 @@ package com.jzson.gotit.client.model;
 public class Question extends BaseModel {
 
     private String question;
+    private String shortName;
     private int answerType;
 
-    public Question(String question, int answerType) {
+    public Question(String question, String shortName, int answerType) {
         this.question = question;
+        this.shortName = shortName;
         this.answerType = answerType;
     }
 
@@ -30,5 +32,13 @@ public class Question extends BaseModel {
 
     public void setAnswerType(int answerType) {
         this.answerType = answerType;
+    }
+
+    public String getShortName() {
+        return shortName;
+    }
+
+    public void setShortName(String shortName) {
+        this.shortName = shortName;
     }
 }

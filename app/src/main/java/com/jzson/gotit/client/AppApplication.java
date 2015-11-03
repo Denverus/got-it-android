@@ -17,6 +17,7 @@ public class AppApplication extends Application {
     private Integer checkIn = null;
     private int userId = 5;
     private List<Question> questionList;
+    private int followerId;
 
     @Override
     public void onCreate() {
@@ -67,6 +68,14 @@ public class AppApplication extends Application {
 
     public void setQuestionList(List<Question> questionList) {
         this.questionList = questionList;
+    }
+
+    public int getFollowerId() {
+        return followerId;
+    }
+
+    public void setFollowerId(int followerId) {
+        this.followerId = followerId;
     }
 }
 

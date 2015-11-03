@@ -11,7 +11,7 @@ public class FollowerSettings extends BaseModel {
 
     private int followerId;
 
-    private List<DataItemSettings> dataShareSettings;
+    private boolean enableSharing;
 
     public String getName() {
         return name;
@@ -21,19 +21,19 @@ public class FollowerSettings extends BaseModel {
         this.name = name;
     }
 
-    public List<DataItemSettings> getDataShareSettings() {
-        return dataShareSettings;
-    }
-
-    public void setDataShareSettings(List<DataItemSettings> dataShareSettings) {
-        this.dataShareSettings = dataShareSettings;
-    }
-
     public int getFollowerId() {
         return followerId;
     }
 
     public void setFollowerId(int followerId) {
         this.followerId = followerId;
+    }
+
+    public boolean isEnableSharing() {
+        return enableSharing;
+    }
+
+    public void setEnableSharing(boolean enableSharing) {
+        this.enableSharing = enableSharing;
     }
 }
