@@ -1,5 +1,7 @@
 package com.jzson.gotit.client.fragments;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -18,6 +20,7 @@ import com.jzson.gotit.client.AppApplication;
 import com.jzson.gotit.client.R;
 import com.jzson.gotit.client.adapter.SettingsFollowerListAdapter;
 import com.jzson.gotit.client.adapter.base.BaseListAdapter;
+import com.jzson.gotit.client.animation.AnimationFactory;
 import com.jzson.gotit.client.databinding.FragmentShareSettingsBinding;
 import com.jzson.gotit.client.databinding.FragmentTeenProfileBinding;
 import com.jzson.gotit.client.model.FollowerSettings;
@@ -62,24 +65,33 @@ public class ShareSettingsFragment extends Fragment implements BaseListAdapter.D
         mAdapter.setDataUpdateListener(this);
         mAdapter.refreshData();
 
-        int userId = AppApplication.getContext().getUserId();
+        final int userId = AppApplication.getContext().getUserId();
 
-        List<FollowerSettings> shareSettings = DataProvider.getInstance().loadFollowerSettings(userId);
+        boolean isSharingEnabled = DataProvider.getInstance().isSharingEnabled(userId);
+        settingsSwitch.setChecked(isSharingEnabled);
+        showFollowerList(isSharingEnabled);
 
         settingsSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    mRecyclerView.animate().translationY(0);
-                } else {
-                    mRecyclerView.animate().translationY(-mRecyclerView.getHeight());
-                }
+                showFollowerList(isChecked);
+
+                DataProvider.getInstance().setSharingEnabled(userId, isChecked);
             }
         });
 
-        settingsSwitch.setChecked(!shareSettings.isEmpty());
-
         return rootView;
+    }
+
+    private void showFollowerList(boolean isChecked) {
+        if (isChecked) {
+            mRecyclerView.setY(-mRecyclerView.getHeight());
+            mRecyclerView.animate().translationY(0).start();
+        } else {
+            mRecyclerView.setY(0);
+            mRecyclerView.animate()
+                    .translationY(-mRecyclerView.getHeight()).start();
+        }
     }
 
     @Override

@@ -7,6 +7,7 @@ import com.jzson.gotit.client.model.Answer;
 import com.jzson.gotit.client.model.CheckIn;
 import com.jzson.gotit.client.model.DataItemSettings;
 import com.jzson.gotit.client.model.FollowerSettings;
+import com.jzson.gotit.client.model.GeneralSettings;
 import com.jzson.gotit.client.model.Notification;
 import com.jzson.gotit.client.model.Person;
 import com.jzson.gotit.client.model.Question;
@@ -44,6 +45,8 @@ public class DataProvider {
     private SubscriptionTable subscriptions = new SubscriptionTable();
 
     private Table<ShareSettings> shareSettingsTable = new Table<>();
+
+    private Table<GeneralSettings> generalSettingsTable = new Table<>();
 
     public DataProvider() {
         initializeData();
@@ -341,7 +344,7 @@ public class DataProvider {
 
             DataItemSettings followerSettings = new DataItemSettings();
             followerSettings.setData(question.getShortName());
-            followerSettings.setQuestionId(followerSettings.getQuestionId());
+            followerSettings.setQuestionId(question.getId());
             followerSettings.setEnableShare(list.isEmpty());
             resultsList.add(followerSettings);
         }
@@ -364,6 +367,35 @@ public class DataProvider {
             shareSettings.setUserId(userId);
             shareSettings.setAllowedQuestionId(questionId);
             shareSettingsTable.add(shareSettings);
+        }
+    }
+
+    public boolean isSharingEnabled(final int userId) {
+        List<GeneralSettings> list = generalSettingsTable.getListByCriteria(new Table.BooleanCriteria<GeneralSettings>() {
+            @Override
+            public boolean getCriteriaValue(GeneralSettings value) {
+                return value.getUserId() == userId && value.getKey() == GeneralSettings.ENABLE_SHARING;
+            }
+        });
+
+        return list.isEmpty();
+    }
+
+    public void setSharingEnabled(final int userId, final boolean enableSharing) {
+        List<GeneralSettings> list = generalSettingsTable.getListByCriteria(new Table.BooleanCriteria<GeneralSettings>() {
+            @Override
+            public boolean getCriteriaValue(GeneralSettings value) {
+                return value.getUserId() == userId && value.getKey() == GeneralSettings.ENABLE_SHARING;
+            }
+        });
+
+        if (enableSharing) {
+            if (!list.isEmpty()) {
+                generalSettingsTable.delete(list.get(0).getId());
+            }
+        } else {
+            GeneralSettings generalSettings = new GeneralSettings(userId, GeneralSettings.ENABLE_SHARING, "false");
+            generalSettingsTable.add(generalSettings);
         }
     }
 }
