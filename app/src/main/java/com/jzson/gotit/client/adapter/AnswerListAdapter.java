@@ -39,7 +39,7 @@ public class AnswerListAdapter extends BaseListAdapter<Answer, AnswerListAdapter
 
     @Override
     protected List<Answer> onRefresh() {
-        return DataProvider.getInstance().getUserAnswerList(AppApplication.getContext().getCheckIn());
+        return AppApplication.getContext().getAnswerList();
     }
 
     @Override

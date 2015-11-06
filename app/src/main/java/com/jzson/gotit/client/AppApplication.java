@@ -3,6 +3,7 @@ package com.jzson.gotit.client;
 import android.app.Application;
 import android.support.v4.app.Fragment;
 
+import com.jzson.gotit.client.model.Answer;
 import com.jzson.gotit.client.model.CheckIn;
 import com.jzson.gotit.client.model.Person;
 import com.jzson.gotit.client.model.Question;
@@ -18,6 +19,7 @@ public class AppApplication extends Application {
     private int userId = 5;
     private List<Question> questionList;
     private int followerId;
+    private List<Answer> answerList;
 
     @Override
     public void onCreate() {
@@ -76,6 +78,14 @@ public class AppApplication extends Application {
 
     public void setFollowerId(int followerId) {
         this.followerId = followerId;
+    }
+
+    public void setAnswerList(List<Answer> answerList) {
+        this.answerList = answerList;
+    }
+
+    public List<Answer> getAnswerList() {
+        return answerList;
     }
 }
 

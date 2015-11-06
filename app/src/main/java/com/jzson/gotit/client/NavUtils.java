@@ -15,6 +15,7 @@ import com.jzson.gotit.client.fragments.SettingsFragment;
 import com.jzson.gotit.client.fragments.SingleFollowerSettingsFragment;
 import com.jzson.gotit.client.fragments.ShareSettingsFragment;
 import com.jzson.gotit.client.fragments.TeenListFragment;
+import com.jzson.gotit.client.model.Answer;
 import com.jzson.gotit.client.model.FollowerSettings;
 import com.jzson.gotit.client.model.Question;
 import com.jzson.gotit.client.provider.DataProvider;
@@ -64,8 +65,8 @@ public class NavUtils {
         showFragmentInMainActivity(context, new NotificationListFragment());
     }
 
-    public static void showAnswerListFragment(Context context, int checkIn) {
-        AppApplication.getContext().setCheckIn(checkIn);
+    public static void showAnswerListFragment(Context context, List<Answer> answerList) {
+        AppApplication.getContext().setAnswerList(answerList);
         showFragmentInMainActivity(context, new AnswerListFragment());
     }
 

@@ -48,7 +48,7 @@ public class TeenListAdapter extends BaseListAdapter<Person, TeenListAdapter.Tee
 
     @Override
     protected List<Person> onRefresh() {
-        return DataProvider.getInstance().getTeens();
+        return DataProvider.getInstance().getTeens(AppApplication.getContext().getUserId());
     }
 
     @Override

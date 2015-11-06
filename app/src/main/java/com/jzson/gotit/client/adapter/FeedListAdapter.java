@@ -30,7 +30,7 @@ public class FeedListAdapter extends BaseListAdapter<UserFeed, FeedListAdapter.F
 
     @Override
     protected void onItemClick(Context context, UserFeed model) {
-        NavUtils.showAnswerListFragment(context, model.getCheckIn().getId());
+        NavUtils.showAnswerListFragment(context, model.getCheckIn().getAnswers());
     }
 
     @Override

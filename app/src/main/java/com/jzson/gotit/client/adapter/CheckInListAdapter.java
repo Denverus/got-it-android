@@ -27,7 +27,7 @@ public class CheckInListAdapter extends BaseListAdapter<CheckIn, CheckInListAdap
 
     @Override
     protected void onItemClick(Context context, CheckIn model) {
-        NavUtils.showAnswerListFragment(context, model.getId());
+        NavUtils.showAnswerListFragment(context, model.getAnswers());
     }
 
     @Override

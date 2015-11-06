@@ -89,25 +89,40 @@ public class DataProvider {
         return personTable.getById(id);
     }
 
-    public List<Person> getPersons() {
-        return personTable.getList();
-    }
-
-    public List<Person> getTeens() {
-        return personTable.getTeens();
+    public List<Person> getTeens(final int userId) {
+        return personTable.getListByCriteria(new Table.BooleanCriteria<Person>() {
+            @Override
+            public boolean getCriteriaValue(Person value) {
+                return value.getId() != userId && value.isHasDiabetes();
+            }
+        });
     }
 
     public List<CheckIn> getFeedback() {
         return feedbackTable.getList();
     }
 
-    public List<UserFeed> getUserFeeds(int personId) {
+    public List<UserFeed> getUserFeeds(final int followerId) {
         List<UserFeed> userFeeds = new ArrayList<>();
 
-        List<Subscription> list = subscriptions.getSubscriptionByPersonId(personId);
+        List<Subscription> list = subscriptions.getSubscriptionByPersonId(followerId);
         for (Subscription subscription : list) {
             final int teenId = subscription.getSubscribedTo();
-            Person person = personTable.getById(teenId);
+            final Person teen = personTable.getById(teenId);
+
+            // Check sharing settings
+            List<GeneralSettings> enableSharing = generalSettingsTable.getListByCriteria(new Table.BooleanCriteria<GeneralSettings>() {
+                @Override
+                public boolean getCriteriaValue(GeneralSettings value) {
+                    return value.getUserId() == teenId && value.getKey() == GeneralSettings.ENABLE_SHARING;
+                }
+            });
+
+            if (!enableSharing.isEmpty()) {
+                // Teen doesn't allow sharing his info
+                continue;
+            }
+
             List<CheckIn> checkInList = checkInTable.getListByCriteria(new Table.BooleanCriteria<CheckIn>() {
                 @Override
                 public boolean getCriteriaValue(CheckIn value) {
@@ -115,18 +130,50 @@ public class DataProvider {
                 }
             });
             for (CheckIn checkIn : checkInList) {
-                UserFeed userFeed = new UserFeed(person, checkIn);
-                userFeeds.add(userFeed);
+                List<ShareSettings> shareSettings = shareSettingsTable.getListByCriteria(new Table.BooleanCriteria<ShareSettings>() {
+                    @Override
+                    public boolean getCriteriaValue(ShareSettings value) {
+                        return value.getUserId() == teen.getId() && value.getFollowerId() == followerId;
+                    }
+                });
+
+                if (shareSettings.isEmpty()) {
+                    UserFeed userFeed = new UserFeed(teen, checkIn);
+                    userFeeds.add(userFeed);
+                } else {
+                    List<Answer> allowedAnswers = new ArrayList<>();
+                    List<Answer> answers = checkIn.getAnswers();
+
+                    for (Answer answer : answers) {
+                        boolean allowSharing = true;
+                        for (ShareSettings settings : shareSettings) {
+                            if (settings.getAllowedQuestionId() == answer.getQuestionId()) {
+                                allowSharing = false;
+                            }
+                        }
+
+                        Question question = questionTable.getById(answer.getQuestionId());
+                        answer.setQuestion(question.getQuestion());
+
+                        if (allowSharing) {
+                            allowedAnswers.add(answer);
+                        }
+                    }
+
+                    CheckIn sharedCheckIn = new CheckIn();
+                    sharedCheckIn.setId(checkIn.getId());
+                    sharedCheckIn.setPersonId(checkIn.getPersonId());
+                    sharedCheckIn.setCreated(checkIn.getCreated());
+                    sharedCheckIn.setAnswers(allowedAnswers);
+
+                    UserFeed userFeed = new UserFeed(teen, sharedCheckIn);
+                    userFeeds.add(userFeed);
+                }
             }
         }
 
         return userFeeds;
     }
-
-    public List<Notification> getNotifications() {
-        return notifications.getList();
-    }
-
 
     public List<Notification> getNotificationsByUserId(final int id) {
         return notifications.getListByCriteria(new Table.BooleanCriteria<Notification>() {
@@ -248,22 +295,6 @@ public class DataProvider {
     public void registerUser(String fullName, Date dateBirth, String login, String password, boolean hasDiabetes, String medicalRecordNumber, Image photo) {
         Person person = new Person(fullName, login, password, dateBirth, hasDiabetes, medicalRecordNumber, photo);
         personTable.add(person);
-    }
-
-    public List<Answer> getUserAnswerList(final int checkIn) {
-        List<Answer> answers = answerTable.getListByCriteria(new Table.BooleanCriteria<Answer>() {
-            @Override
-            public boolean getCriteriaValue(Answer value) {
-                return value.getCheckInId() == checkIn;
-            }
-        });
-
-        for (Answer answer : answers) {
-            Question question = questionTable.getById(answer.getQuestionId());
-            answer.setQuestion(question.getQuestion());
-        }
-
-        return answers;
     }
 
     public void saveAnswer(int userId, List<Answer> answerList) {
