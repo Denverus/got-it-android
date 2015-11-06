@@ -39,6 +39,7 @@ public class ShareSettingsFragment extends Fragment implements BaseListAdapter.D
     private BaseListAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
+    private final int userId = AppApplication.getContext().getUserId();
 
     public ShareSettingsFragment() {
 
@@ -65,11 +66,29 @@ public class ShareSettingsFragment extends Fragment implements BaseListAdapter.D
         mAdapter.setDataUpdateListener(this);
         mAdapter.refreshData();
 
-        final int userId = AppApplication.getContext().getUserId();
+        mRecyclerView.animate().setListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+
+
+            }
+        });
 
         boolean isSharingEnabled = DataProvider.getInstance().isSharingEnabled(userId);
         settingsSwitch.setChecked(isSharingEnabled);
-        showFollowerList(isSharingEnabled);
+
+        mRecyclerView.setVisibility(isSharingEnabled ? View.VISIBLE : View.GONE);
+
+        mRecyclerView.animate().setListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                if (!settingsSwitch.isChecked()) {
+                    mRecyclerView.setVisibility(View.GONE);
+                }
+            }
+        });
 
         settingsSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -85,10 +104,11 @@ public class ShareSettingsFragment extends Fragment implements BaseListAdapter.D
 
     private void showFollowerList(boolean isChecked) {
         if (isChecked) {
-            mRecyclerView.setY(-mRecyclerView.getHeight());
+            mRecyclerView.setTranslationY(-mRecyclerView.getHeight());
+            mRecyclerView.setVisibility(View.VISIBLE);
             mRecyclerView.animate().translationY(0).start();
         } else {
-            mRecyclerView.setY(0);
+            mRecyclerView.setTranslationY(0);
             mRecyclerView.animate()
                     .translationY(-mRecyclerView.getHeight()).start();
         }
@@ -97,6 +117,8 @@ public class ShareSettingsFragment extends Fragment implements BaseListAdapter.D
     @Override
     public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        boolean isSharingEnabled = DataProvider.getInstance().isSharingEnabled(userId);
+        showFollowerList(isSharingEnabled);
     }
 
     @Override
