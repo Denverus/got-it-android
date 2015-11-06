@@ -6,6 +6,9 @@ package com.jzson.gotit.client.model;
 public class GeneralSettings extends BaseModel {
 
     public static final String ENABLE_SHARING = "enable sharing";
+    public static final String ALERT_1 = "alert_1";
+    public static final String ALERT_2 = "alert_2";
+    public static final String ALERT_3 = "alert_3";
 
     private String key;
 

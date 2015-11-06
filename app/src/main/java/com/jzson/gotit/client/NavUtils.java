@@ -10,6 +10,8 @@ import com.jzson.gotit.client.fragments.CheckInListFragment;
 import com.jzson.gotit.client.fragments.FollowerListFragment;
 import com.jzson.gotit.client.fragments.CreateCheckInFragment;
 import com.jzson.gotit.client.fragments.NotificationListFragment;
+import com.jzson.gotit.client.fragments.NotificationSettingsFragment;
+import com.jzson.gotit.client.fragments.SettingsFragment;
 import com.jzson.gotit.client.fragments.SingleFollowerSettingsFragment;
 import com.jzson.gotit.client.fragments.ShareSettingsFragment;
 import com.jzson.gotit.client.fragments.TeenListFragment;
@@ -68,7 +70,15 @@ public class NavUtils {
     }
 
     public static void showSettings(Context context) {
+        showFragmentInMainActivity(context, new SettingsFragment());
+    }
+
+    public static void showShareSettings(Context context) {
         showFragmentInMainActivity(context, new ShareSettingsFragment());
+    }
+
+    public static void showNotificationSettings(Context context) {
+        showFragmentInMainActivity(context, new NotificationSettingsFragment());
     }
 
     public static void showSingleFollowerSettings(Context context, FollowerSettings model) {

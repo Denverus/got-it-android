@@ -398,4 +398,42 @@ public class DataProvider {
             generalSettingsTable.add(generalSettings);
         }
     }
+
+    public String loadGeneralSettings(final int userId, final String settingsKey) {
+        List<GeneralSettings> list = generalSettingsTable.getListByCriteria(new Table.BooleanCriteria<GeneralSettings>() {
+            @Override
+            public boolean getCriteriaValue(GeneralSettings value) {
+                return value.getUserId() == userId && value.getKey() == settingsKey;
+            }
+        });
+
+        if (list.isEmpty()) {
+            return null;
+        } else {
+            return list.get(0).getValue();
+        }
+    }
+
+    public void saveGeneralSettings(final int userId, final String settingsKey, String settingsValue) {
+        List<GeneralSettings> list = generalSettingsTable.getListByCriteria(new Table.BooleanCriteria<GeneralSettings>() {
+            @Override
+            public boolean getCriteriaValue(GeneralSettings value) {
+                return value.getUserId() == userId && value.getKey() == settingsKey;
+            }
+        });
+
+        if (list.isEmpty()) {
+            if (settingsValue != null) {
+                GeneralSettings generalSettings = new GeneralSettings(userId, settingsKey, settingsValue);
+                generalSettingsTable.add(generalSettings);
+            }
+        } else {
+            GeneralSettings generalSettings = list.get(0);
+            if (settingsValue != null) {
+                generalSettings.setValue(settingsValue);
+            } else {
+                generalSettingsTable.deleteAll(list);
+            }
+        }
+    }
 }
