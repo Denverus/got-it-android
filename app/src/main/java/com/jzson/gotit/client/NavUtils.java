@@ -10,7 +10,7 @@ import com.jzson.gotit.client.fragments.CheckInListFragment;
 import com.jzson.gotit.client.fragments.FollowerListFragment;
 import com.jzson.gotit.client.fragments.CreateCheckInFragment;
 import com.jzson.gotit.client.fragments.NotificationListFragment;
-import com.jzson.gotit.client.fragments.NotificationSettingsFragment;
+import com.jzson.gotit.client.fragments.AlertSettingsFragment;
 import com.jzson.gotit.client.fragments.SettingsFragment;
 import com.jzson.gotit.client.fragments.SingleFollowerSettingsFragment;
 import com.jzson.gotit.client.fragments.ShareSettingsFragment;
@@ -79,7 +79,7 @@ public class NavUtils {
     }
 
     public static void showNotificationSettings(Context context) {
-        showFragmentInMainActivity(context, new NotificationSettingsFragment());
+        showFragmentInMainActivity(context, new AlertSettingsFragment());
     }
 
     public static void showSingleFollowerSettings(Context context, FollowerSettings model) {

@@ -34,7 +34,7 @@
                         android:textSize="20sp" />
 
                     <Switch
-                        android:id="@+id/notification_switch_general"
+                        android:id="@+id/alert_switch_general"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
@@ -49,7 +49,7 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/notification1_time"
+                        android:id="@+id/alert1_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
@@ -57,7 +57,7 @@
                         android:textSize="20sp" />
 
                     <Switch
-                        android:id="@+id/notification1_switch"
+                        android:id="@+id/alert1_switch"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
@@ -74,7 +74,7 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/notification2_time"
+                        android:id="@+id/alert2_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
@@ -82,7 +82,7 @@
                         android:textSize="20sp" />
 
                     <Switch
-                        android:id="@+id/notification2_switch"
+                        android:id="@+id/alert2_switch"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
@@ -99,7 +99,7 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/notification3_time"
+                        android:id="@+id/alert3_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
@@ -107,7 +107,7 @@
                         android:textSize="20sp" />
 
                     <Switch
-                        android:id="@+id/notification3_switch"
+                        android:id="@+id/alert3_switch"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"

@@ -19,9 +19,9 @@ import com.jzson.gotit.client.model.GeneralSettings;
 import com.jzson.gotit.client.provider.DataProvider;
 
 import java.util.Calendar;
-import java.util.Date;
+import java.util.List;
 
-public class NotificationSettingsFragment extends Fragment {
+public class AlertSettingsFragment extends Fragment {
 
     private static final String NONE_TEXT = "None";
     private View.OnClickListener timeChangeListener = new View.OnClickListener() {
@@ -37,7 +37,7 @@ public class NotificationSettingsFragment extends Fragment {
         int hour = mCurrentTime.get(Calendar.HOUR_OF_DAY);
         int minute = mCurrentTime.get(Calendar.MINUTE);
         TimePickerDialog mTimePicker;
-        mTimePicker = new TimePickerDialog(NotificationSettingsFragment.this.getContext(), new TimePickerDialog.OnTimeSetListener() {
+        mTimePicker = new TimePickerDialog(AlertSettingsFragment.this.getContext(), new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
                 String value = selectedHour + ":" + selectedMinute;
@@ -46,9 +46,11 @@ public class NotificationSettingsFragment extends Fragment {
 
                 Integer index = getTextViewIndexFromId(textView.getId());
 
-                String key = alertKey[index];
+                if (!generalSwitch.isChecked()) {
+                    generalSwitch.setChecked(true);
+                }
 
-                DataProvider.getInstance().saveGeneralSettings(userId, key, value);
+                DataProvider.getInstance().saveGeneralSettings(userId, alertKey[index], value);
             }
         }, hour, minute, true);//Yes 24 hour time
         mTimePicker.setTitle("Select Time");
@@ -89,13 +91,17 @@ public class NotificationSettingsFragment extends Fragment {
 
             if (isChecked) {
                 showTimePickerDialog(getTextViewByIndex(index));
+            } else {
+                DataProvider.getInstance().saveGeneralSettings(userId, alertKey[index], null);
             }
         }
     };
 
-    private int[] textViews = {R.id.notification1_time, R.id.notification2_time, R.id.notification3_time};
+    private  Switch generalSwitch;
 
-    private int[] switches = {R.id.notification1_switch, R.id.notification2_switch, R.id.notification3_switch};
+    private int[] textViews = {R.id.alert1_time, R.id.alert2_time, R.id.alert3_time};
+
+    private int[] switches = {R.id.alert1_switch, R.id.alert2_switch, R.id.alert3_switch};
 
     private String[] alertKey = {GeneralSettings.ALERT_1, GeneralSettings.ALERT_2, GeneralSettings.ALERT_3};
 
@@ -103,16 +109,16 @@ public class NotificationSettingsFragment extends Fragment {
 
     private View rootView;
 
-    public NotificationSettingsFragment() {
+    public AlertSettingsFragment() {
 
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.fragment_settings_notification , container, false);
+        rootView = inflater.inflate(R.layout.fragment_settings_alert, container, false);
 
-        final Switch generalSwitch = (Switch) rootView.findViewById(R.id.notification_switch_general);
+        generalSwitch = (Switch) rootView.findViewById(R.id.alert_switch_general);
 
         generalSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -130,9 +136,11 @@ public class NotificationSettingsFragment extends Fragment {
             }
         });
 
+        List<GeneralSettings> settingsList = DataProvider.getInstance().loadGeneralSettingsList(userId, alertKey);
+
         boolean notificationEnabled = false;
         for (int i=0; i<alertKey.length; i++) {
-            String time = DataProvider.getInstance().loadGeneralSettings(userId, alertKey[i]);
+            String time = settingsList.get(i).getValue();
             if (time != null) {
                 getTextViewByIndex(i).setText(time);
                 getTextViewByIndex(i).setEnabled(true);

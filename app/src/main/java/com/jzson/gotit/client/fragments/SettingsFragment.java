@@ -8,16 +8,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.jzson.gotit.client.AppApplication;
 import com.jzson.gotit.client.NavUtils;
 import com.jzson.gotit.client.R;
 import com.jzson.gotit.client.databinding.FragmentTeenProfileBinding;
+import com.jzson.gotit.client.model.GeneralSettings;
+import com.jzson.gotit.client.provider.DataProvider;
+
+import java.util.List;
 
 /**
  * A placeholder fragment containing a simple view.
  */
 public class SettingsFragment extends Fragment {
 
-    FragmentTeenProfileBinding bind;
+    private String[] alertKey = {GeneralSettings.ALERT_1, GeneralSettings.ALERT_2, GeneralSettings.ALERT_3};
 
     public SettingsFragment() {
 
@@ -30,8 +35,8 @@ public class SettingsFragment extends Fragment {
 
         TextView sharingSettings = (TextView) rootView.findViewById(R.id.settings_share);
         TextView sharingStatusSettings = (TextView) rootView.findViewById(R.id.settings_share_status);
-        TextView notificationSettings = (TextView) rootView.findViewById(R.id.settings_notification);
-        TextView notificationStatusSettings = (TextView) rootView.findViewById(R.id.settings_notification_status);
+        TextView alertSettings = (TextView) rootView.findViewById(R.id.settings_notification);
+        TextView alertStatusSettings = (TextView) rootView.findViewById(R.id.settings_notification_status);
 
         sharingSettings.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -40,12 +45,27 @@ public class SettingsFragment extends Fragment {
             }
         });
 
-        notificationSettings.setOnClickListener(new View.OnClickListener() {
+        alertSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 NavUtils.showNotificationSettings(getActivity());
             }
         });
+
+        int userId = AppApplication.getContext().getUserId();
+
+        boolean sharingEnabled = DataProvider.getInstance().isSharingEnabled(userId);
+        sharingStatusSettings.setText(sharingEnabled ? "Enabled" : "Disabled");
+
+        List<GeneralSettings> settingsList = DataProvider.getInstance().loadGeneralSettingsList(userId, alertKey);
+        StringBuilder sb = new StringBuilder();
+        for (GeneralSettings settings : settingsList) {
+            if (settings.getValue() != null) {
+                sb.append(settings.getValue());
+                sb.append(" ");
+            }
+        }
+        alertStatusSettings.setText(sb.toString().isEmpty() ? "No alerts" : sb.toString());
 
         return rootView;
     }

@@ -16,6 +16,8 @@ import com.jzson.gotit.client.model.Subscription;
 import com.jzson.gotit.client.model.UserFeed;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -53,6 +55,16 @@ public class DataProvider {
     }
 
     private void initializeData() {
+        personTable.addOnAddTrigger(new Table.AddTrigger<Person>() {
+            @Override
+            public void onAdd(Person model) {
+                generalSettingsTable.add(new GeneralSettings(model.getId(), GeneralSettings.ENABLE_SHARING, "true"));
+                generalSettingsTable.add(new GeneralSettings(model.getId(), GeneralSettings.ALERT_1, "9:00"));
+                generalSettingsTable.add(new GeneralSettings(model.getId(), GeneralSettings.ALERT_2, "12:00"));
+                generalSettingsTable.add(new GeneralSettings(model.getId(), GeneralSettings.ALERT_3, "18:00"));
+            }
+        });
+
         personTable.add(new Person("Emma Wilson", "user1", "", Utils.getRandomBirthDate(), true, "11232", null));
         personTable.add(new Person("Lavery Maiss", "user2", "", Utils.getRandomBirthDate(), true, "11232", null));
         personTable.add(new Person("Lillie Watts", "user3", "", Utils.getRandomBirthDate(), true, "11232", null));
@@ -321,7 +333,7 @@ public class DataProvider {
             List<ShareSettings> userSharingSettings = shareSettingsTable.getListByCriteria(new Table.BooleanCriteria<ShareSettings>() {
                 @Override
                 public boolean getCriteriaValue(ShareSettings value) {
-                    return value.getUserId() == userId && value.getFollowerId() == person.getId();
+                    return value.getUserId() == userId && value.getFollowerId() == person.getId() && value.getFollowerId() != userId;
                 }
             });
 
@@ -369,7 +381,7 @@ public class DataProvider {
             List<ShareSettings> list = shareSettingsTable.getListByCriteria(new Table.BooleanCriteria<ShareSettings>() {
                 @Override
                 public boolean getCriteriaValue(ShareSettings value) {
-                    return value.getUserId() == userId && value.getFollowerId() == followerId && value.getAllowedQuestionId()==question.getId();
+                    return value.getUserId() == userId && value.getFollowerId() == followerId && value.getAllowedQuestionId() == question.getId();
                 }
             });
 
@@ -388,7 +400,7 @@ public class DataProvider {
             List<ShareSettings> shareList = shareSettingsTable.getListByCriteria(new Table.BooleanCriteria<ShareSettings>() {
                 @Override
                 public boolean getCriteriaValue(ShareSettings value) {
-                    return value.getUserId() == userId && value.getFollowerId() == followerId && value.getAllowedQuestionId()==questionId;
+                    return value.getUserId() == userId && value.getFollowerId() == followerId && value.getAllowedQuestionId() == questionId;
                 }
             });
             shareSettingsTable.deleteAll(shareList);
@@ -409,7 +421,7 @@ public class DataProvider {
             }
         });
 
-        return list.isEmpty();
+        return list.isEmpty() ? false : Boolean.parseBoolean(list.get(0).getValue());
     }
 
     public void setSharingEnabled(final int userId, final boolean enableSharing) {
@@ -420,14 +432,7 @@ public class DataProvider {
             }
         });
 
-        if (enableSharing) {
-            if (!list.isEmpty()) {
-                generalSettingsTable.delete(list.get(0).getId());
-            }
-        } else {
-            GeneralSettings generalSettings = new GeneralSettings(userId, GeneralSettings.ENABLE_SHARING, "false");
-            generalSettingsTable.add(generalSettings);
-        }
+        list.get(0).setValue(Boolean.toString(enableSharing));
     }
 
     public String loadGeneralSettings(final int userId, final String settingsKey) {
@@ -445,26 +450,37 @@ public class DataProvider {
         }
     }
 
+    public List<GeneralSettings> loadGeneralSettingsList(final int userId, final String[] settingsKeyList) {
+        List<GeneralSettings> list = generalSettingsTable.getListByCriteria(new Table.BooleanCriteria<GeneralSettings>() {
+            @Override
+            public boolean getCriteriaValue(GeneralSettings value) {
+                for (String key : settingsKeyList) {
+                    if (value.getUserId() == userId && value.getKey().equals(key)) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
+
+        Collections.sort(list, new Comparator<GeneralSettings>() {
+            @Override
+            public int compare(GeneralSettings lhs, GeneralSettings rhs) {
+                return lhs.getKey().compareTo(rhs.getKey());
+            }
+        });
+
+        return list;
+    }
+
     public void saveGeneralSettings(final int userId, final String settingsKey, String settingsValue) {
         List<GeneralSettings> list = generalSettingsTable.getListByCriteria(new Table.BooleanCriteria<GeneralSettings>() {
             @Override
             public boolean getCriteriaValue(GeneralSettings value) {
-                return value.getUserId() == userId && value.getKey() == settingsKey;
+                return value.getUserId() == userId && value.getKey().equals(settingsKey);
             }
         });
 
-        if (list.isEmpty()) {
-            if (settingsValue != null) {
-                GeneralSettings generalSettings = new GeneralSettings(userId, settingsKey, settingsValue);
-                generalSettingsTable.add(generalSettings);
-            }
-        } else {
-            GeneralSettings generalSettings = list.get(0);
-            if (settingsValue != null) {
-                generalSettings.setValue(settingsValue);
-            } else {
-                generalSettingsTable.deleteAll(list);
-            }
-        }
+        list.get(0).setValue(settingsValue);
     }
 }
