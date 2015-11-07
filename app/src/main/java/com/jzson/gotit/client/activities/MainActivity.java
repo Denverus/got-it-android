@@ -19,7 +19,10 @@ import com.jzson.gotit.client.AppApplication;
 import com.jzson.gotit.client.NavUtils;
 import com.jzson.gotit.client.NavigationViewManager;
 import com.jzson.gotit.client.R;
+import com.jzson.gotit.client.fragments.CheckInListFragment;
 import com.jzson.gotit.client.fragments.CreateCheckInFragment;
+import com.jzson.gotit.client.fragments.FeedListFragment;
+import com.jzson.gotit.client.fragments.NotificationListFragment;
 import com.jzson.gotit.client.fragments.TeenListFragment;
 import com.jzson.gotit.client.model.Person;
 import com.jzson.gotit.client.provider.InternalProvider;
@@ -85,10 +88,13 @@ public class MainActivity extends AppCompatActivity {
         if (!mPersonIsTeen) {
             hideActionButton();
         } else {
-            if (fragment instanceof CreateCheckInFragment) {
-                hideActionButton();
-            } else {
+            if ((fragment instanceof TeenListFragment) ||
+                    (fragment instanceof CheckInListFragment) ||
+                    (fragment instanceof FeedListFragment) ||
+                    (fragment instanceof NotificationListFragment)) {
                 showActionButton();
+            } else {
+                hideActionButton();
             }
         }
 

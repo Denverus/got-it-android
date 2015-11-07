@@ -141,13 +141,17 @@ public class CreateCheckInFragment extends Fragment {
 
         switch (inputType) {
             case Answer.TYPE_STRING: {
-                String answerText = answerEditText.getText().toString();
-                answer = new Answer(questionId, answerText);
+                if (answerEditText.getText().toString().isEmpty()) {
+                    String answerText = answerEditText.getText().toString();
+                    answer = new Answer(questionId, answerText);
+                }
                 break;
             }
             case Answer.TYPE_INT: {
-                Integer answerInt = Integer.parseInt(answerEditNumber.getText().toString());
-                answer = new Answer(questionId, answerInt);
+                if (!answerEditNumber.getText().toString().isEmpty()) {
+                    Integer answerInt = Integer.parseInt(answerEditNumber.getText().toString());
+                    answer = new Answer(questionId, answerInt);
+                }
                 break;
             }
             case Answer.TYPE_BOOLEAN: {

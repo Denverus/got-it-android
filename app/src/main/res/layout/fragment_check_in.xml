@@ -17,14 +17,14 @@
         android:id="@+id/question"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/answer_frame"
+        android:layout_below="@+id/progressBar"
         android:layout_centerHorizontal="true"
         android:text="This is very long Question"
         android:textSize="25dp" />
 
     <RelativeLayout
         android:id="@+id/answer_frame"
-        android:layout_centerVertical="true"
+        android:layout_below="@+id/question"
         android:layout_centerHorizontal="true"
         android:padding="5dp"
         android:layout_width="match_parent"
@@ -56,7 +56,7 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/answer_frame"
         android:layout_centerHorizontal="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
