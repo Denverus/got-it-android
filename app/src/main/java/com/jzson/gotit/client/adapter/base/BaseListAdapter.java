@@ -13,6 +13,7 @@ import com.jzson.gotit.client.model.BaseModel;
 import com.jzson.gotit.client.provider.ServiceApi;
 import com.jzson.gotit.client.provider.ServiceCall;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 
@@ -25,7 +26,7 @@ public abstract class BaseListAdapter<T extends BaseModel, H extends RecyclerVie
         void onDataUpdated();
     }
 
-    private List<T> modelList;
+    private List<T> modelList = new ArrayList<>();
     private RecyclerView mRecyclerView;
     private Context mContext;
     private DataUpdateListener dataUpdateListener;
@@ -95,6 +96,7 @@ public abstract class BaseListAdapter<T extends BaseModel, H extends RecyclerVie
             @Override
             public void success(List<T> data) {
                 setData(data);
+                notifyDataSetChanged();
                 dataUpdateListener.onDataUpdated();
             }
 

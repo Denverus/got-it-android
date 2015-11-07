@@ -17,7 +17,6 @@ public class AppApplication extends Application {
     private Person person;
     private Person currentPerson;
     private Integer checkIn = null;
-    private int userId = 5;
     private List<Question> questionList;
     private int followerId;
     private List<Answer> answerList;
@@ -58,11 +57,7 @@ public class AppApplication extends Application {
     }
 
     public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
+        return currentPerson.getId();
     }
 
     public List<Question> getQuestionList() {

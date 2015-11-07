@@ -32,7 +32,8 @@ public class NavUtils {
 
     public static void showMainActivity(Context context) {
         Intent intent = new Intent(context, MainActivity.class);
-        NavUtils.showTeensActivity(context);
+        context.startActivity(intent);
+        AppApplication.getContext().setFragment(new TeenListFragment());
     }
 
     public static void showTeensActivity(Context context) {

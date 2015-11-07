@@ -3,14 +3,20 @@ package com.jzson.gotit.client;
 import android.content.Intent;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.jzson.gotit.client.activities.LoginScreenActivity;
 import com.jzson.gotit.client.activities.MainActivity;
 import com.jzson.gotit.client.activities.RegistrationActivity;
 import com.jzson.gotit.client.fragments.FeedListFragment;
 import com.jzson.gotit.client.fragments.FollowerListFragment;
 import com.jzson.gotit.client.fragments.NotificationListFragment;
+import com.jzson.gotit.client.model.Person;
+import com.jzson.gotit.client.provider.ProviderFactory;
+import com.jzson.gotit.client.provider.ServiceApi;
+import com.jzson.gotit.client.provider.ServiceCall;
 
 /**
  * Created by Denis on 6/26/15.
@@ -73,16 +79,10 @@ public class NavigationViewManager {
                 Toast.makeText(mMainActivity, "Not implemented", Toast.LENGTH_SHORT).show();;
                 break;
             case R.id.nav_as_teen:
-                AppApplication.getContext().setUserId(0);
-                showTeenMenu(true);
-                mMainActivity.updateDrawer();
-                Toast.makeText(mMainActivity, "Switched to teen", Toast.LENGTH_SHORT).show();;
+                switchToUser("user1");
                 break;
             case R.id.nav_as_follower:
-                AppApplication.getContext().setUserId(5);
-                showTeenMenu(false);
-                mMainActivity.updateDrawer();
-                Toast.makeText(mMainActivity, "Switched to followe", Toast.LENGTH_SHORT).show();;
+                switchToUser("user6");
                 break;
 
         }
@@ -95,5 +95,43 @@ public class NavigationViewManager {
     private void setMenuItemVisible(int resourceId, boolean visible) {
         MenuItem menuItem1 = mNavigationView.getMenu().findItem(resourceId);
         menuItem1.setVisible(visible);
+    }
+
+    private void switchToUser(final String username) {
+        ProviderFactory.init(ProviderFactory.INTERNAL_PROVIDER, null, username, null);
+
+        CallableTask.invoke(mMainActivity, new ServiceCall<Person>() {
+
+            @Override
+            public Person call(ServiceApi svc) throws Exception {
+                return svc.getPersonByUsername(username);
+            }
+        }, new TaskCallback<Person>() {
+
+            @Override
+            public void success(Person person) {
+                if (person.isHasDiabetes()) {
+                    showTeenMenu(true);
+                    Toast.makeText(mMainActivity, "Switched to teen "+person.getName(), Toast.LENGTH_SHORT).show();;
+                } else {
+                    showTeenMenu(false);
+                    Toast.makeText(mMainActivity, "Switched to follower "+person.getName(), Toast.LENGTH_SHORT).show();;
+                }
+                mMainActivity.updateDrawer();
+
+                AppApplication.getContext().setCurrentUser(person);
+                NavUtils.showTeensActivity(mMainActivity);
+            }
+
+            @Override
+            public void error(Exception e) {
+                Log.e(LoginScreenActivity.class.getName(), "Error logging in via OAuth.", e);
+
+                Toast.makeText(
+                        mMainActivity,
+                        "Login failed, check your Internet connection and credentials.",
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

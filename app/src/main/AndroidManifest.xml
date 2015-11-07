@@ -33,14 +33,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.AddMetaDataActivity"
-            android:label="@string/title_activity_add_meta_data" >
-        </activity>
-        <activity
-            android:name=".activities.TeenListActivity"
-            android:label="@string/title_activity_teen_list" >
-        </activity>
-        <activity
             android:name=".activities.RegistrationActivity"
             android:label="@string/title_activity_teen_list" >
         </activity>
