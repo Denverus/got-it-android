@@ -15,6 +15,7 @@ public class AppApplication extends Application {
     private static AppApplication context;
     private Fragment fragment;
     private Person person;
+    private Person currentPerson;
     private Integer checkIn = null;
     private int userId = 5;
     private List<Question> questionList;
@@ -86,6 +87,14 @@ public class AppApplication extends Application {
 
     public List<Answer> getAnswerList() {
         return answerList;
+    }
+
+    public void setCurrentUser(Person person) {
+        currentPerson = person;
+    }
+
+    public Person getCurrentUser() {
+        return currentPerson;
     }
 }
 

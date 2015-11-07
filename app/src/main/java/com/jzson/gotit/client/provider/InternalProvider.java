@@ -24,13 +24,7 @@ import java.util.List;
 /**
  * Created by Denis on 10/11/2015.
  */
-public class DataProvider {
-    private static final DataProvider INSTANCE = new DataProvider();
-
-    public static int FOLLOWER_STATUS_NOT_FOLLOWED = 0;
-    public static int FOLLOWER_STATUS_REQUESTED = 1;
-    public static int FOLLOWER_STATUS_FOLLOWED = 2;
-
+public class InternalProvider implements ServiceApi {
 
     private PersonTable personTable = new PersonTable();
 
@@ -50,7 +44,7 @@ public class DataProvider {
 
     private Table<GeneralSettings> generalSettingsTable = new Table<>();
 
-    public DataProvider() {
+    public InternalProvider() {
         initializeData();
     }
 
@@ -93,12 +87,20 @@ public class DataProvider {
         //subscriptions.add(new Subscription(5, 3));
     }
 
-    public static DataProvider getInstance() {
-        return INSTANCE;
-    }
-
     public Person getPersonById(int id) {
         return personTable.getById(id);
+    }
+
+    @Override
+    public Person getPersonByUsername(final String username) {
+        List<Person> persons = personTable.getListByCriteria(new Table.BooleanCriteria<Person>() {
+            @Override
+            public boolean getCriteriaValue(Person value) {
+                return value.getLogin().equals(username);
+            }
+        });
+
+        return persons.isEmpty() ? null : persons.get(0);
     }
 
     public List<Person> getTeens(final int userId) {
@@ -257,7 +259,7 @@ public class DataProvider {
         });
 
         if (!subscriptionList.isEmpty()) {
-            return DataProvider.FOLLOWER_STATUS_FOLLOWED;
+            return InternalProvider.FOLLOWER_STATUS_FOLLOWED;
         } else {
             List<Notification> notificationList = notifications.getListByCriteria(new Table.BooleanCriteria<Notification>() {
                 @Override
@@ -266,9 +268,9 @@ public class DataProvider {
                 }
             });
             if (notificationList.isEmpty()) {
-                return DataProvider.FOLLOWER_STATUS_NOT_FOLLOWED;
+                return InternalProvider.FOLLOWER_STATUS_NOT_FOLLOWED;
             } else {
-                return DataProvider.FOLLOWER_STATUS_REQUESTED;
+                return InternalProvider.FOLLOWER_STATUS_REQUESTED;
             }
         }
     }

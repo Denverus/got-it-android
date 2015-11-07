@@ -31,8 +31,7 @@ public class VideoSvc {
 		}
 	}
 
-	public static synchronized VideoSvcApi init(String server, String user,
-			String pass) {
+	public static synchronized VideoSvcApi init(int serverType, String server, String user, String pass) {
 
 		videoSvc_ = new SecuredRestBuilder()
 				.setLoginEndpoint(server + VideoSvcApi.TOKEN_PATH)

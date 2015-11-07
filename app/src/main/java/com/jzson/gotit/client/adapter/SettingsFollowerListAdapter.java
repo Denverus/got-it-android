@@ -5,17 +5,20 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.CompoundButton;
-import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.jzson.gotit.client.AppApplication;
+import com.jzson.gotit.client.CallableTask;
 import com.jzson.gotit.client.NavUtils;
 import com.jzson.gotit.client.R;
+import com.jzson.gotit.client.TaskCallback;
 import com.jzson.gotit.client.adapter.base.BaseListAdapter;
 import com.jzson.gotit.client.model.FollowerSettings;
-import com.jzson.gotit.client.model.Notification;
-import com.jzson.gotit.client.provider.DataProvider;
+import com.jzson.gotit.client.provider.InternalProvider;
+import com.jzson.gotit.client.provider.ServiceApi;
+import com.jzson.gotit.client.provider.ServiceCall;
 
 import java.util.List;
 
@@ -45,9 +48,9 @@ public class SettingsFollowerListAdapter extends BaseListAdapter<FollowerSetting
     }
 
     @Override
-    protected List<FollowerSettings> onRefresh() {
+    protected List<FollowerSettings> onRefresh(ServiceApi svc) {
         int userId = AppApplication.getContext().getUserId();
-        return DataProvider.getInstance().loadFollowerSettings(userId);
+        return svc.loadFollowerSettings(userId);
     }
 
     @Override
@@ -60,7 +63,27 @@ public class SettingsFollowerListAdapter extends BaseListAdapter<FollowerSetting
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 int userId = AppApplication.getContext().getUserId();
-                DataProvider.getInstance().enableFollowerSharing(userId, model.getFollowerId(), isChecked);
+                enableFollowerSharing(isChecked, userId, model);
+            }
+        });
+    }
+
+    private void enableFollowerSharing(final boolean isChecked, final int userId, final FollowerSettings model) {
+        CallableTask.invoke(getContext(), new ServiceCall<Void>() {
+            @Override
+            public Void call(ServiceApi srv) throws Exception {
+                srv.enableFollowerSharing(userId, model.getFollowerId(), isChecked);
+                return null;
+            }
+        }, new TaskCallback<Void>() {
+            @Override
+            public void success(Void result) {
+
+            }
+
+            @Override
+            public void error(Exception e) {
+                Toast.makeText(getContext(), "Can't change settings", Toast.LENGTH_SHORT).show();
             }
         });
     }

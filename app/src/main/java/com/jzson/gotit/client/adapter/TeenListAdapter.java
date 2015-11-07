@@ -15,7 +15,8 @@ import com.jzson.gotit.client.activities.MainActivity;
 import com.jzson.gotit.client.adapter.base.BaseListAdapter;
 import com.jzson.gotit.client.fragments.TeenProfileFragment;
 import com.jzson.gotit.client.model.Person;
-import com.jzson.gotit.client.provider.DataProvider;
+import com.jzson.gotit.client.provider.InternalProvider;
+import com.jzson.gotit.client.provider.ServiceApi;
 
 import java.util.List;
 
@@ -47,8 +48,8 @@ public class TeenListAdapter extends BaseListAdapter<Person, TeenListAdapter.Tee
     }
 
     @Override
-    protected List<Person> onRefresh() {
-        return DataProvider.getInstance().getTeens(AppApplication.getContext().getUserId());
+    protected List<Person> onRefresh(ServiceApi svc) {
+        return svc.getTeens(AppApplication.getContext().getUserId());
     }
 
     @Override

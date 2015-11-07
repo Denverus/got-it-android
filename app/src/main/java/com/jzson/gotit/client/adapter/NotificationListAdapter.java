@@ -12,13 +12,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jzson.gotit.client.AppApplication;
+import com.jzson.gotit.client.CallableTask;
 import com.jzson.gotit.client.NavUtils;
 import com.jzson.gotit.client.R;
+import com.jzson.gotit.client.TaskCallback;
 import com.jzson.gotit.client.Utils;
 import com.jzson.gotit.client.adapter.base.BaseListAdapter;
 import com.jzson.gotit.client.model.Notification;
 import com.jzson.gotit.client.model.Person;
-import com.jzson.gotit.client.provider.DataProvider;
+import com.jzson.gotit.client.provider.InternalProvider;
+import com.jzson.gotit.client.provider.ServiceApi;
+import com.jzson.gotit.client.provider.ServiceCall;
 
 import java.util.List;
 
@@ -39,8 +43,7 @@ public class NotificationListAdapter extends BaseListAdapter<Notification, Notif
                     .setMessage("Are you sure you want to delete this notification?")
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            DataProvider.getInstance().deleteNotification(model.getId());
-                            NavUtils.showNotificationList(getContext());
+                            deleteNotification(model.getId());
                         }
                     })
                     .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
@@ -55,6 +58,26 @@ public class NotificationListAdapter extends BaseListAdapter<Notification, Notif
         }
     }
 
+    private void deleteNotification(final int notificationId) {
+        CallableTask.invoke(getContext(), new ServiceCall<Void>() {
+            @Override
+            public Void call(ServiceApi srv) throws Exception {
+                srv.deleteNotification(notificationId);
+                return null;
+            }
+        }, new TaskCallback<Void>() {
+            @Override
+            public void success(Void result) {
+                NavUtils.showNotificationList(getContext());
+            }
+
+            @Override
+            public void error(Exception e) {
+                Toast.makeText(getContext(), "Can't delete notification", Toast.LENGTH_SHORT);
+            }
+        });
+    }
+
     @Override
     protected int getItemResourceId() {
         return R.layout.notification_item;
@@ -66,14 +89,36 @@ public class NotificationListAdapter extends BaseListAdapter<Notification, Notif
     }
 
     @Override
-    protected List<Notification> onRefresh() {
-        return DataProvider.getInstance().getNotificationsByUserId(AppApplication.getContext().getUserId());
+    protected List<Notification> onRefresh(ServiceApi svc) {
+        return svc.getNotificationsByUserId(AppApplication.getContext().getUserId());
     }
 
     @Override
     public void onBindViewHolder(final NotificationViewHolder holder, final int position) {
         final Notification notification = getModel(position);
-        Person person = DataProvider.getInstance().getPersonById(notification.getFromPersonId());
+        loadPersonAndInitViewHolder(holder, notification);
+    }
+
+    private void loadPersonAndInitViewHolder(final NotificationViewHolder holder, final Notification notification) {
+        CallableTask.invoke(getContext(), new ServiceCall<Person>() {
+            @Override
+            public Person call(ServiceApi srv) throws Exception {
+                return srv.getPersonById(notification.getFromPersonId());
+            }
+        }, new TaskCallback<Person>() {
+            @Override
+            public void success(Person person) {
+                initViewHolder(holder, notification, person);
+            }
+
+            @Override
+            public void error(Exception e) {
+                Toast.makeText(getContext(), "Can't load data", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void initViewHolder(final NotificationViewHolder holder, final Notification notification, Person person) {
         String summary = "";
 
         switch (notification.getCode()) {
@@ -109,16 +154,53 @@ public class NotificationListAdapter extends BaseListAdapter<Notification, Notif
             @Override
             public void onClick(View v) {
                 holder.yesButton.setEnabled(false);
-                DataProvider.getInstance().acceptSubscribeRequest(notification.getId());
-                NavUtils.showNotificationList(getContext());
+                acceptSubscribeRequest(notification.getId());
             }
         });
         holder.noButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 holder.noButton.setEnabled(false);
-                DataProvider.getInstance().rejectSubscribeRequest(notification.getId());
+                rejectSubscribeRequest(notification.getId());
+            }
+        });    }
+
+    private void rejectSubscribeRequest(final int notificationId) {
+        CallableTask.invoke(getContext(), new ServiceCall<Void>() {
+            @Override
+            public Void call(ServiceApi srv) throws Exception {
+                srv.rejectSubscribeRequest(notificationId);
+                return null;
+            }
+        }, new TaskCallback<Void>() {
+            @Override
+            public void success(Void result) {
                 NavUtils.showNotificationList(getContext());
+            }
+
+            @Override
+            public void error(Exception e) {
+                Toast.makeText(getContext(), "Network error", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void acceptSubscribeRequest(final int notificationId) {
+        CallableTask.invoke(getContext(), new ServiceCall<Void>() {
+            @Override
+            public Void call(ServiceApi srv) throws Exception {
+                srv.acceptSubscribeRequest(notificationId);
+                return null;
+            }
+        }, new TaskCallback<Void>() {
+            @Override
+            public void success(Void result) {
+                NavUtils.showNotificationList(getContext());
+            }
+
+            @Override
+            public void error(Exception e) {
+                Toast.makeText(getContext(), "Network error", Toast.LENGTH_SHORT).show();
             }
         });
     }

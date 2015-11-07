@@ -22,7 +22,7 @@ import com.jzson.gotit.client.R;
 import com.jzson.gotit.client.fragments.CreateCheckInFragment;
 import com.jzson.gotit.client.fragments.TeenListFragment;
 import com.jzson.gotit.client.model.Person;
-import com.jzson.gotit.client.provider.DataProvider;
+import com.jzson.gotit.client.provider.InternalProvider;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void updateDrawer() {
-        Person person = DataProvider.getInstance().getPersonById(AppApplication.getContext().getUserId());
+        Person person = AppApplication.getContext().getCurrentUser();
         mPersonIsTeen = person.isHasDiabetes();
         mNavigationViewManager.showTeenMenu(mPersonIsTeen);
         mUsernameTextView.setText(person.getName());

@@ -1,15 +1,20 @@
 package com.jzson.gotit.client.adapter.base;
 
 import android.content.Context;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.jzson.gotit.client.CallableTask;
+import com.jzson.gotit.client.TaskCallback;
 import com.jzson.gotit.client.model.BaseModel;
+import com.jzson.gotit.client.provider.ServiceApi;
+import com.jzson.gotit.client.provider.ServiceCall;
 
 import java.util.List;
+import java.util.concurrent.Callable;
 
 /**
  * Created by Denis on 10/11/2015.
@@ -35,7 +40,7 @@ public abstract class BaseListAdapter<T extends BaseModel, H extends RecyclerVie
 
     protected abstract H createViewHolder(View v);
 
-    protected abstract List<T> onRefresh();
+    protected abstract List<T> onRefresh(ServiceApi svc );
 
     protected T getModel(int index) {
         return modelList.get(index);
@@ -81,9 +86,23 @@ public abstract class BaseListAdapter<T extends BaseModel, H extends RecyclerVie
     }
 
     public void refreshData() {
-        List<T> data = onRefresh();
-        setData(data);
-        dataUpdateListener.onDataUpdated();
+        CallableTask.invoke(getContext(), new ServiceCall<List<T>>() {
+            @Override
+            public List<T> call(ServiceApi srv) throws Exception {
+                return onRefresh(srv);
+            }
+        }, new TaskCallback<List<T>>() {
+            @Override
+            public void success(List<T> data) {
+                setData(data);
+                dataUpdateListener.onDataUpdated();
+            }
+
+            @Override
+            public void error(Exception e) {
+                Toast.makeText(getContext(), "Network error", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     public void setDataUpdateListener(DataUpdateListener dataUpdateListener) {

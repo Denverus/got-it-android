@@ -8,34 +8,48 @@ package com.jzson.gotit.client;
 
 import java.util.concurrent.Callable;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
+
+import com.jzson.gotit.client.provider.ProviderFactory;
+import com.jzson.gotit.client.provider.ServiceApi;
+import com.jzson.gotit.client.provider.ServiceCall;
 
 
 public class CallableTask<T> extends AsyncTask<Void,Double,T> {
 
     private static final String TAG = CallableTask.class.getName();
 
-    public static <V> void invoke(Callable<V> call, TaskCallback<V> callback){
-        new CallableTask<V>(call, callback).execute();
+    public static <V> void invoke(Context context, ServiceCall<V> call, TaskCallback<V> callback){
+        ServiceApi srv = ProviderFactory.getOrShowLogin(context);
+        if (srv != null) {
+            new CallableTask<V>(srv, call, callback).execute();
+        } else {
+            Toast.makeText(context, "Service error", Toast.LENGTH_SHORT).show();
+        }
     }
 
-    private Callable<T> callable_;
+    private ServiceCall<T> callable_;
 
     private TaskCallback<T> callback_;
+
+    private ServiceApi service;
     
     private Exception error_;
 
-    public CallableTask(Callable<T> callable, TaskCallback<T> callback) {
+    public CallableTask(ServiceApi srv, ServiceCall<T> callable, TaskCallback<T> callback) {
         callable_ = callable;
         callback_ = callback;
+        service = srv;
     }
 
     @Override
     protected T doInBackground(Void... ts) {
         T result = null;
         try{
-            result = callable_.call();
+            result = callable_.call(service);
         } catch (Exception e){
             Log.e(TAG, "Error invoking callable in AsyncTask callable: "+callable_, e);
             error_ = e;

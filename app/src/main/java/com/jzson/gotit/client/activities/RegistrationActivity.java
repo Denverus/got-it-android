@@ -12,8 +12,12 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.jzson.gotit.client.CallableTask;
 import com.jzson.gotit.client.R;
-import com.jzson.gotit.client.provider.DataProvider;
+import com.jzson.gotit.client.TaskCallback;
+import com.jzson.gotit.client.provider.InternalProvider;
+import com.jzson.gotit.client.provider.ServiceApi;
+import com.jzson.gotit.client.provider.ServiceCall;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -80,9 +84,27 @@ public class RegistrationActivity extends AppCompatActivity implements DatePicke
         boolean hasDiabetes = hasDiabetesSwitch.isChecked();
         String medicalRecordNumber = reg_medical_record.getText().toString();
 
-        DataProvider.getInstance().registerUser(fullName, date, login, password, hasDiabetes, medicalRecordNumber, null);
+        registerUser(fullName, date, login, password, hasDiabetes, medicalRecordNumber, null);
+    }
 
-        Toast.makeText(this, "User registered", Toast.LENGTH_SHORT).show();
+    private void registerUser(final String fullName, final Date date, final String login, final String password, final boolean hasDiabetes, final String medicalRecordNumber, final Object o) {
+        CallableTask.invoke(this, new ServiceCall<Void>() {
+            @Override
+            public Void call(ServiceApi srv) throws Exception {
+                srv.registerUser(fullName, date, login, password, hasDiabetes, medicalRecordNumber, null);
+                return null;
+            }
+        }, new TaskCallback<Void>() {
+            @Override
+            public void success(Void result) {
+                Toast.makeText(RegistrationActivity.this, "User registered", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void error(Exception e) {
+                Toast.makeText(RegistrationActivity.this, "User registered", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override

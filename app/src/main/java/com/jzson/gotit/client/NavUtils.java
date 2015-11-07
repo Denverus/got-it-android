@@ -1,6 +1,7 @@
 package com.jzson.gotit.client;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 
 import com.jzson.gotit.client.activities.MainActivity;
@@ -18,7 +19,9 @@ import com.jzson.gotit.client.fragments.TeenListFragment;
 import com.jzson.gotit.client.model.Answer;
 import com.jzson.gotit.client.model.FollowerSettings;
 import com.jzson.gotit.client.model.Question;
-import com.jzson.gotit.client.provider.DataProvider;
+import com.jzson.gotit.client.provider.InternalProvider;
+import com.jzson.gotit.client.provider.ProviderFactory;
+import com.jzson.gotit.client.provider.ServiceApi;
 
 import java.util.List;
 
@@ -26,6 +29,12 @@ import java.util.List;
  * Created by Denis on 10/12/2015.
  */
 public class NavUtils {
+
+    public static void showMainActivity(Context context) {
+        Intent intent = new Intent(context, MainActivity.class);
+        NavUtils.showTeensActivity(context);
+    }
+
     public static void showTeensActivity(Context context) {
         showFragmentInMainActivity(context, new TeenListFragment());
     }
@@ -34,11 +43,16 @@ public class NavUtils {
     }
 
     public static void showCreateCheckIn(Context context) {
-        List<Question> questionList = DataProvider.getInstance().getCheckInQuestions();
 
-        AppApplication.getContext().setQuestionList(questionList);
+        ServiceApi service = ProviderFactory.getOrShowLogin(context);
 
-        showFragmentInMainActivity(context, new CreateCheckInFragment());
+        if (service != null) {
+            List<Question> questionList = service.getCheckInQuestions();
+
+            AppApplication.getContext().setQuestionList(questionList);
+
+            showFragmentInMainActivity(context, new CreateCheckInFragment());
+        }
     }
 
     public static void showCheckInList(Context context) {

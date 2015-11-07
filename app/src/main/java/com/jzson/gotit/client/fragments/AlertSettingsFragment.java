@@ -14,9 +14,13 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.jzson.gotit.client.AppApplication;
+import com.jzson.gotit.client.CallableTask;
 import com.jzson.gotit.client.R;
+import com.jzson.gotit.client.TaskCallback;
 import com.jzson.gotit.client.model.GeneralSettings;
-import com.jzson.gotit.client.provider.DataProvider;
+import com.jzson.gotit.client.provider.InternalProvider;
+import com.jzson.gotit.client.provider.ServiceApi;
+import com.jzson.gotit.client.provider.ServiceCall;
 
 import java.util.Calendar;
 import java.util.List;
@@ -50,7 +54,7 @@ public class AlertSettingsFragment extends Fragment {
                     generalSwitch.setChecked(true);
                 }
 
-                DataProvider.getInstance().saveGeneralSettings(userId, alertKey[index], value);
+                saveGeneralSettings(value, alertKey[index]);
             }
         }, hour, minute, true);//Yes 24 hour time
         mTimePicker.setTitle("Select Time");
@@ -62,6 +66,26 @@ public class AlertSettingsFragment extends Fragment {
             }
         });
         mTimePicker.show();
+    }
+
+    private void saveGeneralSettings(final String value, final String key) {
+        CallableTask.invoke(getContext(), new ServiceCall<Void>() {
+            @Override
+            public Void call(ServiceApi srv) throws Exception {
+                srv.saveGeneralSettings(userId, key, value);
+                return null;
+            }
+        }, new TaskCallback<Void>() {
+            @Override
+            public void success(Void result) {
+
+            }
+
+            @Override
+            public void error(Exception e) {
+
+            }
+        });
     }
 
     private Integer getTextViewIndexFromId(int id) {
@@ -92,7 +116,7 @@ public class AlertSettingsFragment extends Fragment {
             if (isChecked) {
                 showTimePickerDialog(getTextViewByIndex(index));
             } else {
-                DataProvider.getInstance().saveGeneralSettings(userId, alertKey[index], null);
+                saveGeneralSettings(alertKey[index], null);
             }
         }
     };
@@ -123,21 +147,25 @@ public class AlertSettingsFragment extends Fragment {
         generalSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    for (int i = 0; i < switches.length; i++) {
-                        if (!isChecked) {
-                            getSwitchByIndex(i).setChecked(false);
-                            getSwitchByIndex(i).setEnabled(false);
-                            getTextViewByIndex(i).setEnabled(false);
-                            getTextViewByIndex(i).setText(NONE_TEXT);
-                        } else {
-                            getSwitchByIndex(i).setEnabled(true);
-                        }
+                for (int i = 0; i < switches.length; i++) {
+                    if (!isChecked) {
+                        getSwitchByIndex(i).setChecked(false);
+                        getSwitchByIndex(i).setEnabled(false);
+                        getTextViewByIndex(i).setEnabled(false);
+                        getTextViewByIndex(i).setText(NONE_TEXT);
+                    } else {
+                        getSwitchByIndex(i).setEnabled(true);
                     }
+                }
             }
         });
 
-        List<GeneralSettings> settingsList = DataProvider.getInstance().loadGeneralSettingsList(userId, alertKey);
+        loadGeneralSettingsList(userId, alertKey);
 
+        return rootView;
+    }
+
+    private void initView(List<GeneralSettings> settingsList) {
         boolean notificationEnabled = false;
         for (int i=0; i<alertKey.length; i++) {
             String time = settingsList.get(i).getValue();
@@ -164,8 +192,25 @@ public class AlertSettingsFragment extends Fragment {
             Switch switch1 = getSwitchByIndex(i);
             switch1.setOnCheckedChangeListener(switchStateListener);
         }
+    }
 
-        return rootView;
+    private void loadGeneralSettingsList(final int userId, final String[] alertKey) {
+        CallableTask.invoke(getContext(), new ServiceCall<List<GeneralSettings>>() {
+            @Override
+            public List<GeneralSettings> call(ServiceApi srv) throws Exception {
+                return srv.loadGeneralSettingsList(userId, alertKey);
+            }
+        }, new TaskCallback<List<GeneralSettings>>() {
+            @Override
+            public void success(List<GeneralSettings> result) {
+                initView(result);
+            }
+
+            @Override
+            public void error(Exception e) {
+
+            }
+        });
     }
 
     private TextView getTextViewByIndex(int index) {

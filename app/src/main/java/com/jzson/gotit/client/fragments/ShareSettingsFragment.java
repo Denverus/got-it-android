@@ -2,33 +2,22 @@ package com.jzson.gotit.client.fragments;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
-import android.widget.FrameLayout;
 import android.widget.Switch;
 
 import com.jzson.gotit.client.AppApplication;
 import com.jzson.gotit.client.R;
 import com.jzson.gotit.client.adapter.SettingsFollowerListAdapter;
 import com.jzson.gotit.client.adapter.base.BaseListAdapter;
-import com.jzson.gotit.client.animation.AnimationFactory;
-import com.jzson.gotit.client.databinding.FragmentShareSettingsBinding;
-import com.jzson.gotit.client.databinding.FragmentTeenProfileBinding;
-import com.jzson.gotit.client.model.FollowerSettings;
-import com.jzson.gotit.client.model.Person;
-import com.jzson.gotit.client.model.ShareSettings;
-import com.jzson.gotit.client.provider.DataProvider;
-
-import java.util.List;
+import com.jzson.gotit.client.provider.InternalProvider;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -75,7 +64,7 @@ public class ShareSettingsFragment extends Fragment implements BaseListAdapter.D
             }
         });
 
-        boolean isSharingEnabled = DataProvider.getInstance().isSharingEnabled(userId);
+        boolean isSharingEnabled = InternalProvider.getInstance().isSharingEnabled(userId);
         settingsSwitch.setChecked(isSharingEnabled);
 
         mRecyclerView.setVisibility(isSharingEnabled ? View.VISIBLE : View.GONE);
@@ -95,7 +84,7 @@ public class ShareSettingsFragment extends Fragment implements BaseListAdapter.D
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 showFollowerList(isChecked);
 
-                DataProvider.getInstance().setSharingEnabled(userId, isChecked);
+                InternalProvider.getInstance().setSharingEnabled(userId, isChecked);
             }
         });
 
@@ -117,7 +106,7 @@ public class ShareSettingsFragment extends Fragment implements BaseListAdapter.D
     @Override
     public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        boolean isSharingEnabled = DataProvider.getInstance().isSharingEnabled(userId);
+        boolean isSharingEnabled = InternalProvider.getInstance().isSharingEnabled(userId);
         showFollowerList(isSharingEnabled);
     }
 

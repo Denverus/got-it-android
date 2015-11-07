@@ -11,9 +11,8 @@ import android.widget.TextView;
 import com.jzson.gotit.client.AppApplication;
 import com.jzson.gotit.client.NavUtils;
 import com.jzson.gotit.client.R;
-import com.jzson.gotit.client.databinding.FragmentTeenProfileBinding;
 import com.jzson.gotit.client.model.GeneralSettings;
-import com.jzson.gotit.client.provider.DataProvider;
+import com.jzson.gotit.client.provider.InternalProvider;
 
 import java.util.List;
 
@@ -54,10 +53,10 @@ public class SettingsFragment extends Fragment {
 
         int userId = AppApplication.getContext().getUserId();
 
-        boolean sharingEnabled = DataProvider.getInstance().isSharingEnabled(userId);
+        boolean sharingEnabled = InternalProvider.getInstance().isSharingEnabled(userId);
         sharingStatusSettings.setText(sharingEnabled ? "Enabled" : "Disabled");
 
-        List<GeneralSettings> settingsList = DataProvider.getInstance().loadGeneralSettingsList(userId, alertKey);
+        List<GeneralSettings> settingsList = InternalProvider.getInstance().loadGeneralSettingsList(userId, alertKey);
         StringBuilder sb = new StringBuilder();
         for (GeneralSettings settings : settingsList) {
             if (settings.getValue() != null) {

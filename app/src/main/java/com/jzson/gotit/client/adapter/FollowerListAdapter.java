@@ -8,14 +8,19 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.jzson.gotit.client.AppApplication;
+import com.jzson.gotit.client.CallableTask;
 import com.jzson.gotit.client.NavUtils;
 import com.jzson.gotit.client.R;
+import com.jzson.gotit.client.TaskCallback;
 import com.jzson.gotit.client.adapter.base.BaseListAdapter;
 import com.jzson.gotit.client.databinding.FollowerListItemBinding;
 import com.jzson.gotit.client.model.Person;
-import com.jzson.gotit.client.provider.DataProvider;
+import com.jzson.gotit.client.provider.InternalProvider;
+import com.jzson.gotit.client.provider.ServiceApi;
+import com.jzson.gotit.client.provider.ServiceCall;
 
 import java.util.List;
 
@@ -45,8 +50,8 @@ public class FollowerListAdapter extends BaseListAdapter<Person, FollowerListAda
     }
 
     @Override
-    protected List<Person> onRefresh() {
-        return DataProvider.getInstance().getFollowerList(AppApplication.getContext().getUserId());
+    protected List<Person> onRefresh(ServiceApi svc) {
+        return svc.getFollowerList(AppApplication.getContext().getUserId());
     }
 
     @Override
@@ -58,8 +63,7 @@ public class FollowerListAdapter extends BaseListAdapter<Person, FollowerListAda
             @Override
             public void onClick(View v) {
                 bind.unsubscribe.setEnabled(false);
-                DataProvider.getInstance().cancelSubscription(AppApplication.getContext().getUserId(), person.getId());
-                NavUtils.showFollowerList(getContext());
+                cancelSubscription(AppApplication.getContext().getUserId(), person.getId());
             }
         });
     }
@@ -77,5 +81,26 @@ public class FollowerListAdapter extends BaseListAdapter<Person, FollowerListAda
             name = (TextView)itemView.findViewById(R.id.name);
             unsibscribeButton = (Button)itemView.findViewById(R.id.unsubscribe);
         }
+    }
+
+    private void cancelSubscription(final int userId, final int followerId) {
+        CallableTask.invoke(getContext(), new ServiceCall<Void>() {
+            @Override
+            public Void call(ServiceApi srv) throws Exception {
+                srv.cancelSubscription(userId, followerId);
+                return null;
+            }
+        }, new TaskCallback<Void>() {
+            @Override
+            public void success(Void result) {
+                NavUtils.showFollowerList(getContext());
+                Toast.makeText(getContext(), "Subscription canceled", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void error(Exception e) {
+                Toast.makeText(getContext(), "Network error", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

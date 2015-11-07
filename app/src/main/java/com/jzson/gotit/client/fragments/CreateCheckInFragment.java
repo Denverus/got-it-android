@@ -14,18 +14,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jzson.gotit.client.AppApplication;
+import com.jzson.gotit.client.CallableTask;
 import com.jzson.gotit.client.NavUtils;
 import com.jzson.gotit.client.R;
+import com.jzson.gotit.client.TaskCallback;
 import com.jzson.gotit.client.model.Answer;
 import com.jzson.gotit.client.model.Question;
-import com.jzson.gotit.client.provider.DataProvider;
+import com.jzson.gotit.client.provider.ServiceApi;
+import com.jzson.gotit.client.provider.ServiceCall;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Denis on 10/27/2015.
- */
 public class CreateCheckInFragment extends Fragment {
 
     private int questionIndex;
@@ -104,13 +104,32 @@ public class CreateCheckInFragment extends Fragment {
         } else {
             if (!answerList.isEmpty()) {
                 int userId = AppApplication.getContext().getUserId();
-                DataProvider.getInstance().saveAnswer(userId, answerList);
-                NavUtils.showCheckInList(getContext());
-                Toast.makeText(getContext(), "Check In saved", Toast.LENGTH_SHORT).show();
+                saveAnswers(userId, answerList);
             } else {
                 Toast.makeText(getContext(), "Check In doesn't complete", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    private void saveAnswers(final int userId, final List<Answer> answerList) {
+        CallableTask.invoke(getContext(), new ServiceCall<Void>() {
+            @Override
+            public Void call(ServiceApi srv) throws Exception {
+                srv.saveAnswer(userId, answerList);
+                return null;
+            }
+        }, new TaskCallback<Void>() {
+            @Override
+            public void success(Void result) {
+                Toast.makeText(getContext(), "Check In saved", Toast.LENGTH_SHORT).show();
+                NavUtils.showCheckInList(getContext());
+            }
+
+            @Override
+            public void error(Exception e) {
+                Toast.makeText(getContext(), "Error during saving", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private Answer readAnswer() {

@@ -11,12 +11,18 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.jzson.gotit.client.AppApplication;
 import com.jzson.gotit.client.CallableTask;
+import com.jzson.gotit.client.NavUtils;
 import com.jzson.gotit.client.R;
 import com.jzson.gotit.client.TaskCallback;
 import com.jzson.gotit.client.Video;
 import com.jzson.gotit.client.VideoSvc;
 import com.jzson.gotit.client.VideoSvcApi;
+import com.jzson.gotit.client.model.Person;
+import com.jzson.gotit.client.provider.ProviderFactory;
+import com.jzson.gotit.client.provider.ServiceApi;
+import com.jzson.gotit.client.provider.ServiceCall;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -63,26 +69,22 @@ public class LoginScreenActivity extends Activity {
 		String pass = password_.getText().toString();
 		String server = server_.getText().toString();
 
-		final VideoSvcApi svc = VideoSvc.init(server, user, pass);
+		ProviderFactory.init(ProviderFactory.INTERNAL_PROVIDER, server, user, pass);
 
-		CallableTask.invoke(new Callable<Collection<Video>>() {
+		CallableTask.invoke(this, new ServiceCall<Person>() {
 
 			@Override
-			public Collection<Video> call() throws Exception {
-				return svc.getVideoList();
+			public Person call(ServiceApi svc) throws Exception {
+				return svc.getPersonByUsername(user);
 			}
-		}, new TaskCallback<Collection<Video>>() {
+		}, new TaskCallback<Person>() {
 
 			@Override
-			public void success(Collection<Video> result) {
+			public void success(Person result) {
 				// OAuth 2.0 grant was successful and we
 				// can talk to the server, open up the video listing
-				Intent intent = new Intent(
-						LoginScreenActivity.this,
-						VideoListActivity.class);
-				intent.putExtra("username", user);
-
-				startActivity(intent);
+				AppApplication.getContext().setCurrentUser(result);
+				NavUtils.showMainActivity(LoginScreenActivity.this);
 				loginButton.setEnabled(true);
 			}
 

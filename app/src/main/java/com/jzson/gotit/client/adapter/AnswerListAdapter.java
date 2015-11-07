@@ -10,7 +10,7 @@ import com.jzson.gotit.client.AppApplication;
 import com.jzson.gotit.client.R;
 import com.jzson.gotit.client.adapter.base.BaseListAdapter;
 import com.jzson.gotit.client.model.Answer;
-import com.jzson.gotit.client.provider.DataProvider;
+import com.jzson.gotit.client.provider.ServiceApi;
 
 import java.util.List;
 
@@ -38,7 +38,7 @@ public class AnswerListAdapter extends BaseListAdapter<Answer, AnswerListAdapter
     }
 
     @Override
-    protected List<Answer> onRefresh() {
+    protected List<Answer> onRefresh(ServiceApi svc) {
         return AppApplication.getContext().getAnswerList();
     }
 

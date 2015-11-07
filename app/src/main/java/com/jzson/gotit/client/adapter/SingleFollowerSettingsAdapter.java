@@ -7,14 +7,17 @@ import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.jzson.gotit.client.AppApplication;
-import com.jzson.gotit.client.NavUtils;
+import com.jzson.gotit.client.CallableTask;
 import com.jzson.gotit.client.R;
+import com.jzson.gotit.client.TaskCallback;
 import com.jzson.gotit.client.adapter.base.BaseListAdapter;
 import com.jzson.gotit.client.model.DataItemSettings;
-import com.jzson.gotit.client.model.FollowerSettings;
-import com.jzson.gotit.client.provider.DataProvider;
+import com.jzson.gotit.client.provider.InternalProvider;
+import com.jzson.gotit.client.provider.ServiceApi;
+import com.jzson.gotit.client.provider.ServiceCall;
 
 import java.util.List;
 
@@ -42,10 +45,10 @@ public class SingleFollowerSettingsAdapter extends BaseListAdapter<DataItemSetti
     }
 
     @Override
-    protected List<DataItemSettings> onRefresh() {
+    protected List<DataItemSettings> onRefresh(ServiceApi svc) {
         int userId = AppApplication.getContext().getUserId();
         int followerId = AppApplication.getContext().getFollowerId();
-        return DataProvider.getInstance().loadSingleFollowerSettings(userId, followerId);
+        return svc.loadSingleFollowerSettings(userId, followerId);
     }
 
     @Override
@@ -59,7 +62,27 @@ public class SingleFollowerSettingsAdapter extends BaseListAdapter<DataItemSetti
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 int userId = AppApplication.getContext().getUserId();
                 int followerId = AppApplication.getContext().getFollowerId();
-                DataProvider.getInstance().saveSingleFollowerSettings(userId, followerId, model.getQuestionId(), isChecked);
+                saveSingleFollowerSettings(userId, followerId, model.getQuestionId(), isChecked);
+            }
+        });
+    }
+
+    private void saveSingleFollowerSettings(final int userId, final int followerId, final int questionId, final boolean isChecked) {
+        CallableTask.invoke(getContext(), new ServiceCall<Void>() {
+            @Override
+            public Void call(ServiceApi srv) throws Exception {
+                srv.saveSingleFollowerSettings(userId, followerId, questionId, isChecked);
+                return null;
+            }
+        }, new TaskCallback<Void>() {
+            @Override
+            public void success(Void result) {
+                Toast.makeText(getContext(), "Saved", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void error(Exception e) {
+                Toast.makeText(getContext(), "Error during saving", Toast.LENGTH_SHORT).show();
             }
         });
     }

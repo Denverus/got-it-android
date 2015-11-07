@@ -1,7 +1,6 @@
 package com.jzson.gotit.client.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -11,11 +10,10 @@ import com.jzson.gotit.client.AppApplication;
 import com.jzson.gotit.client.NavUtils;
 import com.jzson.gotit.client.R;
 import com.jzson.gotit.client.Utils;
-import com.jzson.gotit.client.activities.MainActivity;
 import com.jzson.gotit.client.adapter.base.BaseListAdapter;
-import com.jzson.gotit.client.fragments.AnswerListFragment;
 import com.jzson.gotit.client.model.UserFeed;
-import com.jzson.gotit.client.provider.DataProvider;
+import com.jzson.gotit.client.provider.InternalProvider;
+import com.jzson.gotit.client.provider.ServiceApi;
 
 import java.util.List;
 
@@ -44,8 +42,8 @@ public class FeedListAdapter extends BaseListAdapter<UserFeed, FeedListAdapter.F
     }
 
     @Override
-    protected List<UserFeed> onRefresh() {
-        return DataProvider.getInstance().getUserFeeds(AppApplication.getContext().getUserId());
+    protected List<UserFeed> onRefresh(ServiceApi svc) {
+        return svc.getUserFeeds(AppApplication.getContext().getUserId());
     }
 
     @Override
