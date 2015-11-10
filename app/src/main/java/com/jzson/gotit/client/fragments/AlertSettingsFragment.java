@@ -18,6 +18,8 @@ import com.jzson.gotit.client.CallableTask;
 import com.jzson.gotit.client.R;
 import com.jzson.gotit.client.TaskCallback;
 import com.jzson.gotit.client.model.GeneralSettings;
+import com.jzson.gotit.client.model.Notification;
+import com.jzson.gotit.client.notification.NotificationFactory;
 import com.jzson.gotit.client.provider.InternalProvider;
 import com.jzson.gotit.client.provider.ServiceApi;
 import com.jzson.gotit.client.provider.ServiceCall;
@@ -78,7 +80,7 @@ public class AlertSettingsFragment extends Fragment {
         }, new TaskCallback<Void>() {
             @Override
             public void success(Void result) {
-
+                NotificationFactory.create(getContext());
             }
 
             @Override
