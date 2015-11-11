@@ -55,7 +55,7 @@ public class AlertSettingsFragment extends Fragment {
                     generalSwitch.setChecked(true);
                 }
 
-                saveGeneralSettings(value, alertKey[index]);
+                saveGeneralSettings(alertKey[index], value);
             }
         }, hour, minute, true);//Yes 24 hour time
         mTimePicker.setTitle("Select Time");
@@ -69,7 +69,7 @@ public class AlertSettingsFragment extends Fragment {
         mTimePicker.show();
     }
 
-    private void saveGeneralSettings(final String value, final String key) {
+    private void saveGeneralSettings(final String key, final String value) {
         CallableTask.invoke(getContext(), new ServiceCall<Void>() {
             @Override
             public Void call(ServiceApi srv) throws Exception {
