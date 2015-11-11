@@ -5,7 +5,7 @@
     <data>
         <variable
             name="notification"
-            type="com.jzson.gotit.client.model.Notification" />
+            type="org.coursera.capstone.gotit.client.model.Notification" />
     </data>
 
     <LinearLayout

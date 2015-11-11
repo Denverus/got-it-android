@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <import type="com.jzson.gotit.client.Utils"/>
+        <import type="org.coursera.capstone.gotit.client.Utils"/>
 
         <variable
             name="person"
-            type="com.jzson.gotit.client.model.Person" />
+            type="org.coursera.capstone.gotit.client.model.Person" />
     </data>
 
     <LinearLayout

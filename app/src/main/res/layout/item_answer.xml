@@ -5,7 +5,7 @@
     <data>
         <variable
             name="answer"
-            type="com.jzson.gotit.client.model.Answer" />
+            type="org.coursera.capstone.gotit.client.model.Answer" />
     </data>
 
     <LinearLayout
