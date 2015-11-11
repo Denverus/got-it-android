@@ -20,7 +20,6 @@ import com.jzson.gotit.client.Utils;
 import com.jzson.gotit.client.adapter.base.BaseListAdapter;
 import com.jzson.gotit.client.model.Notification;
 import com.jzson.gotit.client.model.Person;
-import com.jzson.gotit.client.provider.InternalProvider;
 import com.jzson.gotit.client.provider.ServiceApi;
 import com.jzson.gotit.client.provider.ServiceCall;
 
@@ -90,7 +89,7 @@ public class NotificationListAdapter extends BaseListAdapter<Notification, Notif
 
     @Override
     protected List<Notification> onRefresh(ServiceApi svc) {
-        return svc.getNotificationsByUserId(AppApplication.getContext().getUserId());
+        return svc.getNotificationsByUserId(AppApplication.getContext().getCurrentUserId());
     }
 
     @Override

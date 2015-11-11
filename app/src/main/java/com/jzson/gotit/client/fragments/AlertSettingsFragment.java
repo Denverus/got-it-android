@@ -12,17 +12,16 @@ import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.jzson.gotit.client.AppApplication;
 import com.jzson.gotit.client.CallableTask;
 import com.jzson.gotit.client.R;
 import com.jzson.gotit.client.TaskCallback;
 import com.jzson.gotit.client.model.GeneralSettings;
-import com.jzson.gotit.client.model.Notification;
-import com.jzson.gotit.client.notification.NotificationFactory;
-import com.jzson.gotit.client.provider.InternalProvider;
 import com.jzson.gotit.client.provider.ServiceApi;
 import com.jzson.gotit.client.provider.ServiceCall;
+import com.jzson.gotit.client.receiver.AlarmReceiver;
 
 import java.util.Calendar;
 import java.util.List;
@@ -80,7 +79,8 @@ public class AlertSettingsFragment extends Fragment {
         }, new TaskCallback<Void>() {
             @Override
             public void success(Void result) {
-                NotificationFactory.create(getContext());
+                Toast.makeText(getContext(), "Settings updated", Toast.LENGTH_SHORT).show();
+                AlarmReceiver.updateAlarms(getContext(), userId, alertKey);
             }
 
             @Override
@@ -131,7 +131,7 @@ public class AlertSettingsFragment extends Fragment {
 
     private String[] alertKey = {GeneralSettings.ALERT_1, GeneralSettings.ALERT_2, GeneralSettings.ALERT_3};
 
-    private int userId = AppApplication.getContext().getUserId();
+    private int userId = AppApplication.getContext().getCurrentUserId();
 
     private View rootView;
 

@@ -16,7 +16,6 @@ import com.jzson.gotit.client.R;
 import com.jzson.gotit.client.TaskCallback;
 import com.jzson.gotit.client.adapter.base.BaseListAdapter;
 import com.jzson.gotit.client.model.FollowerSettings;
-import com.jzson.gotit.client.provider.InternalProvider;
 import com.jzson.gotit.client.provider.ServiceApi;
 import com.jzson.gotit.client.provider.ServiceCall;
 
@@ -49,7 +48,7 @@ public class SettingsFollowerListAdapter extends BaseListAdapter<FollowerSetting
 
     @Override
     protected List<FollowerSettings> onRefresh(ServiceApi svc) {
-        int userId = AppApplication.getContext().getUserId();
+        int userId = AppApplication.getContext().getCurrentUserId();
         return svc.loadFollowerSettings(userId);
     }
 
@@ -62,7 +61,7 @@ public class SettingsFollowerListAdapter extends BaseListAdapter<FollowerSetting
         holder.aSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                int userId = AppApplication.getContext().getUserId();
+                int userId = AppApplication.getContext().getCurrentUserId();
                 enableFollowerSharing(isChecked, userId, model);
             }
         });

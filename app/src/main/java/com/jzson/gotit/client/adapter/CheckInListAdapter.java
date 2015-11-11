@@ -12,7 +12,6 @@ import com.jzson.gotit.client.R;
 import com.jzson.gotit.client.Utils;
 import com.jzson.gotit.client.adapter.base.BaseListAdapter;
 import com.jzson.gotit.client.model.CheckIn;
-import com.jzson.gotit.client.provider.InternalProvider;
 import com.jzson.gotit.client.provider.ServiceApi;
 
 import java.util.List;
@@ -43,7 +42,7 @@ public class CheckInListAdapter extends BaseListAdapter<CheckIn, CheckInListAdap
 
     @Override
     protected List<CheckIn> onRefresh(ServiceApi svc) {
-        return svc.getCheckInListByUserId(AppApplication.getContext().getUserId());
+        return svc.getCheckInListByUserId(AppApplication.getContext().getCurrentUserId());
     }
 
     @Override

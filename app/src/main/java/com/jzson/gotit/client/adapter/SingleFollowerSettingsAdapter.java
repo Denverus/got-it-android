@@ -15,7 +15,6 @@ import com.jzson.gotit.client.R;
 import com.jzson.gotit.client.TaskCallback;
 import com.jzson.gotit.client.adapter.base.BaseListAdapter;
 import com.jzson.gotit.client.model.DataItemSettings;
-import com.jzson.gotit.client.provider.InternalProvider;
 import com.jzson.gotit.client.provider.ServiceApi;
 import com.jzson.gotit.client.provider.ServiceCall;
 
@@ -46,7 +45,7 @@ public class SingleFollowerSettingsAdapter extends BaseListAdapter<DataItemSetti
 
     @Override
     protected List<DataItemSettings> onRefresh(ServiceApi svc) {
-        int userId = AppApplication.getContext().getUserId();
+        int userId = AppApplication.getContext().getCurrentUserId();
         int followerId = AppApplication.getContext().getFollowerId();
         return svc.loadSingleFollowerSettings(userId, followerId);
     }
@@ -60,7 +59,7 @@ public class SingleFollowerSettingsAdapter extends BaseListAdapter<DataItemSetti
         holder.aSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                int userId = AppApplication.getContext().getUserId();
+                int userId = AppApplication.getContext().getCurrentUserId();
                 int followerId = AppApplication.getContext().getFollowerId();
                 saveSingleFollowerSettings(userId, followerId, model.getQuestionId(), isChecked);
             }

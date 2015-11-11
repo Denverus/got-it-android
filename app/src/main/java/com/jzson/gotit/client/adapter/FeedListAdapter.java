@@ -12,7 +12,6 @@ import com.jzson.gotit.client.R;
 import com.jzson.gotit.client.Utils;
 import com.jzson.gotit.client.adapter.base.BaseListAdapter;
 import com.jzson.gotit.client.model.UserFeed;
-import com.jzson.gotit.client.provider.InternalProvider;
 import com.jzson.gotit.client.provider.ServiceApi;
 
 import java.util.List;
@@ -43,7 +42,7 @@ public class FeedListAdapter extends BaseListAdapter<UserFeed, FeedListAdapter.F
 
     @Override
     protected List<UserFeed> onRefresh(ServiceApi svc) {
-        return svc.getUserFeeds(AppApplication.getContext().getUserId());
+        return svc.getUserFeeds(AppApplication.getContext().getCurrentUserId());
     }
 
     @Override

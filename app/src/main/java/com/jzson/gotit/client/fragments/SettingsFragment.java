@@ -15,7 +15,6 @@ import com.jzson.gotit.client.NavUtils;
 import com.jzson.gotit.client.R;
 import com.jzson.gotit.client.TaskCallback;
 import com.jzson.gotit.client.model.GeneralSettings;
-import com.jzson.gotit.client.provider.InternalProvider;
 import com.jzson.gotit.client.provider.ServiceApi;
 import com.jzson.gotit.client.provider.ServiceCall;
 
@@ -60,7 +59,7 @@ public class SettingsFragment extends Fragment {
             }
         });
 
-        int userId = AppApplication.getContext().getUserId();
+        int userId = AppApplication.getContext().getCurrentUserId();
 
         isSharingEnabled(userId);
 

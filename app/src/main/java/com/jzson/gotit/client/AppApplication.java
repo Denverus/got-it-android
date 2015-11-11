@@ -56,7 +56,7 @@ public class AppApplication extends Application {
         return checkIn;
     }
 
-    public int getUserId() {
+    public int getCurrentUserId() {
         return currentPerson.getId();
     }
 

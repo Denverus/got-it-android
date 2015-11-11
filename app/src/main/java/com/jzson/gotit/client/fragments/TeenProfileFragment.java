@@ -47,7 +47,7 @@ public class TeenProfileFragment extends Fragment implements View.OnClickListene
         bind.setPerson(mPerson);
         bind.subscribeButton.setOnClickListener(this);
 
-        checkFollowerStatus(AppApplication.getContext().getUserId(), mPerson.getId());
+        checkFollowerStatus(AppApplication.getContext().getCurrentUserId(), mPerson.getId());
     }
 
     private void checkFollowerStatus(final int userId, final int followerId) {
@@ -80,14 +80,14 @@ public class TeenProfileFragment extends Fragment implements View.OnClickListene
     public void onClick(View v) {
         bind.subscribeButton.setText(R.string.requested);
         bind.subscribeButton.setEnabled(false);
-        sendSubscribeRequest(mPerson.getId(), AppApplication.getContext().getUserId());
+        sendSubscribeRequest(mPerson.getId(), AppApplication.getContext().getCurrentUserId());
     }
 
     private void sendSubscribeRequest(int followerId, int userId) {
         CallableTask.invoke(getContext(), new ServiceCall<Void>() {
             @Override
             public Void call(ServiceApi srv) throws Exception {
-                srv.sendSubscribeRequest(mPerson.getId(), AppApplication.getContext().getUserId());;
+                srv.sendSubscribeRequest(mPerson.getId(), AppApplication.getContext().getCurrentUserId());;
                 return null;
             }
         }, new TaskCallback<Void>() {

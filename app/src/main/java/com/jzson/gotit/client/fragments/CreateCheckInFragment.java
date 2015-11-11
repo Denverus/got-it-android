@@ -103,7 +103,7 @@ public class CreateCheckInFragment extends Fragment {
             openNextQuestion();
         } else {
             if (!answerList.isEmpty()) {
-                int userId = AppApplication.getContext().getUserId();
+                int userId = AppApplication.getContext().getCurrentUserId();
                 saveAnswers(userId, answerList);
             } else {
                 Toast.makeText(getContext(), "Check In doesn't complete", Toast.LENGTH_SHORT).show();

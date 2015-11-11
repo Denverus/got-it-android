@@ -18,7 +18,6 @@ import com.jzson.gotit.client.TaskCallback;
 import com.jzson.gotit.client.adapter.base.BaseListAdapter;
 import com.jzson.gotit.client.databinding.FollowerListItemBinding;
 import com.jzson.gotit.client.model.Person;
-import com.jzson.gotit.client.provider.InternalProvider;
 import com.jzson.gotit.client.provider.ServiceApi;
 import com.jzson.gotit.client.provider.ServiceCall;
 
@@ -51,7 +50,7 @@ public class FollowerListAdapter extends BaseListAdapter<Person, FollowerListAda
 
     @Override
     protected List<Person> onRefresh(ServiceApi svc) {
-        return svc.getFollowerList(AppApplication.getContext().getUserId());
+        return svc.getFollowerList(AppApplication.getContext().getCurrentUserId());
     }
 
     @Override
@@ -63,7 +62,7 @@ public class FollowerListAdapter extends BaseListAdapter<Person, FollowerListAda
             @Override
             public void onClick(View v) {
                 bind.unsubscribe.setEnabled(false);
-                cancelSubscription(AppApplication.getContext().getUserId(), person.getId());
+                cancelSubscription(AppApplication.getContext().getCurrentUserId(), person.getId());
             }
         });
     }

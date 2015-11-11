@@ -36,7 +36,7 @@ public class ShareSettingsFragment extends Fragment implements BaseListAdapter.D
     private BaseListAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
-    private final int userId = AppApplication.getContext().getUserId();
+    private final int userId = AppApplication.getContext().getCurrentUserId();
 
     public ShareSettingsFragment() {
 
