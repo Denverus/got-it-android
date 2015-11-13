@@ -140,7 +140,7 @@ public class CreateCheckInFragment extends Fragment {
 
         switch (inputType) {
             case Answer.TYPE_STRING: {
-                if (answerEditText.getText().toString().isEmpty()) {
+                if (!answerEditText.getText().toString().isEmpty()) {
                     String answerText = answerEditText.getText().toString();
                     answer = new Answer(questionId, answerText);
                 }

@@ -213,6 +213,12 @@ public class InternalProvider implements ServiceApi {
                     return value.getCheckInId() == checkInId;
                 }
             });
+
+            for (Answer answer : answerList) {
+                Question question = questionTable.getById(answer.getQuestionId());
+                answer.setQuestion(question.getQuestion());
+            }
+
             checkIn.setAnswers(answerList);
         }
         return checkInList;
