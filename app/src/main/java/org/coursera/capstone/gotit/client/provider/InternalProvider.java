@@ -650,9 +650,9 @@ public class InternalProvider implements ServiceApi {
                 Collections.sort(graphData, new Comparator<GraphData>() {
                     @Override
                     public int compare(GraphData lhs, GraphData rhs) {
-                        if (lhs.getDate().getTime() < rhs.getDate().getTime()) {
+                        if (lhs.getDate().getTime() > rhs.getDate().getTime()) {
                             return 1;
-                        } else if (lhs.getDate().getTime() > rhs.getDate().getTime()) {
+                        } else if (lhs.getDate().getTime() < rhs.getDate().getTime()) {
                             return -1;
                         } else {
                             return 0;
