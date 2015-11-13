@@ -21,6 +21,8 @@ public class ProviderFactory {
 
     public static final String CLIENT_ID = "mobile";
 
+    private static final ServiceApi internalProvider = new InternalProvider();
+
     private static ServiceApi service;
 
     public static synchronized ServiceApi getOrShowLogin(Context ctx) {
@@ -37,7 +39,7 @@ public class ProviderFactory {
 
         switch (serverType) {
             case INTERNAL_PROVIDER: {
-                service = new InternalProvider();
+                service = internalProvider;
                 break;
             }
             case SPRING_PROVIDER: {
@@ -58,6 +60,4 @@ public class ProviderFactory {
                 .setEndpoint(server).setLogLevel(RestAdapter.LogLevel.FULL).build()
                 .create(ServiceApi.class);
     }
-
-
 }

@@ -20,11 +20,14 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by Denis on 10/11/2015.
  */
 public class InternalProvider implements ServiceApi {
+
+    private static final String[] MEALS = {"sandwich, sugar-free tea", "burger, salad, diet cola", "steak, french fries"};
 
     private PersonTable personTable = new PersonTable();
 
@@ -70,6 +73,15 @@ public class InternalProvider implements ServiceApi {
         questionTable.add(new Question("What did you eat at meal time?", "Meal", Answer.TYPE_STRING));
         questionTable.add(new Question("Did you administer insulin?", "Insulin administer", Answer.TYPE_BOOLEAN));
 
+        sendSubscribeRequest(1, 0);
+        acceptSubscribeRequest(0);
+
+        for (Person person : personTable.getTeens()) {
+            for (int i=0; i<10; i++) {
+                createTestCheckInData(person.getId());
+            }
+        }
+
 
         /*feedbackTable.add(new CheckIn(0, createQuestions(10d, "Meat", false)));
         feedbackTable.add(new CheckIn(1, createQuestions(5d, "Bread", true)));
@@ -86,6 +98,17 @@ public class InternalProvider implements ServiceApi {
         //subscriptions.add(new Subscription(5, 2));
         //subscriptions.add(new Subscription(5, 3));
     }
+
+    private void createTestCheckInData(int personId) {
+        List<Answer> answers = new ArrayList<>();
+
+        Random rnd = new Random();
+
+        answers.add(new Answer(0, rnd.nextInt(200)));
+        answers.add(new Answer(1, MEALS[rnd.nextInt(MEALS.length)]));
+        answers.add(new Answer(2, rnd.nextBoolean()));
+
+        saveAnswer(personId, answers);    }
 
     public Person getPersonById(int id) {
         return personTable.getById(id);
@@ -132,7 +155,7 @@ public class InternalProvider implements ServiceApi {
                 }
             });
 
-            if (!enableSharing.isEmpty()) {
+            if (enableSharing.isEmpty() || !Boolean.parseBoolean(enableSharing.get(0).getValue())) {
                 // Teen doesn't allow sharing his info
                 continue;
             }
@@ -143,7 +166,7 @@ public class InternalProvider implements ServiceApi {
                     return value.getPersonId() == teenId;
                 }
             });
-            for (CheckIn checkIn : checkInList) {
+            for (final CheckIn checkIn : checkInList) {
                 List<ShareSettings> shareSettings = shareSettingsTable.getListByCriteria(new Table.BooleanCriteria<ShareSettings>() {
                     @Override
                     public boolean getCriteriaValue(ShareSettings value) {
@@ -152,6 +175,17 @@ public class InternalProvider implements ServiceApi {
                 });
 
                 if (shareSettings.isEmpty()) {
+                    List<Answer> answerList = answerTable.getListByCriteria(new Table.BooleanCriteria<Answer>() {
+                        @Override
+                        public boolean getCriteriaValue(Answer value) {
+                            return value.getCheckInId() == checkIn.getId();
+                        }
+                    });
+
+                    updateAnswersByQuestions(answerList);
+
+                    checkIn.setAnswers(answerList);
+
                     UserFeed userFeed = new UserFeed(teen, checkIn);
                     userFeeds.add(userFeed);
                 } else {
@@ -249,6 +283,9 @@ public class InternalProvider implements ServiceApi {
         if (notification.getCode() == Notification.SUBSCRIBE_REQUESTED) {
             Subscription subscription = new Subscription(notification.getFromPersonId(), notification.getToPersonId());
             subscriptions.add(subscription);
+
+            // Allow sharing to person in settings
+            enableFollowerSharing(notification.getToPersonId(), notification.getFromPersonId(), true);
 
             Notification followerNotification = new Notification(Notification.SUBSCRIBE_REJECTED, notification.getToPersonId(), notification.getFromPersonId());
             notifications.add(followerNotification);
@@ -490,5 +527,12 @@ public class InternalProvider implements ServiceApi {
         });
 
         list.get(0).setValue(settingsValue);
+    }
+
+    private void updateAnswersByQuestions(List<Answer> answers) {
+        for (Answer answer : answers) {
+            Question question = questionTable.getById(answer.getQuestionId());
+            answer.setQuestion(question.getQuestion());
+        }
     }
 }
