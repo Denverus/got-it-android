@@ -7,15 +7,19 @@
             android:title="@string/nav_teens" />
         <item
             android:id="@+id/nav_check_ins"
-            android:icon="@drawable/ic_notifications_black_24dp"
+            android:icon="@drawable/ic_done_black_24dp"
             android:title="@string/nav_checkins" />
         <item
             android:id="@+id/nav_feeds"
-            android:icon="@drawable/ic_notifications_black_24dp"
+            android:icon="@drawable/ic_chat_black_24dp"
             android:title="@string/nav_feeds" />
         <item
+            android:id="@+id/nav_feedback"
+            android:icon="@drawable/ic_event_note_black_24dp"
+            android:title="@string/nav_feedback" />
+        <item
             android:id="@+id/nav_followers"
-            android:icon="@drawable/ic_group_black_24dp"
+            android:icon="@drawable/ic_directions_run_black_24dp"
             android:title="@string/nav_followers" />
         <item
             android:id="@+id/nav_notifications"

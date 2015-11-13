@@ -10,11 +10,14 @@ import java.util.List;
 public class CheckIn extends BaseModel {
 
     private Date created;
-    private List<Answer> answerList = Collections.EMPTY_LIST;
     private int personId;
+    private List<Answer> answerList = Collections.EMPTY_LIST;
 
-    public CheckIn() {
-        created = new Date();
+    public CheckIn(Date date) {
+        if (date == null)
+            created = new Date();
+        else
+            created = date;
     }
 
     public CheckIn(int personId, List<Answer> answerList) {
@@ -48,5 +51,14 @@ public class CheckIn extends BaseModel {
 
     public void setPersonId(int personId) {
         this.personId = personId;
+    }
+
+    @Override
+    public String toString() {
+        return "CheckIn{" +
+                "created=" + created +
+                ", personId=" + personId +
+                ", answerList=" + answerList +
+                '}';
     }
 }

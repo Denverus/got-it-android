@@ -13,6 +13,7 @@ import org.coursera.capstone.gotit.client.activities.LoginScreenActivity;
 import org.coursera.capstone.gotit.client.activities.MainActivity;
 import org.coursera.capstone.gotit.client.activities.RegistrationActivity;
 import org.coursera.capstone.gotit.client.fragments.FeedListFragment;
+import org.coursera.capstone.gotit.client.fragments.FeedbackListFragment;
 import org.coursera.capstone.gotit.client.fragments.FollowerListFragment;
 import org.coursera.capstone.gotit.client.fragments.NotificationListFragment;
 import org.coursera.capstone.gotit.client.model.Person;
@@ -66,6 +67,9 @@ public class NavigationViewManager {
                 break;
             case R.id.nav_feeds:
                 mMainActivity.setFragment(new FeedListFragment());
+                break;
+            case R.id.nav_feedback:
+                NavUtils.showFeedbackList(mMainActivity);
                 break;
             case R.id.nav_followers:
                 mMainActivity.setFragment(new FollowerListFragment());

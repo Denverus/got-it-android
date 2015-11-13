@@ -1,13 +1,16 @@
 package org.coursera.capstone.gotit.client.provider;
 
 import android.media.Image;
+import android.widget.CheckBox;
 
 import org.coursera.capstone.gotit.client.Utils;
 import org.coursera.capstone.gotit.client.model.Answer;
 import org.coursera.capstone.gotit.client.model.CheckIn;
 import org.coursera.capstone.gotit.client.model.DataItemSettings;
+import org.coursera.capstone.gotit.client.model.Feedback;
 import org.coursera.capstone.gotit.client.model.FollowerSettings;
 import org.coursera.capstone.gotit.client.model.GeneralSettings;
+import org.coursera.capstone.gotit.client.model.GraphData;
 import org.coursera.capstone.gotit.client.model.Notification;
 import org.coursera.capstone.gotit.client.model.Person;
 import org.coursera.capstone.gotit.client.model.Question;
@@ -16,6 +19,7 @@ import org.coursera.capstone.gotit.client.model.Subscription;
 import org.coursera.capstone.gotit.client.model.UserFeed;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -65,8 +69,8 @@ public class InternalProvider implements ServiceApi {
         personTable.add(new Person("Emma Wilson", "user1", "", Utils.getRandomBirthDate(), true, "11232", null));
         personTable.add(new Person("Lavery Maiss", "user2", "", Utils.getRandomBirthDate(), true, "11232", null));
         personTable.add(new Person("Lillie Watts", "user3", "", Utils.getRandomBirthDate(), true, "11232", null));
-        personTable.add(new Person("Michel Rodrigez", "user4", "", Utils.getRandomBirthDate(), true, "11232", null));
-        personTable.add(new Person("Caren Wilosn", "user5", "", Utils.getRandomBirthDate(), true, "11232", null));
+        personTable.add(new Person("Michael Rodrigez", "user4", "", Utils.getRandomBirthDate(), true, "11232", null));
+        personTable.add(new Person("Caren Wilson", "user5", "", Utils.getRandomBirthDate(), true, "11232", null));
         personTable.add(new Person("Mike Waters", "user6", "", Utils.getRandomBirthDate(), false, null, null));
 
         questionTable.add(new Question("What was your blood sugar level at meal time?", "Blood sugar level", Answer.TYPE_INT));
@@ -76,8 +80,14 @@ public class InternalProvider implements ServiceApi {
         sendSubscribeRequest(1, 0);
         acceptSubscribeRequest(0);
 
+        sendSubscribeRequest(2, 0);
+        acceptSubscribeRequest(2);
+
+        sendSubscribeRequest(3, 0);
+        acceptSubscribeRequest(3);
+
         for (Person person : personTable.getTeens()) {
-            for (int i=0; i<10; i++) {
+            for (int i = 0; i < 10; i++) {
                 createTestCheckInData(person.getId());
             }
         }
@@ -108,7 +118,11 @@ public class InternalProvider implements ServiceApi {
         answers.add(new Answer(1, MEALS[rnd.nextInt(MEALS.length)]));
         answers.add(new Answer(2, rnd.nextBoolean()));
 
-        saveAnswer(personId, answers);    }
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(2015, 10, rnd.nextInt(29)+1, rnd.nextInt(23), rnd.nextInt(60));
+
+        saveAnswer(calendar.getTime(), personId, answers);
+    }
 
     public Person getPersonById(int id) {
         return personTable.getById(id);
@@ -208,7 +222,7 @@ public class InternalProvider implements ServiceApi {
                         }
                     }
 
-                    CheckIn sharedCheckIn = new CheckIn();
+                    CheckIn sharedCheckIn = new CheckIn(checkIn.getCreated());
                     sharedCheckIn.setId(checkIn.getId());
                     sharedCheckIn.setPersonId(checkIn.getPersonId());
                     sharedCheckIn.setCreated(checkIn.getCreated());
@@ -354,8 +368,8 @@ public class InternalProvider implements ServiceApi {
         personTable.add(person);
     }
 
-    public void saveAnswer(int userId, List<Answer> answerList) {
-        CheckIn checkIn = new CheckIn();
+    public void saveAnswer(Date date, int userId, List<Answer> answerList) {
+        CheckIn checkIn = new CheckIn(date);
         checkIn.setPersonId(userId);
         int checkInId = checkInTable.add(checkIn);
 
@@ -527,6 +541,132 @@ public class InternalProvider implements ServiceApi {
         });
 
         list.get(0).setValue(settingsValue);
+    }
+
+    private List<CheckIn> getSecuredCheckIns(final int followerId, int personId) {
+        List<CheckIn> resultCheckIn = new ArrayList<>();
+
+        List<Subscription> list = subscriptions.getSubscriptionByPersonId(followerId);
+        for (Subscription subscription : list) {
+            final int teenId = subscription.getSubscribedTo();
+
+            if (teenId != personId) {
+                continue;
+            }
+
+            final Person teen = personTable.getById(teenId);
+
+            // Check sharing settings
+            List<GeneralSettings> enableSharing = generalSettingsTable.getListByCriteria(new Table.BooleanCriteria<GeneralSettings>() {
+                @Override
+                public boolean getCriteriaValue(GeneralSettings value) {
+                    return value.getUserId() == teenId && value.getKey() == GeneralSettings.ENABLE_SHARING;
+                }
+            });
+
+            if (enableSharing.isEmpty() || !Boolean.parseBoolean(enableSharing.get(0).getValue())) {
+                // Teen doesn't allow sharing his info
+                continue;
+            }
+
+            List<CheckIn> checkInList = checkInTable.getListByCriteria(new Table.BooleanCriteria<CheckIn>() {
+                @Override
+                public boolean getCriteriaValue(CheckIn value) {
+                    return value.getPersonId() == teenId;
+                }
+            });
+            for (final CheckIn checkIn : checkInList) {
+                List<ShareSettings> shareSettings = shareSettingsTable.getListByCriteria(new Table.BooleanCriteria<ShareSettings>() {
+                    @Override
+                    public boolean getCriteriaValue(ShareSettings value) {
+                        return value.getUserId() == teen.getId() && value.getFollowerId() == followerId;
+                    }
+                });
+
+                CheckIn sharedCheckIn = null;
+                if (shareSettings.isEmpty()) {
+                    List<Answer> answerList = answerTable.getListByCriteria(new Table.BooleanCriteria<Answer>() {
+                        @Override
+                        public boolean getCriteriaValue(Answer value) {
+                            return value.getCheckInId() == checkIn.getId();
+                        }
+                    });
+
+                    updateAnswersByQuestions(answerList);
+
+                    checkIn.setAnswers(answerList);
+
+                    sharedCheckIn = checkIn;
+                } else {
+                    List<Answer> allowedAnswers = new ArrayList<>();
+                    List<Answer> answers = checkIn.getAnswers();
+
+                    for (Answer answer : answers) {
+                        boolean allowSharing = true;
+                        for (ShareSettings settings : shareSettings) {
+                            if (settings.getAllowedQuestionId() == answer.getQuestionId()) {
+                                allowSharing = false;
+                            }
+                        }
+
+                        Question question = questionTable.getById(answer.getQuestionId());
+                        answer.setQuestion(question.getQuestion());
+
+                        if (allowSharing) {
+                            allowedAnswers.add(answer);
+                        }
+                    }
+
+                    sharedCheckIn = new CheckIn(checkIn.getCreated());
+                    sharedCheckIn.setId(checkIn.getId());
+                    sharedCheckIn.setPersonId(checkIn.getPersonId());
+                    sharedCheckIn.setCreated(checkIn.getCreated());
+                    sharedCheckIn.setAnswers(allowedAnswers);
+                }
+
+                resultCheckIn.add(sharedCheckIn);
+            }
+        }
+
+        return resultCheckIn;
+    }
+
+    @Override
+    public List<Feedback> getFeedbackList(int userId) {
+        List<Feedback> result = new ArrayList<>();
+
+        for (Person teen : personTable.getTeens()) {
+            final List<CheckIn> checkIns = getSecuredCheckIns(userId, teen.getId());
+            List<GraphData> graphData = new ArrayList<>();
+
+            for (CheckIn checkIn : checkIns) {
+                for (Answer answer : checkIn.getAnswers()) {
+                    if (answer.getAnswerType() == Answer.TYPE_INT) {
+                        graphData.add(new GraphData(checkIn.getCreated(), answer.getAnswerAsInteger()));
+                    }
+                }
+            }
+            if (!graphData.isEmpty()) {
+                Collections.sort(graphData, new Comparator<GraphData>() {
+                    @Override
+                    public int compare(GraphData lhs, GraphData rhs) {
+                        if (lhs.getDate().getTime() < rhs.getDate().getTime()) {
+                            return 1;
+                        } else if (lhs.getDate().getTime() > rhs.getDate().getTime()) {
+                            return -1;
+                        } else {
+                            return 0;
+                        }
+                    }
+                });
+
+                Feedback feedback = new Feedback();
+                feedback.setPerson(teen);
+                feedback.setGraphData(graphData);
+                result.add(feedback);
+            }
+        }
+        return result;
     }
 
     private void updateAnswersByQuestions(List<Answer> answers) {

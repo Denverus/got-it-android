@@ -55,4 +55,6 @@
     <string name="next">Next</string>
     <string name="settings">Settings</string>
     <string name="register_link_text"><u>Register</u></string>
+    <string name="nav_feedback">Feedback</string>
+    <string name="graph_title">Sugar blood level</string>
 </resources>

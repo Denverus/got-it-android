@@ -114,7 +114,7 @@ public class CreateCheckInFragment extends Fragment {
         CallableTask.invoke(getContext(), new ServiceCall<Void>() {
             @Override
             public Void call(ServiceApi srv) throws Exception {
-                srv.saveAnswer(userId, answerList);
+                srv.saveAnswer(null, userId, answerList);
                 return null;
             }
         }, new TaskCallback<Void>() {

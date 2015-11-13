@@ -8,6 +8,7 @@ import org.coursera.capstone.gotit.client.activities.MainActivity;
 import org.coursera.capstone.gotit.client.fragments.AnswerListFragment;
 import org.coursera.capstone.gotit.client.fragments.FeedListFragment;
 import org.coursera.capstone.gotit.client.fragments.CheckInListFragment;
+import org.coursera.capstone.gotit.client.fragments.FeedbackListFragment;
 import org.coursera.capstone.gotit.client.fragments.FollowerListFragment;
 import org.coursera.capstone.gotit.client.fragments.CreateCheckInFragment;
 import org.coursera.capstone.gotit.client.fragments.NotificationListFragment;
@@ -106,5 +107,9 @@ public class NavUtils {
     public static void showTeenProfile(Context context, Person person) {
         AppApplication.getContext().setPerson(person);
         showFragmentInMainActivity(context, new TeenProfileFragment());
+    }
+
+    public static void showFeedbackList(Context context) {
+        showFragmentInMainActivity(context, new FeedbackListFragment());
     }
 }

@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import org.coursera.capstone.gotit.client.AppApplication;
 import org.coursera.capstone.gotit.client.NavUtils;
+import org.coursera.capstone.gotit.client.R;
 import org.coursera.capstone.gotit.client.Utils;
 import org.coursera.capstone.gotit.client.adapter.base.BaseListAdapter;
 import org.coursera.capstone.gotit.client.model.UserFeed;
@@ -31,7 +32,7 @@ public class FeedListAdapter extends BaseListAdapter<UserFeed, FeedListAdapter.F
 
     @Override
     protected int getItemResourceId() {
-        return org.coursera.capstone.gotit.client.R.layout.feedback_item;
+        return R.layout.feed_item;
     }
 
     @Override

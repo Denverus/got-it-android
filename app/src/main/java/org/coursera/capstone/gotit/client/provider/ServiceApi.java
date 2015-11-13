@@ -5,6 +5,7 @@ import android.media.Image;
 import org.coursera.capstone.gotit.client.model.Answer;
 import org.coursera.capstone.gotit.client.model.CheckIn;
 import org.coursera.capstone.gotit.client.model.DataItemSettings;
+import org.coursera.capstone.gotit.client.model.Feedback;
 import org.coursera.capstone.gotit.client.model.FollowerSettings;
 import org.coursera.capstone.gotit.client.model.GeneralSettings;
 import org.coursera.capstone.gotit.client.model.Notification;
@@ -52,7 +53,7 @@ public interface ServiceApi {
 
     public void registerUser(String fullName, Date dateBirth, String login, String password, boolean hasDiabetes, String medicalRecordNumber, Image photo);
 
-    public void saveAnswer(int userId, List<Answer> answerList);
+    public void saveAnswer(Date date, int userId, List<Answer> answerList);
 
     public List<Question> getCheckInQuestions();
 
@@ -73,4 +74,6 @@ public interface ServiceApi {
     public List<GeneralSettings> loadGeneralSettingsList(final int userId, final String[] settingsKeyList);
 
     public void saveGeneralSettings(final int userId, final String settingsKey, String settingsValue);
+
+    List<Feedback> getFeedbackList(int userId);
 }
