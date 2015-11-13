@@ -16,8 +16,10 @@ import org.coursera.capstone.gotit.client.fragments.SettingsFragment;
 import org.coursera.capstone.gotit.client.fragments.SingleFollowerSettingsFragment;
 import org.coursera.capstone.gotit.client.fragments.ShareSettingsFragment;
 import org.coursera.capstone.gotit.client.fragments.TeenListFragment;
+import org.coursera.capstone.gotit.client.fragments.TeenProfileFragment;
 import org.coursera.capstone.gotit.client.model.Answer;
 import org.coursera.capstone.gotit.client.model.FollowerSettings;
+import org.coursera.capstone.gotit.client.model.Person;
 import org.coursera.capstone.gotit.client.model.Question;
 import org.coursera.capstone.gotit.client.provider.ProviderFactory;
 import org.coursera.capstone.gotit.client.provider.ServiceApi;
@@ -99,5 +101,10 @@ public class NavUtils {
     public static void showSingleFollowerSettings(Context context, FollowerSettings model) {
         AppApplication.getContext().setFollowerId(model.getFollowerId());
         showFragmentInMainActivity(context, new SingleFollowerSettingsFragment());
+    }
+
+    public static void showTeenProfile(Context context, Person person) {
+        AppApplication.getContext().setPerson(person);
+        showFragmentInMainActivity(context, new TeenProfileFragment());
     }
 }

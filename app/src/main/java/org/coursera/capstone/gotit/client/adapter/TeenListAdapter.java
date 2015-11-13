@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.coursera.capstone.gotit.client.AppApplication;
+import org.coursera.capstone.gotit.client.NavUtils;
 import org.coursera.capstone.gotit.client.Utils;
 import org.coursera.capstone.gotit.client.activities.MainActivity;
 import org.coursera.capstone.gotit.client.adapter.base.BaseListAdapter;
@@ -29,10 +30,7 @@ public class TeenListAdapter extends BaseListAdapter<Person, TeenListAdapter.Tee
 
     @Override
     protected void onItemClick(Context context, Person person) {
-        Intent intent = new Intent(context, MainActivity.class);
-        AppApplication.getContext().setPerson(person);
-        AppApplication.getContext().setFragment(new TeenProfileFragment());
-        context.startActivity(intent);
+        NavUtils.showTeenProfile(context, person);
     }
 
     @Override
