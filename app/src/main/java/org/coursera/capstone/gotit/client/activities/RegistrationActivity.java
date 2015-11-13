@@ -2,6 +2,7 @@ package org.coursera.capstone.gotit.client.activities;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.coursera.capstone.gotit.client.CallableTask;
+import org.coursera.capstone.gotit.client.R;
 import org.coursera.capstone.gotit.client.TaskCallback;
 import org.coursera.capstone.gotit.client.provider.ServiceApi;
 import org.coursera.capstone.gotit.client.provider.ServiceCall;
@@ -42,20 +44,20 @@ public class RegistrationActivity extends AppCompatActivity implements DatePicke
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(org.coursera.capstone.gotit.client.R.layout.register);
+        setContentView(R.layout.activity_register);
 
-        reg_fullName = (EditText) findViewById(org.coursera.capstone.gotit.client.R.id.reg_fullname);
+        reg_fullName = (EditText) findViewById(R.id.reg_fullname);
 
-        birthDateEdit = (EditText) findViewById(org.coursera.capstone.gotit.client.R.id.birthDate);
+        birthDateEdit = (EditText) findViewById(R.id.birthDate);
 
-        reg_login =  (EditText) findViewById(org.coursera.capstone.gotit.client.R.id.reg_login);
+        reg_login =  (EditText) findViewById(R.id.reg_login);
 
-        reg_password =  (EditText) findViewById(org.coursera.capstone.gotit.client.R.id.reg_password);
+        reg_password =  (EditText) findViewById(R.id.reg_password);
 
-        hasDiabetesSwitch = (Switch) findViewById(org.coursera.capstone.gotit.client.R.id.reg_has_diabetes);
+        hasDiabetesSwitch = (Switch) findViewById(R.id.reg_has_diabetes);
 
-        reg_medical_record = (EditText)findViewById(org.coursera.capstone.gotit.client.R.id.reg_medical_record);
-        final TextView reg_medical_record_title = (TextView)findViewById(org.coursera.capstone.gotit.client.R.id.reg_medical_record_title);
+        reg_medical_record = (EditText)findViewById(R.id.reg_medical_record);
+        final TextView reg_medical_record_title = (TextView)findViewById(R.id.reg_medical_record_title);
 
         hasDiabetesSwitch.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,6 +98,8 @@ public class RegistrationActivity extends AppCompatActivity implements DatePicke
             @Override
             public void success(Void result) {
                 Toast.makeText(RegistrationActivity.this, "User registered", Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(RegistrationActivity.this, LoginScreenActivity.class);
+                startActivity(i);
             }
 
             @Override

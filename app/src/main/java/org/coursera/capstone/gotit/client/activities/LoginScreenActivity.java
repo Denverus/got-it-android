@@ -1,17 +1,21 @@
 package org.coursera.capstone.gotit.client.activities;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.coursera.capstone.gotit.client.AppApplication;
 import org.coursera.capstone.gotit.client.CallableTask;
 import org.coursera.capstone.gotit.client.NavUtils;
+import org.coursera.capstone.gotit.client.R;
 import org.coursera.capstone.gotit.client.TaskCallback;
 import org.coursera.capstone.gotit.client.model.Person;
 import org.coursera.capstone.gotit.client.provider.ProviderFactory;
@@ -35,25 +39,31 @@ import butterknife.OnClick;
  */
 public class LoginScreenActivity extends Activity {
 
-	@InjectView(org.coursera.capstone.gotit.client.R.id.userName)
+	public static final String PREFS_NAME = "PrefsFile";
+
+    public static final String DEFAULT_SERVER = "https://10.0.2.2:8443";
+    public static final String DEFAULT_USER = "user1";
+    public static final String DEFAULT_PASSWORD = "pass";
+
+	@InjectView(R.id.userName)
 	protected EditText userName_;
 
-	@InjectView(org.coursera.capstone.gotit.client.R.id.password)
+	@InjectView(R.id.password)
 	protected EditText password_;
 
-	@InjectView(org.coursera.capstone.gotit.client.R.id.server)
+	@InjectView(R.id.server)
 	protected EditText server_;
 
-	@InjectView(org.coursera.capstone.gotit.client.R.id.loginButton)
+	@InjectView(R.id.loginButton)
 	protected Button loginButton;
 
-	@InjectView(org.coursera.capstone.gotit.client.R.id.useLocalDataCheckBox)
-	protected CheckBox useLocalDataCheckBox;
+    @InjectView(R.id.useLocalDataCheckBox)
+    protected CheckBox useLocalDataCheckBox;
 
-	@Override
+    @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(org.coursera.capstone.gotit.client.R.layout.activity_login_screen);
+		setContentView(R.layout.activity_login_screen);
 
 		ButterKnife.inject(this);
 
@@ -63,15 +73,50 @@ public class LoginScreenActivity extends Activity {
                 server_.setEnabled(!isChecked);
             }
         });
+
+        // Restore preferences
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        boolean autoConnect = settings.getBoolean("autoConnect", false);
+        boolean useLocalStorage = settings.getBoolean("useLocalStorage", false);
+        String server = settings.getString("server", DEFAULT_SERVER);
+        String user = settings.getString("user", DEFAULT_USER);
+        String password = settings.getString("password", DEFAULT_PASSWORD);
+
+        useLocalDataCheckBox.setChecked(useLocalStorage);
+        server_.setText(server);
+        userName_.setText(user);
+        password_.setText(password);
+
+        if (autoConnect) {
+            login();
+        }
 	}
 
-	@OnClick(org.coursera.capstone.gotit.client.R.id.loginButton)
+    @OnClick(R.id.registerTextView)
+    public void register() {
+        Intent registerIntent = new Intent(this, RegistrationActivity.class);
+        startActivity(registerIntent);
+    }
+
+	@OnClick(R.id.loginButton)
 	public void login() {
 		loginButton.setEnabled(false);
 
-		final String user = userName_.getText().toString();
+        final String user = userName_.getText().toString();
 		String pass = password_.getText().toString();
 		String server = server_.getText().toString();
+
+        // Prepare settings to save
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putBoolean("autoConnect", true);
+        editor.putBoolean("useLocalStorage", useLocalDataCheckBox.isChecked());
+        editor.putString("server", server);
+        editor.putString("user", user);
+        editor.putString("password", pass);
+
+        // Commit the edits!
+        editor.commit();
 
         if (useLocalDataCheckBox.isChecked()) {
             ProviderFactory.init(ProviderFactory.INTERNAL_PROVIDER, server, user, pass);
