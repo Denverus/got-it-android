@@ -234,6 +234,19 @@ public class InternalProvider implements ServiceApi {
             }
         }
 
+        Collections.sort(userFeeds, new Comparator<UserFeed>() {
+            @Override
+            public int compare(UserFeed lhs, UserFeed rhs) {
+                if (lhs.getCheckIn().getCreated().getTime() > rhs.getCheckIn().getCreated().getTime()) {
+                    return 1;
+                } else if (lhs.getCheckIn().getCreated().getTime() < rhs.getCheckIn().getCreated().getTime()) {
+                    return -1;
+                } else {
+                    return 0;
+                }
+            }
+        });
+
         return userFeeds;
     }
 

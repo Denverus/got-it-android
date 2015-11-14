@@ -1,5 +1,7 @@
 package org.coursera.capstone.gotit.client.model;
 
+import org.apache.commons.lang3.text.StrBuilder;
+
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -42,7 +44,23 @@ public class CheckIn extends BaseModel {
     }
 
     public String getSummary() {
-        return "Answers "+ answerList.size();
+        StringBuilder sb = new StringBuilder();
+        for (Answer answer : answerList) {
+            if (answer.getAnswerType() == Answer.TYPE_INT) {
+                sb.append("Sugar level [");
+                sb.append(answer.getStringAnswer());
+                sb.append("] ");
+            } else if (answer.getAnswerType() == Answer.TYPE_STRING) {
+                sb.append("Meal [");
+                sb.append(answer.getStringAnswer());
+                sb.append("] ");
+            } else if (answer.getAnswerType() == Answer.TYPE_BOOLEAN) {
+                sb.append("Insulin [");
+                sb.append(answer.getStringAnswer());
+                sb.append("] ");
+            }
+        }
+        return sb.toString();
     }
 
     public int getPersonId() {

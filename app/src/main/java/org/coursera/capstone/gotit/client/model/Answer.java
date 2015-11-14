@@ -95,7 +95,7 @@ public class Answer extends BaseModel {
         } else if (answerType == TYPE_INT) {
             return answerAsInteger.toString();
         } else if (answerType == TYPE_BOOLEAN) {
-            return answerAsBoolean.toString();
+            return answerAsBoolean ? "Yes" : "No";
         }
         return "";
     }
