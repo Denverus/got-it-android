@@ -13,11 +13,11 @@ public class Person extends BaseModel {
     private Image photo;
     private String login;
     private String password;
-    private Date dateBirth;
+    private Long dateBirth;
     private boolean hasDiabetes;
     private String medicalRecordNumber;
 
-    public Person(String name, String login, String password, Date dateBirth, boolean hasDiabetes, String medicalRecordNumber, Image photo) {
+    public Person(String name, String login, String password, Long dateBirth, boolean hasDiabetes, String medicalRecordNumber, Image photo) {
         this.name = name;
         this.login = login;
         this.password = password;
@@ -59,11 +59,11 @@ public class Person extends BaseModel {
         this.password = password;
     }
 
-    public Date getDateBirth() {
+    public Long getDateBirth() {
         return dateBirth;
     }
 
-    public void setDateBirth(Date dateBirth) {
+    public void setDateBirth(Long dateBirth) {
         this.dateBirth = dateBirth;
     }
 

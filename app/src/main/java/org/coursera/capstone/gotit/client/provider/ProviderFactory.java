@@ -3,7 +3,6 @@ package org.coursera.capstone.gotit.client.provider;
 import android.content.Context;
 import android.content.Intent;
 
-import org.coursera.capstone.gotit.client.VideoSvcApi;
 import org.coursera.capstone.gotit.client.activities.LoginScreenActivity;
 import org.coursera.capstone.gotit.client.oauth.SecuredRestBuilder;
 import org.coursera.capstone.gotit.client.unsafe.EasyHttpClient;
@@ -51,7 +50,7 @@ public class ProviderFactory {
 
     private static ServiceApi createRestProvider(String server, String user, String pass) {
         return new SecuredRestBuilder()
-                .setLoginEndpoint(server + VideoSvcApi.TOKEN_PATH)
+                .setLoginEndpoint(server + ServiceApi.TOKEN_PATH)
                 .setUsername(user)
                 .setPassword(pass)
                 .setClientId(CLIENT_ID)

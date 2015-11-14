@@ -13,29 +13,43 @@ import org.coursera.capstone.gotit.client.model.Person;
 import org.coursera.capstone.gotit.client.model.Question;
 import org.coursera.capstone.gotit.client.model.UserFeed;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+
+import retrofit.http.GET;
+import retrofit.http.Path;
 
 public interface ServiceApi {
     public static final int FOLLOWER_STATUS_NOT_FOLLOWED = 0;
     public static final int FOLLOWER_STATUS_REQUESTED = 1;
     public static final int FOLLOWER_STATUS_FOLLOWED = 2;
 
-    public Person getPersonById(int id);
+    public static final String TITLE_PARAMETER = "title";
 
-    public Person getPersonByUsername(final String username);
+    public static final String DURATION_PARAMETER = "duration";
 
-    public List<Person> getTeens(final int userId);
+    public static final String TOKEN_PATH = "/oauth/token";
 
-    public List<CheckIn> getFeedback();
+    public static final String PERSON_SVC_PATH = "/person";
+    public static final String TEEN_SVC_PATH = "/teens";
+    public static final String FEED_SVC_PATH = "/feed";
+    public static final String FEEDBACK_SVC_PATH = "/feedback";
+
+    @GET(PERSON_SVC_PATH + "id/{id}")
+    public Person getPersonById(@Path("id") int id);
+
+    @GET(PERSON_SVC_PATH + "username/{name}")
+    public Person getPersonByUsername(@Path("name") String username);
+
+    @GET(TEEN_SVC_PATH + "list/{id}")
+    public List<Person> getTeens(@Path("id") int userId);
 
     public List<UserFeed> getUserFeeds(final int followerId);
 
     public List<Notification> getNotificationsByUserId(final int id);
 
     public List<CheckIn> getCheckInListByUserId(final int userId);
-
-    public void addFeedback(CheckIn checkIn);
 
     public void sendSubscribeRequest(int teenId, int followerId);
 
@@ -51,7 +65,7 @@ public interface ServiceApi {
 
     public void deleteNotification(int id);
 
-    public void registerUser(String fullName, Date dateBirth, String login, String password, boolean hasDiabetes, String medicalRecordNumber, Image photo);
+    public void registerUser(String fullName, Long dateBirth, String login, String password, boolean hasDiabetes, String medicalRecordNumber, Image photo);
 
     public void saveAnswer(Date date, int userId, List<Answer> answerList);
 

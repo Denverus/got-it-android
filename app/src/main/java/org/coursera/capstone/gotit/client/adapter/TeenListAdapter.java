@@ -17,6 +17,7 @@ import org.coursera.capstone.gotit.client.fragments.TeenProfileFragment;
 import org.coursera.capstone.gotit.client.model.Person;
 import org.coursera.capstone.gotit.client.provider.ServiceApi;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**

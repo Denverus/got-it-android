@@ -376,7 +376,7 @@ public class InternalProvider implements ServiceApi {
         notifications.delete(id);
     }
 
-    public void registerUser(String fullName, Date dateBirth, String login, String password, boolean hasDiabetes, String medicalRecordNumber, Image photo) {
+    public void registerUser(String fullName, Long dateBirth, String login, String password, boolean hasDiabetes, String medicalRecordNumber, Image photo) {
         Person person = new Person(fullName, login, password, dateBirth, hasDiabetes, medicalRecordNumber, photo);
         personTable.add(person);
     }

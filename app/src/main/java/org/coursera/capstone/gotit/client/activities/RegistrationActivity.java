@@ -91,7 +91,7 @@ public class RegistrationActivity extends AppCompatActivity implements DatePicke
         CallableTask.invoke(this, new ServiceCall<Void>() {
             @Override
             public Void call(ServiceApi srv) throws Exception {
-                srv.registerUser(fullName, date, login, password, hasDiabetes, medicalRecordNumber, null);
+                srv.registerUser(fullName, date.getTime(), login, password, hasDiabetes, medicalRecordNumber, null);
                 return null;
             }
         }, new TaskCallback<Void>() {

@@ -30,6 +30,10 @@ public class Utils {
         }
     }
 
+    public static String dateBirthToString(Long date) {
+        return dateBirthToString(new Date(date));
+    }
+
     public static String dateBirthToString(Date date) {
         if (date != null) {
             SimpleDateFormat sdf = new SimpleDateFormat(DATE_BIRTH_FORMAT, Locale.US);
@@ -37,6 +41,10 @@ public class Utils {
         } else {
             return "";
         }
+    }
+
+    public static String ageToString(Long date) {
+        return ageToString(date);
     }
 
     public static String ageToString(Date date) {
@@ -49,7 +57,7 @@ public class Utils {
         }
     }
 
-    public static Date getRandomBirthDate() {
+    public static Long getRandomBirthDate() {
         Random rnd = new Random();
         int year = rnd.nextInt(25)+1980;
         int month = rnd.nextInt(12);
@@ -57,6 +65,6 @@ public class Utils {
 
         Calendar calendar = Calendar.getInstance();
         calendar.set(year, month, day);
-        return calendar.getTime();
+        return calendar.getTime().getTime();
     }
 }
