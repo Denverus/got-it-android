@@ -8,19 +8,19 @@ import java.util.Date;
 
 public class GraphData {
 
-    private Date date;
+    private Long date;
     private int value;
 
-    public GraphData(Date date, int value) {
+    public GraphData(Long date, int value) {
         this.date = date;
         this.value = value;
     }
 
-    public Date getDate() {
+    public Long getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(Long date) {
         this.date = date;
     }
 

@@ -11,27 +11,27 @@ import java.util.List;
  */
 public class CheckIn extends BaseModel {
 
-    private Date created;
+    private Long created;
     private int personId;
     private List<Answer> answerList = Collections.EMPTY_LIST;
 
-    public CheckIn(Date date) {
+    public CheckIn(Long date) {
         if (date == null)
-            created = new Date();
+            created = new Date().getTime();
         else
             created = date;
     }
 
     public CheckIn(int personId, List<Answer> answerList) {
-        created = new Date();
+        created = new Date().getTime();
         this.personId = personId;
         this.answerList = answerList;
     }
-    public Date getCreated() {
+    public Long getCreated() {
         return created;
     }
 
-    public void setCreated(Date created) {
+    public void setCreated(Long created) {
         this.created = created;
     }
 

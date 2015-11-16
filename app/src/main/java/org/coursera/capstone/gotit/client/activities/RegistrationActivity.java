@@ -16,6 +16,7 @@ import android.widget.Toast;
 import org.coursera.capstone.gotit.client.CallableTask;
 import org.coursera.capstone.gotit.client.R;
 import org.coursera.capstone.gotit.client.TaskCallback;
+import org.coursera.capstone.gotit.client.model.Person;
 import org.coursera.capstone.gotit.client.provider.ServiceApi;
 import org.coursera.capstone.gotit.client.provider.ServiceCall;
 
@@ -84,14 +85,15 @@ public class RegistrationActivity extends AppCompatActivity implements DatePicke
         boolean hasDiabetes = hasDiabetesSwitch.isChecked();
         String medicalRecordNumber = reg_medical_record.getText().toString();
 
-        registerUser(fullName, date, login, password, hasDiabetes, medicalRecordNumber, null);
+        Person person = new Person(fullName, login, password, date.getTime(), hasDiabetes, medicalRecordNumber, null);
+        registerUser(person);
     }
 
-    private void registerUser(final String fullName, final Date date, final String login, final String password, final boolean hasDiabetes, final String medicalRecordNumber, final Object o) {
+    private void registerUser(final Person person) {
         CallableTask.invoke(this, new ServiceCall<Void>() {
             @Override
             public Void call(ServiceApi srv) throws Exception {
-                srv.registerUser(fullName, date.getTime(), login, password, hasDiabetes, medicalRecordNumber, null);
+                srv.registerUser(person);
                 return null;
             }
         }, new TaskCallback<Void>() {

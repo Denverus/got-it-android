@@ -13,11 +13,11 @@ import org.coursera.capstone.gotit.client.model.Person;
 import org.coursera.capstone.gotit.client.model.Question;
 import org.coursera.capstone.gotit.client.model.UserFeed;
 
-import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 
+import retrofit.http.DELETE;
 import retrofit.http.GET;
+import retrofit.http.POST;
 import retrofit.http.Path;
 
 public interface ServiceApi {
@@ -33,61 +33,95 @@ public interface ServiceApi {
 
     public static final String PERSON_SVC_PATH = "/person";
     public static final String TEEN_SVC_PATH = "/teens";
+    public static final String FOLLOWER_SVC_PATH = "/follower";
     public static final String FEED_SVC_PATH = "/feed";
     public static final String FEEDBACK_SVC_PATH = "/feedback";
+    public static final String NOTIFICATION_SVC_PATH = "/notification";
+    public static final String CHECKIN_SVC_PATH = "/checkin";
+    public static final String REQUEST_SVC_PATH = "/request";
+    public static final String SUBSCRIPTION_SVC_PATH = "/subscription";
+    public static final String QUESTION_SVC_PATH = "/question";
+    public static final String SETTINGS_SVC_PATH = "/settings";
+
+    public static final String LIST_SVC_PATH = "/list";
+    public static final String GENERAL_SVC_PATH = "/general";
+    public static final String SHARE_SVC_PATH = "/share";
 
     @GET(PERSON_SVC_PATH + "id/{id}")
     public Person getPersonById(@Path("id") int id);
 
-    @GET(PERSON_SVC_PATH + "username/{name}")
+    @GET(PERSON_SVC_PATH + "/username/{name}")
     public Person getPersonByUsername(@Path("name") String username);
 
-    @GET(TEEN_SVC_PATH + "list/{id}")
+    @GET(TEEN_SVC_PATH + LIST_SVC_PATH + "/{id}")
     public List<Person> getTeens(@Path("id") int userId);
 
-    public List<UserFeed> getUserFeeds(final int followerId);
+    @GET(FEED_SVC_PATH + LIST_SVC_PATH + "/{id}")
+    public List<UserFeed> getUserFeeds(@Path("id") int followerId);
 
-    public List<Notification> getNotificationsByUserId(final int id);
+    @GET(NOTIFICATION_SVC_PATH + "/{id}")
+    public List<Notification> getNotificationsByUserId(@Path("id") int id);
 
-    public List<CheckIn> getCheckInListByUserId(final int userId);
+    @GET(CHECKIN_SVC_PATH + LIST_SVC_PATH + "/{id}")
+    public List<CheckIn> getCheckInListByUserId(@Path("id") int userId);
 
-    public void sendSubscribeRequest(int teenId, int followerId);
+    @POST(REQUEST_SVC_PATH + "/send/{teenid}/{id}")
+    public Integer sendSubscribeRequest(@Path("teenid")int teenId, @Path("id") int followerId);
 
-    public void acceptSubscribeRequest(int notificationId);
+    @POST(REQUEST_SVC_PATH + "/accept/{id}")
+    public Boolean acceptSubscribeRequest(@Path("id")int notificationId);
 
-    public void rejectSubscribeRequest(int notificationId);
+    @POST(REQUEST_SVC_PATH + "/reject/{id}")
+    public Boolean rejectSubscribeRequest(@Path("id") int notificationId);
 
-    public int checkFollowerStatus(final int followerId, final int teenId);
+    @GET(FOLLOWER_SVC_PATH + "/status/{id}/{teenid}")
+    public int checkFollowerStatus(@Path("id") int followerId, @Path("teenid") int teenId);
 
-    public List<Person> getFollowerList(final int userId);
+    @GET(FOLLOWER_SVC_PATH + LIST_SVC_PATH + "/{id}")
+    public List<Person> getFollowerList(@Path("id") int userId);
 
-    public void cancelSubscription(final int teenId, final int followerId);
+    @POST(SUBSCRIPTION_SVC_PATH + "/cancel/{teenid}/{id}")
+    public Boolean cancelSubscription(@Path("teenid") int teenId, @Path("id") int followerId);
 
-    public void deleteNotification(int id);
+    @DELETE(NOTIFICATION_SVC_PATH + "/{id}")
+    public Notification deleteNotification(@Path("id") int id);
 
-    public void registerUser(String fullName, Long dateBirth, String login, String password, boolean hasDiabetes, String medicalRecordNumber, Image photo);
+    @POST(PERSON_SVC_PATH + "/{person}")
+    public Integer registerUser(@Path("person") Person person);
 
-    public void saveAnswer(Date date, int userId, List<Answer> answerList);
+    @POST(CHECKIN_SVC_PATH + "/{date}/{id}/{answers}")
+    public Integer saveAnswer(@Path("date")Long date, @Path("id")int userId, @Path("answers")List<Answer> answerList);
 
+    @GET(QUESTION_SVC_PATH + LIST_SVC_PATH)
     public List<Question> getCheckInQuestions();
 
-    public List<FollowerSettings> loadFollowerSettings(final int userId);
+    @GET(SETTINGS_SVC_PATH + LIST_SVC_PATH + "/{id}")
+    public List<FollowerSettings> loadFollowerSettings(@Path("id") int userId);
 
-    public void enableFollowerSharing(final int userId, final int followerId, boolean doShare);
+    @POST(SETTINGS_SVC_PATH + SHARE_SVC_PATH + "/{teenid}/{id}/{share}")
+    public Boolean enableFollowerSharing(@Path("teenid") int userId, @Path("id") int followerId, @Path("share")boolean doShare);
 
-    public List<DataItemSettings> loadSingleFollowerSettings(final int userId, final int followerId);
+    @GET(SETTINGS_SVC_PATH + SHARE_SVC_PATH + "/{id}")
+    public List<DataItemSettings> loadSingleFollowerSettings(@Path("teenid") int userId, @Path("id") int followerId);
 
-    public void saveSingleFollowerSettings(final int userId, final int followerId, final int questionId, final boolean doShare);
+    @POST(SETTINGS_SVC_PATH + SHARE_SVC_PATH + "/{teenid}/{id}/{questionid}/{doshare}")
+    public Boolean saveSingleFollowerSettings(@Path("teenid") int userId, @Path("id") int followerId, @Path("questionid") int questionId, @Path("doshare") boolean doShare);
 
-    public boolean isSharingEnabled(final int userId);
+    @GET(SETTINGS_SVC_PATH + SHARE_SVC_PATH + "/{id}")
+    public boolean isSharingEnabled(@Path("id") int userId);
 
-    public void setSharingEnabled(final int userId, final boolean enableSharing);
+    @POST(SETTINGS_SVC_PATH + SHARE_SVC_PATH + "/{id}/{enable}")
+    public void setSharingEnabled(@Path("id") int userId, @Path("enable") boolean enableSharing);
 
-    public String loadGeneralSettings(final int userId, final String settingsKey);
+    @GET(SETTINGS_SVC_PATH + SHARE_SVC_PATH + "/{id}/{key}")
+    public String loadGeneralSettings(@Path("id") int userId, @Path("key") String settingsKey);
 
-    public List<GeneralSettings> loadGeneralSettingsList(final int userId, final String[] settingsKeyList);
+    @GET(SETTINGS_SVC_PATH + SHARE_SVC_PATH + "/{id}/{keys}")
+    public List<GeneralSettings> loadGeneralSettingsList(@Path("id") int userId, @Path("keys") final String[] settingsKeyList);
 
-    public void saveGeneralSettings(final int userId, final String settingsKey, String settingsValue);
+    @POST(SETTINGS_SVC_PATH + SHARE_SVC_PATH + "/{id}/{key}/{value}")
+    public Boolean saveGeneralSettings(@Path("id") int userId, @Path("key") String settingsKey, @Path("value")String settingsValue);
 
-    List<Feedback> getFeedbackList(int userId);
+    @GET(FEEDBACK_SVC_PATH + LIST_SVC_PATH + "/{id}")
+    public List<Feedback> getFeedbackList(@Path("id") int userId);
 }

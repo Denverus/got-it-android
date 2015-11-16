@@ -1,6 +1,8 @@
 package org.coursera.capstone.gotit.client.adapter;
 
 import android.content.Context;
+import android.graphics.Paint;
+import android.graphics.PathEffect;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -26,6 +28,9 @@ import java.util.Date;
 import java.util.List;
 
 public class FeedbackListAdapter extends BaseListAdapter<Feedback, FeedbackListAdapter.FeedbackViewHolder> {
+
+    private static final int MIN_SUGAR_LEVEL = 70;
+    private static final int MAX_SUGAR_LEVEL = 150;
 
     public FeedbackListAdapter(Context context) {
         super(context);
@@ -54,6 +59,9 @@ public class FeedbackListAdapter extends BaseListAdapter<Feedback, FeedbackListA
     public void onBindViewHolder(FeedbackViewHolder holder, int position) {
         final Feedback feedback = getModel(position);
 
+        final Long minDate = feedback.getGraphData().get(0).getDate();
+        final Long maxDate = feedback.getGraphData().get(feedback.getGraphData().size() - 1).getDate();
+
         holder.personName.setText(feedback.getPerson().getName());
 
         GraphView graph = holder.graphView;
@@ -66,7 +74,28 @@ public class FeedbackListAdapter extends BaseListAdapter<Feedback, FeedbackListA
 
         LineGraphSeries<DataPoint> series = new LineGraphSeries<>(dataPoints);
 
+        // Low and High sugar blood level
+        final int lineColor = getContext().getResources().getColor(R.color.limit_line);
+
+        Paint paint = new Paint();
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setColor(lineColor);
+
+        final DataPoint[] lowDataPoints = {new DataPoint(minDate, MIN_SUGAR_LEVEL), new DataPoint(maxDate, MIN_SUGAR_LEVEL)};
+        LineGraphSeries<DataPoint> lowLineSeries = new LineGraphSeries<>(lowDataPoints);
+        lowLineSeries.setThickness(2);
+        //lowLineSeries.setCustomPaint(paint);
+        lowLineSeries.setColor(lineColor);
+
+        final DataPoint[] highDataPoints = {new DataPoint(minDate, MAX_SUGAR_LEVEL), new DataPoint(maxDate, MAX_SUGAR_LEVEL)};
+        LineGraphSeries<DataPoint> highLineSeries = new LineGraphSeries<>(highDataPoints);
+        highLineSeries.setThickness(2);
+        //highLineSeries.setCustomPaint(paint);
+        highLineSeries.setColor(lineColor);
+
         graph.addSeries(series);
+        graph.addSeries(lowLineSeries);
+        graph.addSeries(highLineSeries);
         graph.setTitle(getContext().getString(R.string.graph_title));
 
         // set date label formatter
@@ -74,8 +103,8 @@ public class FeedbackListAdapter extends BaseListAdapter<Feedback, FeedbackListA
         graph.getGridLabelRenderer().setNumHorizontalLabels(3); // only 4 because of the space
 
         // set manual x bounds to have nice steps
-        graph.getViewport().setMinX(feedback.getGraphData().get(0).getDate().getTime());
-        graph.getViewport().setMaxX(feedback.getGraphData().get(feedback.getGraphData().size()-1).getDate().getTime());
+        graph.getViewport().setMinX(minDate);
+        graph.getViewport().setMaxX(maxDate);
         graph.getViewport().setXAxisBoundsManual(true);
     }
 

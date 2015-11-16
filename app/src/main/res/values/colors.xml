@@ -22,5 +22,6 @@
     <color name="question_item_bg">#E5FFFF</color>
     <color name="question_text_color">#003366</color>
     <color name="question_item_border">#E5FFFF</color>
+    <color name="limit_line">#FF0000</color>
 
 </resources>

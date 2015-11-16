@@ -26,9 +26,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
-/**
- * Created by Denis on 10/11/2015.
- */
 public class InternalProvider implements ServiceApi {
 
     private static final String[] MEALS = {"sandwich, sugar-free tea", "burger, salad, diet cola", "steak, french fries"};
@@ -121,7 +118,7 @@ public class InternalProvider implements ServiceApi {
         Calendar calendar = Calendar.getInstance();
         calendar.set(2015, 10, rnd.nextInt(29)+1, rnd.nextInt(23), rnd.nextInt(60));
 
-        saveAnswer(calendar.getTime(), personId, answers);
+        saveAnswer(calendar.getTime().getTime(), personId, answers);
     }
 
     public Person getPersonById(int id) {
@@ -237,9 +234,9 @@ public class InternalProvider implements ServiceApi {
         Collections.sort(userFeeds, new Comparator<UserFeed>() {
             @Override
             public int compare(UserFeed lhs, UserFeed rhs) {
-                if (lhs.getCheckIn().getCreated().getTime() > rhs.getCheckIn().getCreated().getTime()) {
+                if (lhs.getCheckIn().getCreated() > rhs.getCheckIn().getCreated()) {
                     return 1;
-                } else if (lhs.getCheckIn().getCreated().getTime() < rhs.getCheckIn().getCreated().getTime()) {
+                } else if (lhs.getCheckIn().getCreated() < rhs.getCheckIn().getCreated()) {
                     return -1;
                 } else {
                     return 0;
@@ -289,11 +286,11 @@ public class InternalProvider implements ServiceApi {
         feedbackTable.add(checkIn);
     }
 
-    public void sendSubscribeRequest(int teenId, int followerId) {
-        notifications.add(new Notification(Notification.SUBSCRIBE_REQUESTED, followerId, teenId));
+    public Integer sendSubscribeRequest(int teenId, int followerId) {
+        return notifications.add(new Notification(Notification.SUBSCRIBE_REQUESTED, followerId, teenId));
     }
 
-    public void acceptSubscribeRequest(int notificationId) {
+    public Boolean acceptSubscribeRequest(int notificationId) {
         Notification notification = notifications.getById(notificationId);
         if (notification.getCode() == Notification.SUBSCRIBE_REQUESTED) {
             Subscription subscription = new Subscription(notification.getFromPersonId(), notification.getToPersonId());
@@ -301,11 +298,13 @@ public class InternalProvider implements ServiceApi {
 
             Notification followerNotification = new Notification(Notification.SUBSCRIBE_ACCEPTED, notification.getToPersonId(), notification.getFromPersonId());
             notifications.add(followerNotification);
+        } else {
+            return false;
         }
-        notifications.delete(notificationId);
+        return notifications.delete(notificationId) != null;
     }
 
-    public void rejectSubscribeRequest(int notificationId) {
+    public Boolean rejectSubscribeRequest(int notificationId) {
         Notification notification = notifications.getById(notificationId);
         if (notification.getCode() == Notification.SUBSCRIBE_REQUESTED) {
             Subscription subscription = new Subscription(notification.getFromPersonId(), notification.getToPersonId());
@@ -316,8 +315,10 @@ public class InternalProvider implements ServiceApi {
 
             Notification followerNotification = new Notification(Notification.SUBSCRIBE_REJECTED, notification.getToPersonId(), notification.getFromPersonId());
             notifications.add(followerNotification);
+        } else {
+            return false;
         }
-        notifications.delete(notificationId);
+        return notifications.delete(notificationId) != null;
     }
 
     public int checkFollowerStatus(final int followerId, final int teenId) {
@@ -360,7 +361,7 @@ public class InternalProvider implements ServiceApi {
         return persons;
     }
 
-    public void cancelSubscription(final int teenId, final int followerId) {
+    public Boolean cancelSubscription(final int teenId, final int followerId) {
         List<Subscription> subscriptions = this.subscriptions.getListByCriteria(new Table.BooleanCriteria<Subscription>() {
             @Override
             public boolean getCriteriaValue(Subscription value) {
@@ -370,18 +371,18 @@ public class InternalProvider implements ServiceApi {
         this.subscriptions.deleteAll(subscriptions);
         Notification notification = new Notification(Notification.SUBSCRIBTION_CANCELED, teenId, followerId);
         notifications.add(notification);
+        return true;
     }
 
-    public void deleteNotification(int id) {
-        notifications.delete(id);
+    public Notification deleteNotification(int id) {
+        return notifications.delete(id);
     }
 
-    public void registerUser(String fullName, Long dateBirth, String login, String password, boolean hasDiabetes, String medicalRecordNumber, Image photo) {
-        Person person = new Person(fullName, login, password, dateBirth, hasDiabetes, medicalRecordNumber, photo);
-        personTable.add(person);
+    public Integer registerUser(Person person) {
+        return personTable.add(person);
     }
 
-    public void saveAnswer(Date date, int userId, List<Answer> answerList) {
+    public Integer saveAnswer(Long date, int userId, List<Answer> answerList) {
         CheckIn checkIn = new CheckIn(date);
         checkIn.setPersonId(userId);
         int checkInId = checkInTable.add(checkIn);
@@ -390,6 +391,7 @@ public class InternalProvider implements ServiceApi {
             answer.setCheckInId(checkInId);
             answerTable.add(answer);
         }
+        return checkInId;
     }
 
     public List<Question> getCheckInQuestions() {
@@ -425,7 +427,7 @@ public class InternalProvider implements ServiceApi {
         return followerSettingList;
     }
 
-    public void enableFollowerSharing(final int userId, final int followerId, boolean doShare) {
+    public Boolean enableFollowerSharing(final int userId, final int followerId, boolean doShare) {
         if (doShare) {
             List<ShareSettings> shareList = shareSettingsTable.getListByCriteria(new Table.BooleanCriteria<ShareSettings>() {
                 @Override
@@ -444,6 +446,8 @@ public class InternalProvider implements ServiceApi {
                 shareSettingsTable.add(shareSettings);
             }
         }
+
+        return true;
     }
 
     public List<DataItemSettings> loadSingleFollowerSettings(final int userId, final int followerId) {
@@ -467,7 +471,7 @@ public class InternalProvider implements ServiceApi {
         return resultsList;
     }
 
-    public void saveSingleFollowerSettings(final int userId, final int followerId, final int questionId, final boolean doShare) {
+    public Boolean saveSingleFollowerSettings(final int userId, final int followerId, final int questionId, final boolean doShare) {
         if (doShare) {
             List<ShareSettings> shareList = shareSettingsTable.getListByCriteria(new Table.BooleanCriteria<ShareSettings>() {
                 @Override
@@ -483,6 +487,7 @@ public class InternalProvider implements ServiceApi {
             shareSettings.setAllowedQuestionId(questionId);
             shareSettingsTable.add(shareSettings);
         }
+        return true;
     }
 
     public boolean isSharingEnabled(final int userId) {
@@ -545,7 +550,7 @@ public class InternalProvider implements ServiceApi {
         return list;
     }
 
-    public void saveGeneralSettings(final int userId, final String settingsKey, String settingsValue) {
+    public Boolean saveGeneralSettings(final int userId, final String settingsKey, String settingsValue) {
         List<GeneralSettings> list = generalSettingsTable.getListByCriteria(new Table.BooleanCriteria<GeneralSettings>() {
             @Override
             public boolean getCriteriaValue(GeneralSettings value) {
@@ -553,7 +558,12 @@ public class InternalProvider implements ServiceApi {
             }
         });
 
+        if (list.isEmpty()) {
+            return false;
+        }
+
         list.get(0).setValue(settingsValue);
+        return false;
     }
 
     private List<CheckIn> getSecuredCheckIns(final int followerId, int personId) {
@@ -663,9 +673,9 @@ public class InternalProvider implements ServiceApi {
                 Collections.sort(graphData, new Comparator<GraphData>() {
                     @Override
                     public int compare(GraphData lhs, GraphData rhs) {
-                        if (lhs.getDate().getTime() > rhs.getDate().getTime()) {
+                        if (lhs.getDate() > rhs.getDate()) {
                             return 1;
-                        } else if (lhs.getDate().getTime() < rhs.getDate().getTime()) {
+                        } else if (lhs.getDate() < rhs.getDate()) {
                             return -1;
                         } else {
                             return 0;
