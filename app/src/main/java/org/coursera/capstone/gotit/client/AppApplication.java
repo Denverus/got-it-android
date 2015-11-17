@@ -18,7 +18,7 @@ public class AppApplication extends Application {
     private Integer checkIn = null;
     private List<Question> questionList;
     private int followerId;
-    private List<Answer> answerList;
+    private Answer[] answerList;
 
     @Override
     public void onCreate() {
@@ -75,11 +75,11 @@ public class AppApplication extends Application {
         this.followerId = followerId;
     }
 
-    public void setAnswerList(List<Answer> answerList) {
+    public void setAnswerList(Answer[] answerList) {
         this.answerList = answerList;
     }
 
-    public List<Answer> getAnswerList() {
+    public Answer[] getAnswerList() {
         return answerList;
     }
 

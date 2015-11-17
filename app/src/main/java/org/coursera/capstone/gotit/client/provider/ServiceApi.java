@@ -45,7 +45,8 @@ public interface ServiceApi {
 
     public static final String LIST_SVC_PATH = "/list";
     public static final String GENERAL_SVC_PATH = "/general";
-    public static final String SHARE_SVC_PATH = "/share";
+    public static final String SHARING_SVC_PATH = "/sharing";
+    public static final String FOLLOWER_SETTINGS_SVC_PATH = "/followersettings";
 
     @GET(PERSON_SVC_PATH + "id/{id}")
     public Person getPersonById(@Path("id") int id);
@@ -59,7 +60,7 @@ public interface ServiceApi {
     @GET(FEED_SVC_PATH + LIST_SVC_PATH + "/{id}")
     public List<UserFeed> getUserFeeds(@Path("id") int followerId);
 
-    @GET(NOTIFICATION_SVC_PATH + "/{id}")
+    @GET(NOTIFICATION_SVC_PATH + LIST_SVC_PATH + "/{id}")
     public List<Notification> getNotificationsByUserId(@Path("id") int id);
 
     @GET(CHECKIN_SVC_PATH + LIST_SVC_PATH + "/{id}")
@@ -95,31 +96,31 @@ public interface ServiceApi {
     @GET(QUESTION_SVC_PATH + LIST_SVC_PATH)
     public List<Question> getCheckInQuestions();
 
-    @GET(SETTINGS_SVC_PATH + LIST_SVC_PATH + "/{id}")
+    @GET(SETTINGS_SVC_PATH + FOLLOWER_SETTINGS_SVC_PATH + LIST_SVC_PATH + "/{id}")
     public List<FollowerSettings> loadFollowerSettings(@Path("id") int userId);
 
-    @POST(SETTINGS_SVC_PATH + SHARE_SVC_PATH + "/{teenid}/{id}/{share}")
+    @POST(SETTINGS_SVC_PATH + FOLLOWER_SETTINGS_SVC_PATH + "/enable/{teenid}/{id}/{share}")
     public Boolean enableFollowerSharing(@Path("teenid") int userId, @Path("id") int followerId, @Path("share")boolean doShare);
 
-    @GET(SETTINGS_SVC_PATH + SHARE_SVC_PATH + "/{id}")
+    @GET(SETTINGS_SVC_PATH + FOLLOWER_SETTINGS_SVC_PATH + "/loadsingle/{id}")
     public List<DataItemSettings> loadSingleFollowerSettings(@Path("teenid") int userId, @Path("id") int followerId);
 
-    @POST(SETTINGS_SVC_PATH + SHARE_SVC_PATH + "/{teenid}/{id}/{questionid}/{doshare}")
+    @POST(SETTINGS_SVC_PATH + FOLLOWER_SETTINGS_SVC_PATH + "/savesingle/{teenid}/{id}/{questionid}/{doshare}")
     public Boolean saveSingleFollowerSettings(@Path("teenid") int userId, @Path("id") int followerId, @Path("questionid") int questionId, @Path("doshare") boolean doShare);
 
-    @GET(SETTINGS_SVC_PATH + SHARE_SVC_PATH + "/{id}")
-    public boolean isSharingEnabled(@Path("id") int userId);
+    @GET(SETTINGS_SVC_PATH + SHARING_SVC_PATH + "/{id}")
+    public Boolean isSharingEnabled(@Path("id") int userId);
 
-    @POST(SETTINGS_SVC_PATH + SHARE_SVC_PATH + "/{id}/{enable}")
-    public void setSharingEnabled(@Path("id") int userId, @Path("enable") boolean enableSharing);
+    @POST(SETTINGS_SVC_PATH + SHARING_SVC_PATH + "/{id}/{enable}")
+    public Boolean setSharingEnabled(@Path("id") int userId, @Path("enable") boolean enableSharing);
 
-    @GET(SETTINGS_SVC_PATH + SHARE_SVC_PATH + "/{id}/{key}")
+    @GET(SETTINGS_SVC_PATH + GENERAL_SVC_PATH + "/{id}/{key}")
     public String loadGeneralSettings(@Path("id") int userId, @Path("key") String settingsKey);
 
-    @GET(SETTINGS_SVC_PATH + SHARE_SVC_PATH + "/{id}/{keys}")
+    @GET(SETTINGS_SVC_PATH + GENERAL_SVC_PATH + LIST_SVC_PATH + "/{id}/{keys}")
     public List<GeneralSettings> loadGeneralSettingsList(@Path("id") int userId, @Path("keys") final String[] settingsKeyList);
 
-    @POST(SETTINGS_SVC_PATH + SHARE_SVC_PATH + "/{id}/{key}/{value}")
+    @POST(SETTINGS_SVC_PATH + GENERAL_SVC_PATH + "/{id}/{key}/{value}")
     public Boolean saveGeneralSettings(@Path("id") int userId, @Path("key") String settingsKey, @Path("value")String settingsValue);
 
     @GET(FEEDBACK_SVC_PATH + LIST_SVC_PATH + "/{id}")

@@ -15,14 +15,14 @@ public class Notification extends BaseModel {
     private int code;
     private int fromPersonId;
     private int toPersonId;
-    private Date created;
+    private Long created;
 
     public Notification(int id) {
         super(id);
     }
 
     public Notification(int code, int fromPersonId, int toPersonId) {
-        this.created = new Date();
+        this.created = new Date().getTime();
         this.code = code;
         this.fromPersonId = fromPersonId;
         this.toPersonId = toPersonId;
@@ -52,11 +52,11 @@ public class Notification extends BaseModel {
         this.toPersonId = toPersonId;
     }
 
-    public Date getCreated() {
+    public Long getCreated() {
         return created;
     }
 
-    public void setCreated(Date created) {
+    public void setCreated(Long created) {
         this.created = created;
     }
 }

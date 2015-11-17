@@ -47,7 +47,7 @@ public class CheckInListAdapter extends BaseListAdapter<CheckIn, CheckInListAdap
     @Override
     public void onBindViewHolder(FeedbackViewHolder feedbackViewHolder, int i) {
         feedbackViewHolder.created.setText(Utils.dateToString(getModel(i).getCreated()));
-        feedbackViewHolder.summary.setText("Answers: " + getModel(i).getAnswers().size());
+        feedbackViewHolder.summary.setText("Answers: " + (getModel(i).getAnswers() != null ? getModel(i).getAnswers().length : 0));
     }
 
     public static class FeedbackViewHolder extends RecyclerView.ViewHolder {

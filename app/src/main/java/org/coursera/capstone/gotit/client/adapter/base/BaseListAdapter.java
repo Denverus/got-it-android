@@ -73,7 +73,7 @@ public abstract class BaseListAdapter<T extends BaseModel, H extends RecyclerVie
 
     @Override
     public int getItemCount() {
-        return modelList.size();
+        return modelList != null ? modelList.size() : 0;
     }
 
     @Override

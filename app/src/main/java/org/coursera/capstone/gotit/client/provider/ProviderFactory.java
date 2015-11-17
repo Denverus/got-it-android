@@ -3,12 +3,17 @@ package org.coursera.capstone.gotit.client.provider;
 import android.content.Context;
 import android.content.Intent;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import org.coursera.capstone.gotit.client.activities.LoginScreenActivity;
+import org.coursera.capstone.gotit.client.model.CheckIn;
 import org.coursera.capstone.gotit.client.oauth.SecuredRestBuilder;
 import org.coursera.capstone.gotit.client.unsafe.EasyHttpClient;
 
 import retrofit.RestAdapter;
 import retrofit.client.ApacheClient;
+import retrofit.converter.GsonConverter;
 
 /**
  * Created by dtrotckii on 11/6/2015.
@@ -49,6 +54,10 @@ public class ProviderFactory {
     }
 
     private static ServiceApi createRestProvider(String server, String user, String pass) {
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(CheckIn.class, new CheckinDeserializer())
+                .create();
+
         return new SecuredRestBuilder()
                 .setLoginEndpoint(server + ServiceApi.TOKEN_PATH)
                 .setUsername(user)
@@ -56,7 +65,9 @@ public class ProviderFactory {
                 .setClientId(CLIENT_ID)
                 .setClient(
                         new ApacheClient(new EasyHttpClient()))
-                .setEndpoint(server).setLogLevel(RestAdapter.LogLevel.FULL).build()
+                .setEndpoint(server).setLogLevel(RestAdapter.LogLevel.FULL)
+                .setConverter(new GsonConverter(gson))
+                .build()
                 .create(ServiceApi.class);
     }
 }

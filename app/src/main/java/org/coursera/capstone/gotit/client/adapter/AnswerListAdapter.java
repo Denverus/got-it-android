@@ -11,6 +11,8 @@ import org.coursera.capstone.gotit.client.adapter.base.BaseListAdapter;
 import org.coursera.capstone.gotit.client.model.Answer;
 import org.coursera.capstone.gotit.client.provider.ServiceApi;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -38,7 +40,7 @@ public class AnswerListAdapter extends BaseListAdapter<Answer, AnswerListAdapter
 
     @Override
     protected List<Answer> onRefresh(ServiceApi svc) {
-        return AppApplication.getContext().getAnswerList();
+        return Arrays.asList(AppApplication.getContext().getAnswerList());
     }
 
     @Override

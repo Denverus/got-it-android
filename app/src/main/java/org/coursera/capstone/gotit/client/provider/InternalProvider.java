@@ -18,7 +18,9 @@ import org.coursera.capstone.gotit.client.model.ShareSettings;
 import org.coursera.capstone.gotit.client.model.Subscription;
 import org.coursera.capstone.gotit.client.model.UserFeed;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
@@ -195,13 +197,13 @@ public class InternalProvider implements ServiceApi {
 
                     updateAnswersByQuestions(answerList);
 
-                    checkIn.setAnswers(answerList);
+                    checkIn.setAnswers(answerList.toArray(new Answer[answerList.size()]));
 
                     UserFeed userFeed = new UserFeed(teen, checkIn);
                     userFeeds.add(userFeed);
                 } else {
                     List<Answer> allowedAnswers = new ArrayList<>();
-                    List<Answer> answers = checkIn.getAnswers();
+                    List<Answer> answers = Arrays.asList(checkIn.getAnswers());
 
                     for (Answer answer : answers) {
                         boolean allowSharing = true;
@@ -223,7 +225,7 @@ public class InternalProvider implements ServiceApi {
                     sharedCheckIn.setId(checkIn.getId());
                     sharedCheckIn.setPersonId(checkIn.getPersonId());
                     sharedCheckIn.setCreated(checkIn.getCreated());
-                    sharedCheckIn.setAnswers(allowedAnswers);
+                    sharedCheckIn.setAnswers(allowedAnswers.toArray(new Answer[allowedAnswers.size()]));
 
                     UserFeed userFeed = new UserFeed(teen, sharedCheckIn);
                     userFeeds.add(userFeed);
@@ -277,7 +279,7 @@ public class InternalProvider implements ServiceApi {
                 answer.setQuestion(question.getQuestion());
             }
 
-            checkIn.setAnswers(answerList);
+            checkIn.setAnswers(answerList.toArray(new Answer[answerList.size()]));
         }
         return checkInList;
     }
@@ -490,7 +492,7 @@ public class InternalProvider implements ServiceApi {
         return true;
     }
 
-    public boolean isSharingEnabled(final int userId) {
+    public Boolean isSharingEnabled(final int userId) {
         List<GeneralSettings> list = generalSettingsTable.getListByCriteria(new Table.BooleanCriteria<GeneralSettings>() {
             @Override
             public boolean getCriteriaValue(GeneralSettings value) {
@@ -501,7 +503,7 @@ public class InternalProvider implements ServiceApi {
         return list.isEmpty() ? false : Boolean.parseBoolean(list.get(0).getValue());
     }
 
-    public void setSharingEnabled(final int userId, final boolean enableSharing) {
+    public Boolean setSharingEnabled(final int userId, final boolean enableSharing) {
         List<GeneralSettings> list = generalSettingsTable.getListByCriteria(new Table.BooleanCriteria<GeneralSettings>() {
             @Override
             public boolean getCriteriaValue(GeneralSettings value) {
@@ -509,7 +511,12 @@ public class InternalProvider implements ServiceApi {
             }
         });
 
+        if (list.isEmpty()) {
+            return false;
+        }
+
         list.get(0).setValue(Boolean.toString(enableSharing));
+        return true;
     }
 
     public String loadGeneralSettings(final int userId, final String settingsKey) {
@@ -617,12 +624,12 @@ public class InternalProvider implements ServiceApi {
 
                     updateAnswersByQuestions(answerList);
 
-                    checkIn.setAnswers(answerList);
+                    checkIn.setAnswers(answerList.toArray(new Answer[answerList.size()]));
 
                     sharedCheckIn = checkIn;
                 } else {
                     List<Answer> allowedAnswers = new ArrayList<>();
-                    List<Answer> answers = checkIn.getAnswers();
+                    List<Answer> answers = Arrays.asList(checkIn.getAnswers());
 
                     for (Answer answer : answers) {
                         boolean allowSharing = true;
@@ -644,7 +651,7 @@ public class InternalProvider implements ServiceApi {
                     sharedCheckIn.setId(checkIn.getId());
                     sharedCheckIn.setPersonId(checkIn.getPersonId());
                     sharedCheckIn.setCreated(checkIn.getCreated());
-                    sharedCheckIn.setAnswers(allowedAnswers);
+                    sharedCheckIn.setAnswers(allowedAnswers.toArray(new Answer[allowedAnswers.size()]));
                 }
 
                 resultCheckIn.add(sharedCheckIn);

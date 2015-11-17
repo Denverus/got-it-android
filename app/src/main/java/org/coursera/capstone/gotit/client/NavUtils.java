@@ -82,7 +82,7 @@ public class NavUtils {
         showFragmentInMainActivity(context, new NotificationListFragment());
     }
 
-    public static void showAnswerListFragment(Context context, List<Answer> answerList) {
+    public static void showAnswerListFragment(Context context, Answer[] answerList) {
         AppApplication.getContext().setAnswerList(answerList);
         showFragmentInMainActivity(context, new AnswerListFragment());
     }

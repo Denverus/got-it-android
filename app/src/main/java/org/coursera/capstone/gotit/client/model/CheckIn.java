@@ -13,7 +13,7 @@ public class CheckIn extends BaseModel {
 
     private Long created;
     private int personId;
-    private List<Answer> answerList = Collections.EMPTY_LIST;
+    private Answer[] answerList;
 
     public CheckIn(Long date) {
         if (date == null)
@@ -22,7 +22,7 @@ public class CheckIn extends BaseModel {
             created = date;
     }
 
-    public CheckIn(int personId, List<Answer> answerList) {
+    public CheckIn(int personId, Answer[] answerList) {
         created = new Date().getTime();
         this.personId = personId;
         this.answerList = answerList;
@@ -35,11 +35,11 @@ public class CheckIn extends BaseModel {
         this.created = created;
     }
 
-    public List<Answer> getAnswers() {
+    public Answer[] getAnswers() {
         return answerList;
     }
 
-    public void setAnswers(List<Answer> questions) {
+    public void setAnswers(Answer[] questions) {
         this.answerList = questions;
     }
 
