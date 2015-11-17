@@ -3,6 +3,7 @@ package org.coursera.capstone.gotit.client;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
+import android.widget.Toast;
 
 import org.coursera.capstone.gotit.client.activities.MainActivity;
 import org.coursera.capstone.gotit.client.fragments.AnswerListFragment;
@@ -24,6 +25,7 @@ import org.coursera.capstone.gotit.client.model.Person;
 import org.coursera.capstone.gotit.client.model.Question;
 import org.coursera.capstone.gotit.client.provider.ProviderFactory;
 import org.coursera.capstone.gotit.client.provider.ServiceApi;
+import org.coursera.capstone.gotit.client.provider.ServiceCall;
 
 import java.util.List;
 
@@ -45,17 +47,25 @@ public class NavUtils {
     public static void showEditFeedback(Context context) {
     }
 
-    public static void showCreateCheckIn(Context context) {
+    public static void showCreateCheckIn(final Context context) {
+        CallableTask.invoke(context, new ServiceCall<List<Question>>() {
+            @Override
+            public List<Question> call(ServiceApi srv) throws Exception {
+                return srv.getCheckInQuestions();
+            }
+        }, new TaskCallback<List<Question>>() {
+            @Override
+            public void success(List<Question> data) {
+                AppApplication.getContext().setQuestionList(data);
 
-        ServiceApi service = ProviderFactory.getOrShowLogin(context);
+                showFragmentInMainActivity(context, new CreateCheckInFragment());
+            }
 
-        if (service != null) {
-            List<Question> questionList = service.getCheckInQuestions();
-
-            AppApplication.getContext().setQuestionList(questionList);
-
-            showFragmentInMainActivity(context, new CreateCheckInFragment());
-        }
+            @Override
+            public void error(Exception e) {
+                Toast.makeText(context, "Network error", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     public static void showCheckInList(Context context) {

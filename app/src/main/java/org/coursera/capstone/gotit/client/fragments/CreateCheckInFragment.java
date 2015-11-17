@@ -1,10 +1,12 @@
 package org.coursera.capstone.gotit.client.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -23,6 +25,7 @@ import org.coursera.capstone.gotit.client.provider.ServiceApi;
 import org.coursera.capstone.gotit.client.provider.ServiceCall;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class CreateCheckInFragment extends Fragment {
@@ -114,7 +117,7 @@ public class CreateCheckInFragment extends Fragment {
         CallableTask.invoke(getContext(), new ServiceCall<Void>() {
             @Override
             public Void call(ServiceApi srv) throws Exception {
-                srv.saveAnswer(null, userId, answerList);
+                srv.saveAnswer(new Date().getTime(), userId, answerList);
                 return null;
             }
         }, new TaskCallback<Void>() {
@@ -169,12 +172,14 @@ public class CreateCheckInFragment extends Fragment {
                 answerEditText.setVisibility(View.VISIBLE);
                 answerEditNumber.setVisibility(View.GONE);
                 answerEditBool.setVisibility(View.GONE);
+                showKeyboard(answerEditText);
                 break;
             }
             case Answer.TYPE_INT: {
                 answerEditText.setVisibility(View.GONE);
                 answerEditNumber.setVisibility(View.VISIBLE);
                 answerEditBool.setVisibility(View.GONE);
+                showKeyboard(answerEditNumber);
                 break;
             }
             case Answer.TYPE_BOOLEAN: {
@@ -184,5 +189,17 @@ public class CreateCheckInFragment extends Fragment {
                 break;
             }
         }
+    }
+
+    private void showKeyboard(View v) {
+        InputMethodManager inputMethodManager =  (InputMethodManager)getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.toggleSoftInputFromWindow(v.getApplicationWindowToken(), InputMethodManager.SHOW_FORCED, 0);
+        v.requestFocus();
+    }
+
+
+    private void hideKeyboard(View v) {
+        InputMethodManager inputMethodManager =  (InputMethodManager)getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.toggleSoftInputFromWindow(v.getApplicationWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
     }
 }

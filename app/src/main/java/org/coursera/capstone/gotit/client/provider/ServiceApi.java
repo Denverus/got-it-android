@@ -15,10 +15,12 @@ import org.coursera.capstone.gotit.client.model.UserFeed;
 
 import java.util.List;
 
+import retrofit.http.Body;
 import retrofit.http.DELETE;
 import retrofit.http.GET;
 import retrofit.http.POST;
 import retrofit.http.Path;
+import retrofit.http.Query;
 
 public interface ServiceApi {
     public static final int FOLLOWER_STATUS_NOT_FOLLOWED = 0;
@@ -76,7 +78,7 @@ public interface ServiceApi {
     public Boolean rejectSubscribeRequest(@Path("id") int notificationId);
 
     @GET(FOLLOWER_SVC_PATH + "/status/{id}/{teenid}")
-    public int checkFollowerStatus(@Path("id") int followerId, @Path("teenid") int teenId);
+    public Integer checkFollowerStatus(@Path("id") int followerId, @Path("teenid") int teenId);
 
     @GET(FOLLOWER_SVC_PATH + LIST_SVC_PATH + "/{id}")
     public List<Person> getFollowerList(@Path("id") int userId);
@@ -90,8 +92,8 @@ public interface ServiceApi {
     @POST(PERSON_SVC_PATH + "/{person}")
     public Integer registerUser(@Path("person") Person person);
 
-    @POST(CHECKIN_SVC_PATH + "/{date}/{id}/{answers}")
-    public Integer saveAnswer(@Path("date")Long date, @Path("id")int userId, @Path("answers")List<Answer> answerList);
+    @POST(CHECKIN_SVC_PATH + "/{date}/{id}")
+    public Integer saveAnswer(@Path("date")Long date, @Path("id")int userId, @Body List<Answer> answerList);
 
     @GET(QUESTION_SVC_PATH + LIST_SVC_PATH)
     public List<Question> getCheckInQuestions();

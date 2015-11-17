@@ -323,7 +323,7 @@ public class InternalProvider implements ServiceApi {
         return notifications.delete(notificationId) != null;
     }
 
-    public int checkFollowerStatus(final int followerId, final int teenId) {
+    public Integer checkFollowerStatus(final int followerId, final int teenId) {
         List<Subscription> subscriptionList = subscriptions.getListByCriteria(new Table.BooleanCriteria<Subscription>() {
             @Override
             public boolean getCriteriaValue(Subscription value) {

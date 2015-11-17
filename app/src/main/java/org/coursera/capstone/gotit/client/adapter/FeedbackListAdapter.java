@@ -90,7 +90,7 @@ public class FeedbackListAdapter extends BaseListAdapter<Feedback, FeedbackListA
         final DataPoint[] highDataPoints = {new DataPoint(minDate, MAX_SUGAR_LEVEL), new DataPoint(maxDate, MAX_SUGAR_LEVEL)};
         LineGraphSeries<DataPoint> highLineSeries = new LineGraphSeries<>(highDataPoints);
         highLineSeries.setThickness(2);
-        //highLineSeries.setCustomPaint(paint);
+        //  highLineSeries.setCustomPaint(paint);
         highLineSeries.setColor(lineColor);
 
         graph.addSeries(series);
