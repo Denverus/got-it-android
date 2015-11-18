@@ -41,6 +41,7 @@ public class LoginScreenActivity extends Activity {
 
 	public static final String PREFS_NAME = "PrefsFile";
 
+    //public static final String DEFAULT_SERVER = "https://10.2.4.52:8443";
     public static final String DEFAULT_SERVER = "https://10.0.2.2:8443";
     public static final String DEFAULT_USER = "user1";
     public static final String DEFAULT_PASSWORD = "pass";
