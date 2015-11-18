@@ -28,6 +28,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
+import retrofit.http.Path;
+
 public class InternalProvider implements ServiceApi {
 
     private static final String[] MEALS = {"sandwich, sugar-free tea", "burger, salad, diet cola", "steak, french fries"};
@@ -534,7 +536,9 @@ public class InternalProvider implements ServiceApi {
         }
     }
 
-    public List<GeneralSettings> loadGeneralSettingsList(final int userId, final String[] settingsKeyList) {
+    @Override
+    public List<GeneralSettings> loadAlertsSettings(final int userId, String alert1, String alert2, String alert3) {
+        final String[] settingsKeyList = new String[] {alert1, alert2, alert3};
         List<GeneralSettings> list = generalSettingsTable.getListByCriteria(new Table.BooleanCriteria<GeneralSettings>() {
             @Override
             public boolean getCriteriaValue(GeneralSettings value) {

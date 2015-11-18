@@ -199,7 +199,7 @@ public class AlertSettingsFragment extends Fragment {
         CallableTask.invoke(getContext(), new ServiceCall<List<GeneralSettings>>() {
             @Override
             public List<GeneralSettings> call(ServiceApi srv) throws Exception {
-                return srv.loadGeneralSettingsList(userId, alertKey);
+                return srv.loadAlertsSettings(userId, alertKey[0], alertKey[1], alertKey[2]);
             }
         }, new TaskCallback<List<GeneralSettings>>() {
             @Override

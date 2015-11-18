@@ -104,23 +104,23 @@ public interface ServiceApi {
     @POST(SETTINGS_SVC_PATH + FOLLOWER_SETTINGS_SVC_PATH + "/enable/{teenid}/{id}/{share}")
     public Boolean enableFollowerSharing(@Path("teenid") int userId, @Path("id") int followerId, @Path("share")boolean doShare);
 
-    @GET(SETTINGS_SVC_PATH + FOLLOWER_SETTINGS_SVC_PATH + "/loadsingle/{id}")
+    @GET(SETTINGS_SVC_PATH + FOLLOWER_SETTINGS_SVC_PATH + "/loadsingle/{teenid}/{id}")
     public List<DataItemSettings> loadSingleFollowerSettings(@Path("teenid") int userId, @Path("id") int followerId);
 
-    @POST(SETTINGS_SVC_PATH + FOLLOWER_SETTINGS_SVC_PATH + "/savesingle/{teenid}/{id}/{questionid}/{doshare}")
-    public Boolean saveSingleFollowerSettings(@Path("teenid") int userId, @Path("id") int followerId, @Path("questionid") int questionId, @Path("doshare") boolean doShare);
+    @POST(SETTINGS_SVC_PATH + FOLLOWER_SETTINGS_SVC_PATH + "/savesingle/{teenid}/{id}/{questionid}")
+    public Boolean saveSingleFollowerSettings(@Path("teenid") int userId, @Path("id") int followerId, @Path("questionid") int questionId, @Body boolean doShare);
 
     @GET(SETTINGS_SVC_PATH + SHARING_SVC_PATH + "/{id}")
     public Boolean isSharingEnabled(@Path("id") int userId);
 
     @POST(SETTINGS_SVC_PATH + SHARING_SVC_PATH + "/{id}/{enable}")
     public Boolean setSharingEnabled(@Path("id") int userId, @Path("enable") boolean enableSharing);
-
+/*
     @GET(SETTINGS_SVC_PATH + GENERAL_SVC_PATH + "/{id}/{key}")
     public String loadGeneralSettings(@Path("id") int userId, @Path("key") String settingsKey);
-
-    @GET(SETTINGS_SVC_PATH + GENERAL_SVC_PATH + LIST_SVC_PATH + "/{id}/{keys}")
-    public List<GeneralSettings> loadGeneralSettingsList(@Path("id") int userId, @Path("keys") final String[] settingsKeyList);
+*/
+    @GET(SETTINGS_SVC_PATH + GENERAL_SVC_PATH + LIST_SVC_PATH + "/{id}/{alert1}/{alert2}/{alert3}")
+    public List<GeneralSettings> loadAlertsSettings(@Path("id") int userId, @Path("alert1") String alert1, @Path("alert2") String alert2, @Path("alert3") String alert3);
 
     @POST(SETTINGS_SVC_PATH + GENERAL_SVC_PATH + "/{id}/{key}/{value}")
     public Boolean saveGeneralSettings(@Path("id") int userId, @Path("key") String settingsKey, @Path("value")String settingsValue);

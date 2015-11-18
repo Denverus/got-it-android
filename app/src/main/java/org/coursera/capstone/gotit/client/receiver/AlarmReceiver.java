@@ -33,8 +33,6 @@ public class AlarmReceiver extends BroadcastReceiver {
         PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "");
         wl.acquire();
 
-        // Put here YOUR code.
-        Toast.makeText(context, "Alarm! "+getClass(), Toast.LENGTH_LONG).show();
         Log.i(TAG, "Prepare for creating notification");
         NotificationFactory.createCheckInNotification(context);
         Log.i(TAG, "Notification created");
@@ -65,7 +63,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         CallableTask.invoke(context, new ServiceCall<List<GeneralSettings>>() {
             @Override
             public List<GeneralSettings> call(ServiceApi srv) throws Exception {
-                return srv.loadGeneralSettingsList(userId, alertKey);
+                return srv.loadAlertsSettings(userId, alertKey[0], alertKey[1], alertKey[2]);
             }
         }, new TaskCallback<List<GeneralSettings>>() {
             @Override

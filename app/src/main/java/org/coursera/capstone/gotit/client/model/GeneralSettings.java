@@ -24,6 +24,9 @@ public class GeneralSettings extends BaseModel {
         this.userId = userId;
     }
 
+    public GeneralSettings() {
+    }
+
     public GeneralSettings(int userId, String key, String value) {
         this.key = key;
         this.value = value;
