@@ -1,7 +1,5 @@
 package org.coursera.capstone.gotit.client.model;
 
-import org.apache.commons.lang3.text.StrBuilder;
-
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
